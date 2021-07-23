@@ -1,0 +1,51 @@
+﻿@using FitzCheckout.BizObjects
+@model List<FitzCheckout.DAL.ChecklistHistory>
+
+<table id="basicHistory" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>@Model[i].DateUpdated</td>
+                <td>@Model[i].FullName</td>
+                @if (Model[i].Status == ChecklistStatus.TechComplete)
+                {
+                    <td>Tech Complete</td>
+                }
+                else if (Model[i].Status == ChecklistStatus.RepairForRetail)
+                {
+                    <td>Repair for Retail</td>
+                }
+                else
+                {
+                    <td>@Model[i].Status.ToString()</td>
+                }
+                <td>@Model[i].Action</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#basicHistory').DataTable({
+            deferRender: true,
+            scrollY: '75vh',
+            scrollCollapse: true,
+            scroller: true,
+            searching: false,
+            paging: false,
+            autoWidth: true
+        });
+
+    });
+</script>
+

@@ -1,0 +1,20 @@
+﻿@using FitzCheckout.Models
+@model List<ChecklistSectionVM>
+<script type="text/javascript" src="~/Scripts/InspectionDetails.js"></script>
+
+<div class="sidebar">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <a href="#Section_@Model[i].ID" id="SecitonLink_@Model[i].ID" class="">@Model[i].SectionLabel</a>
+    }
+    <div>
+        <button name="submit" type="button" id="saveForm3" value="Save" class="btn btn-primary saveForm">Save</button>
+        <button name="submit" type="submit" id="return2" value="Search" class="btn btn-success pull-right">Return</button>
+    </div>
+    <div>
+        <p></p>
+        <button name="submit" type="button" id="Submitted3" value="MarkComplete" class="btn btn-danger submitChecklist">Submit Inspection</button>
+    </div>
+</div>
+
+

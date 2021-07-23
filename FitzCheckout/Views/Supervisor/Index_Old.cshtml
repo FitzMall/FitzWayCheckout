@@ -1,0 +1,48 @@
+﻿@using FitzCheckout.BizObjects
+@model List<ChecklistRecord>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index_Old", "Supervisor", FormMethod.Post, new { enctype = "multipart/formdata" }))
+{
+    @Html.AntiForgeryToken()
+    <h2>@ViewBag.SearchType</h2>
+        <div>
+            @{ Html.RenderPartial("SearchResults", Model); }
+        </div>
+        <div class="row">
+            <h2>Search for Inspections:</h2>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>VIN: </label>
+                    <input type="text" class="form-control" id="vin" name="vin" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Stock #: </label>
+                    <input type="text" class="form-control" id="stockNumber" name="stockNumber" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <p>&nbsp;</p>
+                    <button type="submit" id="userSearch" class="btn btn-primary bottom">Search</button>
+                </div>
+            </div>
+            @if (ViewBag.SearchType == "Search Results - Matching Inspections:")
+            {
+            <div class="col-md-3">
+                <div class="form-group">
+                    <p>&nbsp;</p>
+                    <button type="submit" id="return" value="return" name="returned" class="btn btn-success pull-left bottom">Return</button>
+                </div>
+            </div>
+            }
+        </div>
+    
+}
+

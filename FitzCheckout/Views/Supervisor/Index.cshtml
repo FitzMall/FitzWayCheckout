@@ -1,0 +1,157 @@
+﻿@using FitzCheckout.Models
+@model SupervisorLandingVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+
+@using (Html.BeginForm("Index", "Supervisor", FormMethod.Post, new { enctype = "multipart/formdata" }))
+{
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-md-5">
+                <label style="font-size: 30px">Outstanding Inspections</label>
+            </div>
+        </div>
+
+    </div>
+
+    <table id="supervisorLanding" class="display order-column" style="width:100%">
+        <thead>
+            <tr>
+                <th>Dealership</th>
+                <th>Open Inspections</th>
+                <th>Need Supervisor Attention</th>
+                <th style="display:none">Location Code</th>
+                <th style="display:none">UserID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.TableData.Count; i++)
+            {
+                <tr>
+                    <td>@Model.TableData[i].Location</td>
+                    <td>@Model.TableData[i].OpenTechnicianItems</td>
+                    <td>@Model.TableData[i].OpenSupervisorItems</td>
+                    <td style="display:none" >@Model.TableData[i].LocationCode</td>
+                    <td style="display:none">@ViewBag.UserID</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Totals</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+    <br />
+    <h2>@ViewBag.SearchType</h2>
+    if (Model.Checklists != null && Model.Checklists.Count > 0)
+    {
+        <div>
+            @{ Html.RenderPartial("SearchResults", Model.Checklists); }
+        </div>
+     }
+        <div class="row">
+            <h2>Search for Inspections:</h2>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>VIN: </label>
+                    <input type="text" class="form-control" id="vin" name="vin" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Stock #: </label>
+                    <input type="text" class="form-control" id="stockNumber" name="stockNumber" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <p>&nbsp;</p>
+                    <button type="submit" id="userSearch" class="btn btn-primary bottom">Search</button>
+                </div>
+            </div>
+            @if (ViewBag.SearchType == "Search Results - Matching Inspections:")
+            {
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <p>&nbsp;</p>
+                        <button type="submit" id="return" value="return" name="returned" class="btn btn-success pull-left bottom">Return</button>
+                    </div>
+                </div>
+            }
+        </div>
+
+            }
+
+<script>
+    $(document).ready(function () {
+        $('#supervisorLanding').DataTable({
+            deferRender: true,
+            scrollY: '75vh',
+            scrollCollapse: true,
+            scroller: true,
+            searching: false,
+            paging: false,
+            autoWidth: true,
+            columns: [
+                { data: "Dealership" },
+                { data: "Open Inspections",
+                render: function(data, type, row, meta){
+                    if (type === "display" && data > 0) {
+                        data = "<a href='\Supervisor\\OpenItems?locationCode=" + row["Location Code"] + "&inspectionType=T'>" + data + "</a>";
+                    }
+                    return data;
+                }
+                },
+                {
+                    data: "Awaiting Disposition",
+                    render: function (data, type, row, meta) {
+                        if (type === "display" && data > 0) {
+                            data = "<a href='\Supervisor\\OpenItems?locationCode=" + row["Location Code"] + "&inspectionType=S'>" + data + "</a>";
+                        }
+                        return data;
+                    }
+                },
+                { data: "Location Code" },
+                { data: "UserID"}
+            ],
+
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total open technician inspections
+                totalTechnician = api
+                    .column(1)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Total open supervisor inspections
+                totalSupervisor = api
+                    .column(2)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+                $(api.column(1).footer()).html("<a href='\Supervisor\\OpenItems?locationCode=all&inspectionType=T'>" + totalTechnician + "</a>");
+                $(api.column(2).footer()).html("<a href='\Supervisor\\OpenItems?locationCode=all&inspectionType=S'>" + totalSupervisor + "</a>");
+
+            }
+        });
+
+    });
+</script>

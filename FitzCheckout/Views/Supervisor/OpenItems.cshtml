@@ -1,0 +1,14 @@
+﻿@using FitzCheckout.BizObjects
+@model List<ChecklistRecord>
+@{
+    ViewBag.Title = "OpenItems";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+@using (Html.BeginForm("OpenItems", "Supervisor", FormMethod.Post, new { enctype = "multipart/formdata" }))
+{
+    @*@Html.AntiForgeryToken()*@
+    <div>
+        @{ Html.RenderPartial("SearchResults", Model); }
+    </div>
+            }

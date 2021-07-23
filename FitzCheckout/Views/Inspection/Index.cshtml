@@ -1,0 +1,103 @@
+﻿@model UserDashboard
+@using FitzCheckout.Models
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+    @*<script type="text/javascript" src="~/Scripts/InspectionForm.js"></script>*@
+</head>
+
+<body>
+    @using (Html.BeginForm("Index", "Inspection", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        var type = FitzCheckout.BizObjects.RecordType.ChecklistRecord;
+        <div class="container">
+            <div class="row">
+                <h2>Vehicles Assigned to You</h2>
+            </div>
+            <div class="row col-md-12">
+                <table id="userChecklists" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Dealership</th>
+                            <th>Mileage</th>
+                            <th>Year</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Stock #</th>
+                            <th>VIN</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Checklists.Count; i++)
+                        {
+                            <tr>
+                                <td>@Model.Checklists[i].MetaDataValue1</td>
+                                <td>@Model.Checklists[i].MetaDataValue2</td>
+                                <td>@Model.Checklists[i].MetaDataValue3</td>
+                                <td>@Model.Checklists[i].MetaDataValue4</td>
+                                <td>@Model.Checklists[i].MetaDataValue5</td>
+                                <td>@Model.Checklists[i].MetaDataValue6</td>
+                                <td>@Model.Checklists[i].MetaDataValue7</td>
+                                <td>
+                                    <a href="~/Inspection/GetItem?id=@Model.Checklists[i].ID&type=@type">Open</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <h2>Search for new vehicle:</h2>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>VIN: </label>
+                        <input type="text" class="form-control" id="vin" name="vin" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Stock #: </label>
+                        <input type="text" class="form-control" id="stockNumber" name="stockNumber" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <p>&nbsp;</p>
+                        <button type="submit" id="userSearch" class="btn btn-primary bottom">Search</button>
+                    </div>
+                </div>
+            </div>
+            @if (Model.SearchResults.Count > 0)
+            {
+                <div class="row">
+                    @{ Html.RenderPartial("MatchingVehicles", Model.SearchResults); }
+                </div>
+            }
+            else
+            {
+                if (ViewData["NoSearchResults"].ToString() == "true")
+                {
+                <div class="row"><label class="text-warning">No new vehicles found</label></div>
+                }
+            }
+        </div>
+
+
+        <script>
+            $(document).ready(function () {
+                $('#userChecklists').DataTable({
+                    deferRender: true,
+                    scrollY: '75vh',
+                    scrollCollapse: true,
+                    scroller: true,
+                    searching: false,
+                    paging: false,
+                    autoWidth: true
+                });
+
+            });
+        </script>
+                            }
+</body>

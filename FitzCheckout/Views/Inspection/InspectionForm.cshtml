@@ -1,0 +1,98 @@
+﻿@model FitzCheckout.Models.InspectionFormVM
+@using FitzCheckout.BizObjects
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<head>
+    <script type="text/javascript" src="~/Scripts/InspectionForm.js"></script>
+</head>
+
+<body>
+@*@using (Html.BeginForm("InspectionForm", "Checklist", new { enctype = "multipart/form-data" }))
+{*@
+    @Html.HiddenFor(m => m.ChecklistID)
+    @Html.HiddenFor(m => m.ChecklistRecordID)
+    @Html.ValidationSummary()
+    <h1>@Model.Name</h1>
+    <div id="SearchBox">
+        <div>
+            @if (Model.IsMeta1Searchable && Model.MetaDataTitle1 != null && Model.MetaDataTitle1.Length > 0)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">@Model.MetaDataTitle1</div>                       
+                        <div class="col-md-3">@Html.TextBoxFor(m => m.MetaDataValue1)</div>
+                    </div>
+                </div>
+            }
+            @if (Model.IsMeta2Searchable && Model.MetaDataTitle2 != null && Model.MetaDataTitle2.Length > 0)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">@Model.MetaDataTitle2</div>
+                        <div class="col-md-3">@Html.TextBoxFor(m => m.MetaDataValue2)</div>
+                    </div>
+                </div>
+            }
+            @if (Model.IsMeta3Searchable && Model.MetaDataTitle3 != null && Model.MetaDataTitle3.Length > 0)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">@Model.MetaDataTitle3</div>
+                        <div class="col-md-3">@Html.TextBoxFor(m => m.MetaDataValue3)</div>
+                    </div>
+                </div>
+            }
+            @if (Model.IsMeta4Searchable && Model.MetaDataTitle4 != null && Model.MetaDataTitle4.Length > 0)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">@Model.MetaDataTitle4</div>
+                        <div class="col-md-2">@Html.TextBoxFor(m => m.MetaDataValue4)</div>
+                    </div>
+                </div>
+            }
+            @if (Model.IsMeta5Searchable && Model.MetaDataTitle5 != null && Model.MetaDataTitle5.Length > 0)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">@Model.MetaDataTitle5</div>
+                            <div class="col-md-2">@Html.TextBoxFor(m => m.MetaDataValue5)
+                            </div>
+                    </div>
+                </div>
+            }
+            @if (Model.IsMeta6Searchable && Model.MetaDataTitle6 != null && Model.MetaDataTitle6.Length > 0)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">@Model.MetaDataTitle6</div>
+                        <div class="col-md-2">@Html.TextBoxFor(m => m.MetaDataValue6)</div>
+                    </div>
+                </div>
+            }
+            @if (Model.IsMeta7Searchable && Model.MetaDataTitle7 != null && Model.MetaDataTitle7.Length > 0)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">@Model.MetaDataTitle7</div>
+                        <div class="col-md-2">@Html.TextBoxFor(m => m.MetaDataValue7)</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <p></p><p></p>
+        <div>
+            <div class="row col-md-4">
+                <button name="submit" type="submit" id="search" value="Search" class="btn btn-primary">Search</button>
+                <button name="submit" type="submit" id="new" value="New" class="btn btn-success pull-right">New</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dialog" style="display: none">
+    </div>
+    @*<div class="inspectionOverlay"></div>*@
+
+</body>

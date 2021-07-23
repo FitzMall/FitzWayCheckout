@@ -1,0 +1,12 @@
+﻿@model FitzCheckout.Models.ChecklistVM
+
+@{
+    ViewBag.Title = "GetItem";
+}
+<head>
+</head>
+<body>
+    <h1>@Model.ChecklistName</h1>
+    @{ Html.RenderPartial("_Details", Model); }
+    <div class="inspectionOverlay"></div>
+</body>

@@ -1,0 +1,141 @@
+﻿@using FitzCheckout.Models
+@using FitzCheckout.BizObjects
+@model AdminVM
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<head>
+
+    <script type="text/javascript" src="~/Scripts/chosen.jquery.min.js"></script>
+</head>    
+<body>
+        <div class="container body-content">
+            <form action="/Admin/Index" method="post">
+                <div class="jumbotron">
+                    <h2>Fitzway Checkout Admin</h2>
+                    <div class="row">
+                        <div class="col-md-8">
+                            Select an Associate
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            @{ List<SelectListItem> mySelectList = Model.associates.Select(s => new SelectListItem
+                                {
+                                    Value = s.ID.ToString(),
+                                    Text = s.Name
+                                }).ToList();
+                            }
+                            @Html.DropDownListFor(m => m.AssociateID, mySelectList, "Select Associate", new { id = "associatesList" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button name="submit" type="submit" value="Lookup" class="btn btn-primary">Submit</button>
+                        </div>
+                        @if (Model.locations != null)
+                        {
+                            <div class="col-md-3">
+                                <button type="submit" name="submit" class="btn btn-success" id="SavePermissions" value="Save">Save Changes</button>
+                            </div>
+                        }
+                    </div>
+                    @*</form>*@
+                </div>
+                @*<form action="/Admin/Index" method="post">*@
+                @if (Model.locations != null && Model.locations.Count > 0)
+            {
+                    @Html.HiddenFor(m => m.AssociateID)
+                    <dvi class="row">
+                        <div class="">
+                            @if (ViewBag.DisplayErrorMessage)
+                            {
+                                <label class="alert-danger">Please select a user role</label>
+                            }
+                            <table class="table table-bordered" style="width:100%">
+                                <thead>
+                                    <tr style="background-color:#d9edf7">
+                                        <th><label>Role:</label></th>
+                                        <th>
+                                            <span>@Html.RadioButtonFor(m => m.SelectedAssociate.UserRole, UserRole.Admin, new { id = "AdminRole" }) <label for="AdminRole">Admin</label> </span>
+                                        </th>
+                                        <th>
+                                            <span>@Html.RadioButtonFor(m => m.SelectedAssociate.UserRole, UserRole.Supervisor, new { id = "SupervisorRole" }) <label for="SupervisorRole">Supervisor</label></span>
+                                        </th>
+                                        <th>
+                                            <span>@Html.RadioButtonFor(m => m.SelectedAssociate.UserRole, UserRole.Technician, new { id = "TechnicianRole" }) <label for="TechnicianRole">Technician</label></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </dvi>
+                    <div class="row">
+                        <table id="permissionsTable" class="table table-bordered table-striped" style="width:100%">
+                            <thead>
+                                @*<tr style="background-color:#d9edf7">
+                                <th></th>
+                                <th colspan="3">Permissions</th>
+                            </tr>*@
+                                <tr style="background-color:#d9edf7">
+                                    <th>Location</th>
+                                    <th>Has Access</th>
+                                    @*<th>Admin</th>
+                                <th>Supervisor</th>
+                                <th>Technician</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.locations.Count; i++)
+                                {
+                                    <tr>
+                                        @Html.HiddenFor(m => m.locations[i].ID)
+                                        @Html.HiddenFor(m => m.locations[i].FullName)
+                                        @Html.HiddenFor(m => m.locations[i].PermissionCode)
+                                        @if (String.IsNullOrEmpty(Model.locations[i].Mall))
+                                        {
+                                            <td>@Model.locations[i].FullName (@Model.locations[i].LocCode)</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@Model.locations[i].FullName (@Model.locations[i].LocCode - @Model.locations[i].Mall)</td>
+                                        }
+                                        @*@if (Model.SelectedAssociate.Locations.Contains(Model.locations[i].ID))
+                                    {
+                                        <td> @Html.CheckBoxFor(m => m.locations[i].HasAccess, new { @checked = "checked"}) </td>
+                                    }
+                                    else
+                                    {*@
+                                        <td>@Html.CheckBoxFor(m => m.locations[i].HasAccess, new { @class = "checkboxClass" })</td>
+                                        @*}*@
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="radio">
+                        <button type="submit" name="submit" class="btn btn-success" id="SavePermissions" value="Save">Save Changes</button>
+                    </div>
+                }
+            </form>
+</div>
+
+    <script>
+        $(document).ready(function () {
+            $('#associatesList').chosen();
+
+            $('#permissionsTable').DataTable({
+                deferRender: true,
+                scrollY: '75vh',
+                scrollCollapse: true,
+                scroller: true,
+                searching: false,
+                paging: false,
+                autoWidth: true
+            });
+        });
+    </script>
+
+</body>
