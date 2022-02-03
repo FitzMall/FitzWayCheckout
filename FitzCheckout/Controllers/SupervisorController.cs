@@ -364,9 +364,6 @@ namespace FitzCheckout.Controllers
 
             currentUser = (User)HttpContext.Session["currentUser"];
 
-            if (currentUser.UserRole != UserRole.Supervisor && currentUser.UserRole != UserRole.Admin)
-                return false;
-
             return true;
 
         }

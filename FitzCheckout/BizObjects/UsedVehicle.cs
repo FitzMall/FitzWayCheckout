@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
 
 namespace FitzCheckout.BizObjects
 {
@@ -89,7 +90,8 @@ namespace FitzCheckout.BizObjects
         private string ConstructBaseQuery(string searchValues, SearchType searchType)
         {
             string[] metadata = searchValues.Split(',');
-
+            
+            
             StringBuilder where = new StringBuilder(" WHERE ");
             if (metadata[0] != "undefined" && !String.IsNullOrEmpty(metadata[0]))
                 where.Append("DRloc LIKE '%" + metadata[0] + "%' " + searchType + " ");
@@ -135,6 +137,7 @@ namespace FitzCheckout.BizObjects
 		                , CASE 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				              WHEN DRloc = 'LFO' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFO') 
 				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
 				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
 				                ELSE (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
@@ -142,6 +145,7 @@ namespace FitzCheckout.BizObjects
 		                , CASE 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'LFO' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFO') 
 				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
 				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
 				                ELSE (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
@@ -163,6 +167,7 @@ namespace FitzCheckout.BizObjects
                             ,stk
                             ,Vin 
  		                , CASE 
+				                WHEN DRloc = 'LFO' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFO') 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
 				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
@@ -172,6 +177,7 @@ namespace FitzCheckout.BizObjects
 		                , CASE 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'LFO' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFO') 
 				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
 				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
 				                ELSE (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)

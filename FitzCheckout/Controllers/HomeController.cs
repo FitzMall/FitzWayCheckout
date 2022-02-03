@@ -46,7 +46,7 @@ namespace FitzCheckout.Controllers
             }
 
             HttpCookie testCookie = new HttpCookie("user");
-            testCookie["login"] = "striplingj"; //Admin
+            testCookie["login"] = "burroughsd"; //Admin (originally striplingj)
             //testCookie["login"] = "jburnet1"; //Supervisor
             //testCookie["login"] = "minore"; //Technician
             testCookie["name"] = "Ralph";
