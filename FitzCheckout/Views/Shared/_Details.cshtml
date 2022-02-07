@@ -159,7 +159,7 @@ else
                     </tr>
                     <tr class="sectionErrorMessage" hidden="hidden"><td colspan="5"><label class="alert-warning">You must check at least one checkbox</label></td></tr>
                     
-                        if (Model.sections[i].CanCheckAllOption1 || Model.sections[i].CanCheckAllOption2 || Model.sections[i].CanCheckAllOption3 || Model.sections[i].CanCheckAllOption4)
+                        @if (Model.sections[i].CanCheckAllOption1 || Model.sections[i].CanCheckAllOption2 || Model.sections[i].CanCheckAllOption3 || Model.sections[i].CanCheckAllOption4)
                         {
                             <tr>
                                 <td></td>
