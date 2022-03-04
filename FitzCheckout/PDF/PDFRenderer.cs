@@ -55,8 +55,8 @@ namespace FitzCheckout.PDF
                                             fileName);
                 //var file = System.IO.Path.Combine(ConfigurationManager.AppSettings["PdfLocation"],
                 //                            fileName);
-
-                SqlMapperUtil.SqlWithParams<int>("insert into ztemp (info) values ('this is the filename: " + file + "')", null);
+                
+                SqlMapperUtil.SqlWithParams<int>("insert into ztemp (info) values ('this is the filename- " + file + "')", null);
                 var writer = new PdfWriter(file);
 
                 var pdf = new PdfDocument(writer);
@@ -263,9 +263,11 @@ namespace FitzCheckout.PDF
             {
                 
                 SqlMapperUtil.SqlWithParams<int>("insert into ztemp (info) values ('Error below:')", null);
-                SqlMapperUtil.SqlWithParams<int>("insert into ztemp (info) values ('message: " + ex.Message + "')", null);
+                string fixedErrorMessage = ex.Message.Replace("'", "");
+//                string fixedErrorMessage = ex.Message.Replace(":", "-colon-");
+                SqlMapperUtil.SqlWithParams<int>("insert into ztemp (info) values ('message: " + fixedErrorMessage + "')", null);
                 SqlMapperUtil.SqlWithParams<int>("insert into ztemp (info) values ('stack trace: " + ex.StackTrace + "')", null);
-                SqlMapperUtil.SqlWithParams<int>("insert into ztemp (info) values ('full: " + ex + "')", null);
+ //               SqlMapperUtil.SqlWithParams<int>("insert into ztemp (info) values ('full: " + ex + "')", null);
             }
 
             return "";

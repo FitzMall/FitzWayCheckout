@@ -33,7 +33,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/Supervisor/ViewInspection',
+                url: '/FitzwayCheckout/Supervisor/ViewInspection',
                 data: newData,
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',

@@ -48,7 +48,7 @@ namespace FitzCheckout.Controllers
             HttpCookie testCookie = new HttpCookie("user");
             testCookie["login"] = "burroughsd"; //Admin (originally striplingj)
             //testCookie["login"] = "jburnet1"; //Supervisor
-            //testCookie["login"] = "minore"; //Technician
+            //testCookie["login"] = "daveb1"; //Technician
             testCookie["name"] = "Ralph";
             testCookie.Expires = DateTime.Now.AddDays(5);
             Response.Cookies.Add(testCookie);
