@@ -20,15 +20,13 @@ namespace FitzCheckout.BizObjects
 
         public List<SupervisorTableData> GetTableData(decimal userID)
         {
-            var qs = @"SELECT 
-	                    cr.MetadataValue1 Location
-	                    , cr.MetaDataValue8 LocationCode
-	                    , SUM(CASE WHEN Cr.Status = 1 OR Cr.Status = 7 THEN 1 ELSE 0 END) as OpenTechnicianItems
-	                    , SUM( CASE WHEN Cr.Status = 2 THEN 1 ELSE 0 END) as OpenSupervisorItems 
-                    FROM ChecklistRecord cr, AccessList a 
-                    WHERE a.UserID = @userID 
-	                    AND a.Permissions LIKE '%' + cr.MetaDataValue8 + '%' 
-                    GROUP BY cr.MetadataValue1, cr.MetaDataValue8";
+            var qs = @"SELECT ((l.FullName) + SPACE(1) + '(' + (l.LocCode) + ')') AS Location , l.PermissionCode AS LocationCode, 
+                (SELECT COUNT(*) as OpenTechnicianItems FROM ChecklistRecord WHERE MetaDataValue8 = l.PermissionCode and (Status = 1 OR Status = 7)) as OpenTechnicianItems ,
+                (SELECT COUNT(*) as OpenSupervisorItems FROM ChecklistRecord WHERE MetaDataValue8 = l.PermissionCode and (Status = 2)) as OpenSupervisorItems
+                FROM Locations_lkup l, AccessList a  
+                WHERE a.UserID = @userID AND CHARINDEX(l.PermissionCode, a.Permissions) > 0 
+                ORDER BY l.ID
+            ";
 
             return SqlMapperUtil.SqlWithParams<SupervisorTableData>(qs, new { @userID = userID }).ToList();
         }

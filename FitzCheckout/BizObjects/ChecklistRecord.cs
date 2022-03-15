@@ -29,16 +29,16 @@ namespace FitzCheckout.BizObjects
         public int UserID { get; set; }
         public int ChecklistID { get; set; }
         public string FullName { get; set; }
-        public string MetaDataValue1 { get; set; }
-        public string MetaDataValue2 { get; set; }
-        public string MetaDataValue3 { get; set; }
-        public string MetaDataValue4 { get; set; }
-        public string MetaDataValue5 { get; set; }
+        public string MetaDataValue1 { get; set; } //?
+        public string MetaDataValue2 { get; set; } // YEAR
+        public string MetaDataValue3 { get; set; } // BRAND
+        public string MetaDataValue4 { get; set; } //LINE
+        public string MetaDataValue5 { get; set; } //STOCK #?
         [Required]
-        public string MetaDataValue6 { get; set; }
+        public string MetaDataValue6 { get; set; } 
         [Required]
-        public string MetaDataValue7 { get; set; }
-        public string MetaDataValue8 { get; set; }
+        public string MetaDataValue7 { get; set; } //VIN
+        public string MetaDataValue8 { get; set; } // PERMISSION CODE/LOCATION
         public ChecklistStatus Status { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
