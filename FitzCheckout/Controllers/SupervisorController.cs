@@ -22,10 +22,11 @@ namespace FitzCheckout.Controllers
         private readonly IPdfRenderer _pdfRenderer;
         private readonly ISupervisorTableData _supervisorTableData;
         private readonly IChecklistHistory _checklistHistory;
+        private readonly IUsedVehicle _usedVehicle;
         private User currentUser;
 
         public SupervisorController(IChecklistRecord checklistRecord, IChecklistVM checklistVM
-            , ISupervisorViewDisplayVM supervisorViewDisplayVM, IUser user, IPdfRenderer pdfRenderer, ISupervisorTableData supervisorTableData, IChecklistHistory checklistHistory)
+            , ISupervisorViewDisplayVM supervisorViewDisplayVM, IUser user, IPdfRenderer pdfRenderer, ISupervisorTableData supervisorTableData, IChecklistHistory checklistHistory, IUsedVehicle usedVehicle)
         {
             _checklistRecord = checklistRecord;
             _checklistVM = checklistVM;
@@ -34,6 +35,7 @@ namespace FitzCheckout.Controllers
             _pdfRenderer = pdfRenderer;
             _supervisorTableData = supervisorTableData;
             _checklistHistory = checklistHistory;
+            _usedVehicle = usedVehicle;
         }
         // GET: Supervisor
 
@@ -120,8 +122,7 @@ namespace FitzCheckout.Controllers
 
             supervisorVM.TableData = _supervisorTableData.GetTableData(currentUser.ID);
             supervisorVM.Checklists = _checklistRecord.Search(values, SearchType.And, -1, status);
-
-
+            
             ViewBag.SearchType = "Search Results:";
 
 
@@ -241,7 +242,41 @@ namespace FitzCheckout.Controllers
                 {
                     supervisorViewVM.checklistInfo.PdfFileName = filename;
                 }
+            } 
+            else
+            {
+
+                ChecklistVM newChecklistVM = new Models.ChecklistVM();
+                if (!String.IsNullOrEmpty(id))
+                {
+                    int intID = Int32.Parse(id);
+
+                    if ("0" == RecordType.ChecklistRecord.ToString() || "0" == RecordType.Submitted.ToString())
+                    {
+                        newChecklistVM = _checklistVM.GetChecklistVMByChecklistRecordID(intID);
+                    }
+                    else
+                    {
+                        UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
+
+                        newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2);
+
+                        newChecklistVM.ID = 2;
+                        newChecklistVM.MetaDataValue1 = usedVehicle.DealerName;
+                        newChecklistVM.MetaDataValue2 = usedVehicle.Miles.ToString();
+                        newChecklistVM.MetaDataValue3 = usedVehicle.Yr;
+                        newChecklistVM.MetaDataValue4 = usedVehicle.Make;
+                        newChecklistVM.MetaDataValue5 = usedVehicle.Carline;
+                        newChecklistVM.MetaDataValue6 = usedVehicle.Stk;
+                        newChecklistVM.MetaDataValue7 = usedVehicle.Vin;
+                        newChecklistVM.MetaDataValue8 = usedVehicle.PermissionCode;
+                    }
+                }
+                ModelState.Clear();
+                ModelState.Remove("sections");
+                supervisorViewVM.checklistInfo = newChecklistVM;
             }
+
             return View(supervisorViewVM);
         }
 

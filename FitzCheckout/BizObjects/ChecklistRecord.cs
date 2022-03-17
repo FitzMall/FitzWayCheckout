@@ -29,13 +29,13 @@ namespace FitzCheckout.BizObjects
         public int UserID { get; set; }
         public int ChecklistID { get; set; }
         public string FullName { get; set; }
-        public string MetaDataValue1 { get; set; } //?
-        public string MetaDataValue2 { get; set; } // YEAR
-        public string MetaDataValue3 { get; set; } // BRAND
-        public string MetaDataValue4 { get; set; } //LINE
-        public string MetaDataValue5 { get; set; } //STOCK #?
+        public string MetaDataValue1 { get; set; } // Dealership  
+        public string MetaDataValue2 { get; set; } //MILES
+        public string MetaDataValue3 { get; set; } // YEAR
+        public string MetaDataValue4 { get; set; } // BRAND
+        public string MetaDataValue5 { get; set; } //LINE
         [Required]
-        public string MetaDataValue6 { get; set; } 
+        public string MetaDataValue6 { get; set; } //STOCK #
         [Required]
         public string MetaDataValue7 { get; set; } //VIN
         public string MetaDataValue8 { get; set; } // PERMISSION CODE/LOCATION
@@ -44,8 +44,8 @@ namespace FitzCheckout.BizObjects
         public DateTime DateUpdated { get; set; }
         public string Action { get; set; }
 
-        public List<ChecklistItem> checklistItemValues { get; set; } 
-
+        public List<ChecklistItem> checklistItemValues { get; set; }
+        private List<String> thisUserLocations { get; set; }
 
 
         public ChecklistRecord GetChecklistRecordByID(int ID)
@@ -54,11 +54,25 @@ namespace FitzCheckout.BizObjects
             string qs = @"SELECT *
                             FROM [Checklists].[dbo].[ChecklistRecord] cr
                             WHERE [ID] = @ID";
+    
+                IUser thisUser = new User();
 
             var results = SqlMapperUtil.SqlWithParams<ChecklistRecord>(qs, new { ID = ID }).FirstOrDefault();
             if (results == null)
             {
+
                 checklistItemValues = new List<ChecklistItem>();
+                thisUserLocations = thisUser.GetUserLocationCodes(checklistRecord.UserID); // find tech's location
+
+                //Fitzgerald Mazda Mitsubishi Annapolis code for 'Body Shop' work
+                if (thisUserLocations.Count > 0)
+                {
+                    if (thisUserLocations[0].ToString() == "2MMA")
+                    {
+                        checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";
+                        checklistRecord.MetaDataValue8 = "2MMA";
+                    }
+                }
             }
             else
             {
@@ -77,7 +91,17 @@ namespace FitzCheckout.BizObjects
                 checklistRecord.DateCreated = results.DateCreated;
                 checklistRecord.DateUpdated = results.DateUpdated;
 
+                thisUserLocations = thisUser.GetUserLocationCodes(checklistRecord.UserID);  // find tech's location
 
+                //Fitzgerald Mazda Mitsubishi Annapolis code for 'Body Shop' work
+                if (thisUserLocations.Count > 0)
+                {
+                    if (thisUserLocations[0].ToString() == "2MMA")
+                    {
+                        checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";
+                        checklistRecord.MetaDataValue8 = "2MMA";
+                    }
+                }
             }
 
             return checklistRecord;
@@ -175,7 +199,11 @@ namespace FitzCheckout.BizObjects
             }
 
             string whereClause = where.ToString();
+            bool UnassignedCar = false;
 
+                // modify where clause for second half of the union select because fields are different
+
+              
             if (whereClause != "WHERE ")
             {
                 whereClause = whereClause.Substring(0, whereClause.Length - 4);
@@ -190,13 +218,57 @@ namespace FitzCheckout.BizObjects
                                 cr.MetaDataValue3, cr.MetaDataValue4, cr.MetaDataValue5, 
                                 cr.MetaDataValue6, cr.MetaDataValue7, cr.MetaDataValue8, cr.Status, 
                                 cr.UserID, uv.LastName + ', ' + uv.FirstName FullName, cr.DateCreated, cr.DateUpdated 
-                            FROM [Checklists].[dbo].[ChecklistRecord] cr
+                            FROM [ChecklistRecord] cr
                                 LEFT OUTER JOIN [FITZDB].[dbo].[users] uv on cr.UserID = uv.ID " + whereClause;
+
                 checklistRecords = SqlMapperUtil.SqlWithParams<ChecklistRecord>(qs, new { }).ToList();
+
+                // not in checklists? let's look in JUNK for cars not in system yet
+                // also use this code if we cast a wide net search 
+                if (checklistRecords.Count !=1)
+                {
+
+                    UnassignedCar = true;
+
+                    // where clause modified to use JUNK fieldnames
+                    string whereClause2 = whereClause.Replace("MetaDataValue6", "stk");
+                    whereClause2 = whereClause2.Replace("MetaDataValue7", "vin");
+
+                    //add to established SQL
+
+                    qs += @" UNION SELECT 
+                        UsedID AS ID
+                         , CASE 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
+				                ELSE (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
+			                END as MetaDataValue1    
+                        , STR(miles) AS MetaDataValue2
+                        , yr AS MetaDataValue3
+                        , make AS MetaDataValue4
+                        , carline AS MetaDataValue5
+                        , stk AS MetaDataValue6
+                        , vin AS MetaDataValue7 
+                        , CASE 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
+				                ELSE (SELECT PermissionCode from [Locations_lkup] WHERE LocCode = V.DRloc)
+			                END as MetaDataValue8,
+                         1 AS Status, 0 AS UserID, 'UnAssigned' AS FullName, GETDATE() AS DateCreated, GETDATE() AS DateUpdated 
+                    FROM [JUNK].[dbo].[CSV_vehicleUSED] v ";
+
+                    qs += whereClause2;
+
+                    checklistRecords = SqlMapperUtil.SqlWithParams<ChecklistRecord>(qs, new { }).ToList();
+                }
 
                 if (statusCriteria != null && statusCriteria.Count > 0)
                 {
-                    return checklistRecords.Where(r => statusCriteria.Contains(r.Status)).ToList();
+                    return checklistRecords.ToList();
                 }
 
             }
