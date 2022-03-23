@@ -336,7 +336,7 @@ else
                                         {
                                             if (sectionItemRecord.OptionType4 == "Checkbox")
                                             {
-                                                    @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption4Selected, new { id = "Option4" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, disabled = "disabled", @class = "checkboxItem4 checkboxClass" });
+                                                    @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption4Selected, new { id = "Option4" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem4 checkboxClass" });
                                             }
                                             else if (sectionItemRecord.OptionType4 == "Textbox")
                                             {

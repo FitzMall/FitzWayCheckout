@@ -121,7 +121,7 @@ namespace FitzCheckout.Controllers
             };
 
             supervisorVM.TableData = _supervisorTableData.GetTableData(currentUser.ID);
-            supervisorVM.Checklists = _checklistRecord.Search(values, SearchType.And, -1, status);
+            supervisorVM.Checklists = _checklistRecord.SearchWider(values, SearchType.And, -1, status);
             
             ViewBag.SearchType = "Search Results:";
 
@@ -231,6 +231,7 @@ namespace FitzCheckout.Controllers
 
             ViewBag.UserType = "Supervisor";
             var supervisorViewVM = new SupervisorViewDisplayVM();
+
             supervisorViewVM.checklistInfo = _checklistVM.GetChecklistVMByChecklistRecordID(Int32.Parse(id));
             supervisorViewVM.Users = _user.GetUsersByLocation(currentUser.Locations).Where(u => u.UserRole == UserRole.Technician).ToList();
 
@@ -274,7 +275,7 @@ namespace FitzCheckout.Controllers
                 }
                 ModelState.Clear();
                 ModelState.Remove("sections");
-                supervisorViewVM.checklistInfo = newChecklistVM;
+                supervisorViewVM.checklistInfo = newChecklistVM;  // move new checklist into supervisor view
             }
 
             return View(supervisorViewVM);
@@ -310,6 +311,7 @@ namespace FitzCheckout.Controllers
                 newChecklistRecord.UserID = Int32.Parse(technician);
                 newChecklistRecord.Status = ChecklistStatus.Pending;
                 newChecklistRecord.Save();
+
             }
             else if (newChecklistRecord.Status == ChecklistStatus.Complete || newChecklistRecord.Status == ChecklistStatus.Handyman || 
                 newChecklistRecord.Status == ChecklistStatus.Wholesale || newChecklistRecord.Status == ChecklistStatus.RepairForRetail)

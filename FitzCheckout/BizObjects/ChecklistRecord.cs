@@ -15,7 +15,8 @@ namespace FitzCheckout.BizObjects
         ChecklistRecord GetChecklistRecordInformation(int checklistRecordID);
         int GetChecklistIDByChecklistRecordID(int checklistRecordID);
         int Save(ChecklistRecord checklistRecord);
-        List<ChecklistRecord> Search(string metadataValues, SearchType searchType, int excludeUserID = -1, List<ChecklistStatus> statusCriteria = null);
+        List<ChecklistRecord> Search(string metadataValues, SearchType searchType, int excludeUserID = -1, List<ChecklistStatus> statusCriteria = null, bool bWider = false);
+        List<ChecklistRecord> SearchWider(string metadataValues, SearchType searchType, int excludeUserID = -1, List<ChecklistStatus> statusCriteria = null);
 
         List<ChecklistRecord> GetOutsandingRecords(List<string> locationList, List<ChecklistStatus> statusList);
 
@@ -185,9 +186,14 @@ namespace FitzCheckout.BizObjects
             return result;
         }
 
-        public List<ChecklistRecord> Search(string searchValues, SearchType searchType, int excludeUserID = -1, List<ChecklistStatus> statusCriteria = null)
+        public List<ChecklistRecord> SearchWider(string searchValues, SearchType searchType, int excludeUserID = -1, List<ChecklistStatus> statusCriteria = null)
         {
-            List<ChecklistRecord> checklistRecords = new List<ChecklistRecord>();
+            return Search(searchValues, searchType, excludeUserID, statusCriteria, true);
+        }
+
+            public List<ChecklistRecord> Search(string searchValues, SearchType searchType, int excludeUserID = -1, List<ChecklistStatus> statusCriteria = null, bool bWider = false)
+            {
+                List<ChecklistRecord> checklistRecords = new List<ChecklistRecord>();
             string[] metadata = searchValues.Split(',');
             StringBuilder where = new StringBuilder("WHERE ");
 
@@ -225,7 +231,7 @@ namespace FitzCheckout.BizObjects
 
                 // not in checklists? let's look in JUNK for cars not in system yet
                 // also use this code if we cast a wide net search 
-                if (checklistRecords.Count !=1)
+                if (checklistRecords.Count !=1 & (bWider == true))
                 {
 
                     UnassignedCar = true;
@@ -268,7 +274,13 @@ namespace FitzCheckout.BizObjects
 
                 if (statusCriteria != null && statusCriteria.Count > 0)
                 {
-                    return checklistRecords.ToList();
+                    if (bWider != true) {
+                        return checklistRecords.Where(r => statusCriteria.Contains(r.Status)).ToList();
+                    }
+                    else
+                    {
+                        return checklistRecords.ToList();
+                    }
                 }
 
             }
