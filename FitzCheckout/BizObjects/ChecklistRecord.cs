@@ -56,24 +56,15 @@ namespace FitzCheckout.BizObjects
                             FROM [Checklists].[dbo].[ChecklistRecord] cr
                             WHERE [ID] = @ID";
     
-                IUser thisUser = new User();
+            string vehicleLocation = "";
+            string findVIN = checklistRecord.MetaDataValue7;
+
 
             var results = SqlMapperUtil.SqlWithParams<ChecklistRecord>(qs, new { ID = ID }).FirstOrDefault();
             if (results == null)
             {
 
                 checklistItemValues = new List<ChecklistItem>();
-                thisUserLocations = thisUser.GetUserLocationCodes(checklistRecord.UserID); // find tech's location
-
-                //Fitzgerald Mazda Mitsubishi Annapolis code for 'Body Shop' work
-                if (thisUserLocations.Count > 0)
-                {
-                    if (thisUserLocations[0].ToString() == "2MMA")
-                    {
-                        checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";
-                        checklistRecord.MetaDataValue8 = "2MMA";
-                    }
-                }
             }
             else
             {
@@ -92,17 +83,26 @@ namespace FitzCheckout.BizObjects
                 checklistRecord.DateCreated = results.DateCreated;
                 checklistRecord.DateUpdated = results.DateUpdated;
 
-                thisUserLocations = thisUser.GetUserLocationCodes(checklistRecord.UserID);  // find tech's location
+            }
+            // code for FOC/FMM issue and FCG = FSS OR FAM issue
 
-                //Fitzgerald Mazda Mitsubishi Annapolis code for 'Body Shop' work
-                if (thisUserLocations.Count > 0)
+
+            if ((checklistRecord.MetaDataValue8 == "1CVA" || checklistRecord.MetaDataValue8 == "20FCG")) { 
+                vehicleLocation = PermissionCodeByVIN(findVIN);
+                checklistRecord.MetaDataValue8 = vehicleLocation;  // substitute location from junk/csv_vehicleused
+                if (vehicleLocation == "2MMA")
                 {
-                    if (thisUserLocations[0].ToString() == "2MMA")
-                    {
-                        checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";
-                        checklistRecord.MetaDataValue8 = "2MMA";
-                    }
+                    checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";  // dealership name
                 }
+                else
+                {
+                    checklistRecord.MetaDataValue1 = DealershipNameByVIN(findVIN);  // dealership name
+                }
+            }
+            // STILL no dealership info??
+            if (checklistRecord.MetaDataValue1 == "")  
+            {
+                checklistRecord.MetaDataValue1 = DealershipNameByVIN(findVIN);
             }
 
             return checklistRecord;
@@ -149,6 +149,40 @@ namespace FitzCheckout.BizObjects
         {
             var result = SqlMapperUtil.StoredProcWithParams<int>("ChecklistRecordUpdate", record);
             return record.ID;
+        }
+
+        private string LocationCodeByVIN(string searchVIN)
+        {
+            string qs = "SELECT [loc] FROM [JUNK].[dbo].[CSV_vehicleUSED] WHERE [vin] = @VIN";
+            string result = SqlMapperUtil.SqlWithParams<string>(qs, new { VIN = searchVIN }).FirstOrDefault();
+            if (result == null)
+            {
+                return "";
+            }
+            return result;
+        }
+
+        private string PermissionCodeByVIN(string searchVIN)
+        {
+            string qs = "SELECT l.PermissionCode FROM [JUNK].[dbo].[CSV_vehicleUSED] v JOIN [Checklists].[dbo].[Locations_lkup] l on v.loc = l.LocCode WHERE [vin] = @VIN";
+            string result = SqlMapperUtil.SqlWithParams<string>(qs, new { VIN = searchVIN }).FirstOrDefault();
+            if (result == null)
+            {
+                return "";
+            }
+        
+            return result;
+        }
+
+        private string DealershipNameByVIN(string searchVIN)
+        {
+            string qs = "SELECT [automall] FROM[JUNK].[dbo].[CSV_vehicleUSED] WHERE [vin] = @VIN";
+            string result = SqlMapperUtil.SqlWithParams<string>(qs, new { VIN = searchVIN }).FirstOrDefault();
+            if (result == null)
+            {
+                return "";
+            }
+            return result;
         }
 
         private int SaveRecord(ChecklistRecord record)

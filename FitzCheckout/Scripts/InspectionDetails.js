@@ -229,6 +229,7 @@ $(document).ready(function () {
             if ($(this).find('input').is(':checked')) {
                 $(this).parent('tr').find('.checkboxItem2').attr('checked', false);
                 $(this).parent('tr').find('.checkboxItem3').attr('checked', false);
+  		$(this).parent('tr').find('.checkboxItem4').attr('checked', false);
                 $(this).parent('tr').find('.checkboxItem4').attr('disabled', true);
                 $(this).parent('tr').find('.errorMessage').hide();
             }
@@ -245,6 +246,7 @@ $(document).ready(function () {
             if ($(this).find('input').is(':checked')) {
                 $(this).parent('tr').find('.checkboxItem1').attr('checked', false);
                 $(this).parent('tr').find('.checkboxItem3').attr('checked', false);
+		$(this).parent('tr').find('.checkboxItem4').attr('checked', false);
                 $(this).parent('tr').find('.checkboxItem4').attr('disabled', false);
                 $(this).parent('tr').find('.errorMessage').hide();
             }
@@ -261,6 +263,7 @@ $(document).ready(function () {
             if ($(this).find('input').is(':checked')) {
                 $(this).parent('tr').find('.checkboxItem1').attr('checked', false);
                 $(this).parent('tr').find('.checkboxItem2').attr('checked', false);
+		$(this).parent('tr').find('.checkboxItem4').attr('checked', false);
                 $(this).parent('tr').find('.checkboxItem4').attr('disabled', true);
                 $(this).parent('tr').find('.errorMessage').hide();
             }
