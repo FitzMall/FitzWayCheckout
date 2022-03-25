@@ -87,23 +87,29 @@ namespace FitzCheckout.BizObjects
             // code for FOC/FMM issue and FCG = FSS OR FAM issue
 
 
-            if ((checklistRecord.MetaDataValue8 == "1CVA" || checklistRecord.MetaDataValue8 == "20FCG")) { 
-                vehicleLocation = PermissionCodeByVIN(findVIN);
-                checklistRecord.MetaDataValue8 = vehicleLocation;  // substitute location from junk/csv_vehicleused
-                if (vehicleLocation == "2MMA")
-                {
-                    checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";  // dealership name
-                }
-                else
-                {
-                    checklistRecord.MetaDataValue1 = DealershipNameByVIN(findVIN);  // dealership name
-                }
+            vehicleLocation =  checklistRecord.MetaDataValue8;
+            if ((vehicleLocation == "1CVA" || vehicleLocation == "20FCG" || vehicleLocation == "" || vehicleLocation == null)) {
+                    if (findVIN != null && findVIN != "")
+                    {
+                        vehicleLocation = PermissionCodeByVIN(findVIN);
+                    }
+                    // still FCG- make it FAM
+                    if (vehicleLocation == "20FCG" || vehicleLocation == "" || vehicleLocation == null)
+                    {
+                        vehicleLocation = "7AMF";  // force FCG to FAM (and make FAM code if nothing else is there)
+                    }
+                    checklistRecord.MetaDataValue8 = vehicleLocation;  // substitute location from junk/csv_vehicleused
+
+                    if (vehicleLocation == "2MMA")
+                    {
+                        checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";  // dealership name
+                    }
             }
-            // STILL no dealership info??
-            if (checklistRecord.MetaDataValue1 == "")  
-            {
-                checklistRecord.MetaDataValue1 = DealershipNameByVIN(findVIN);
-            }
+                // no dealership name??
+                if (checklistRecord.MetaDataValue1 == "" || checklistRecord.MetaDataValue1 == null)  
+                {
+                    checklistRecord.MetaDataValue1 = DealershipNameByVIN(findVIN);
+                }
 
             return checklistRecord;
         }
