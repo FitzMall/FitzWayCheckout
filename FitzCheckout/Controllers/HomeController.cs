@@ -63,11 +63,12 @@ namespace FitzCheckout.Controllers
                 var userIDFromCookie = qsCollection["login"].ToString();
                 var userNameFromCookie = qsCollection["name"].ToString();
 
+
+
                 var currentUser = _user.GetUserByID(userIDFromCookie);
                 HttpContext.Session["currentUser"] = currentUser;
                 HttpContext.Session["userName"] = currentUser.FullName;
                 HttpContext.Session["userRole"] = currentUser.UserRole.ToString();
-
                 
 
 

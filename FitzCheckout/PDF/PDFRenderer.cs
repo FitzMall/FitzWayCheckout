@@ -88,6 +88,18 @@ namespace FitzCheckout.PDF
 
                 //loop through checklist data
                 Table table = new Table(UnitValue.CreatePercentArray(new float[] { 1, 5, 1, 1, 1, 1, 1 }));
+
+                // adding page # etc.
+           
+                string Page1Info = ("" + checklistRecord.MetaDataValue7 + " / " + checklistRecord.DateUpdated + " / 1 of 2");
+                Paragraph ParagraphPage1 = new Paragraph()
+                                                    .Add(Page1Info)
+                                                    .SetFontSize(8)
+                                                    .SetVerticalAlignment(VerticalAlignment.BOTTOM)
+                                                    .SetFixedPosition(columnWidth + 35, 5, 250);
+
+                document.Add(ParagraphPage1);
+
                 foreach (var section in checklistRecord.sections)
                 {
 
@@ -229,8 +241,8 @@ namespace FitzCheckout.PDF
 
                     }
                 }
-                document.Add(table);
 
+                document.Add(table);
 
                 AddFoldLines(pdf, offset, columnWidth, pageSize);
 
@@ -238,19 +250,21 @@ namespace FitzCheckout.PDF
 
                 AddTitle(document, offset, columnWidth, pageSize, sectionFont);
 
-                AddMetaData(document, checklistRecordID, offset, columnWidth, pageSize);
+                AddMetaData(document, checklistRecordID, offset, columnWidth, pageSize);  // dealership, mileage, year, model, VIN
 
                 InsertFooter(document, offset, columnWidth, pageSize);
 
                 Table inspectionPlateTable = new Table(UnitValue.CreatePercentArray(1));
 
                 inspectionPlateTable.SetFixedPosition(offset + columnWidth * 2 + 10, offset, columnWidth - (offset + 20));
-                Cell inspectionCell = new Cell(1, 100)
+
+                 // adding page # etc.
+                Cell inspectionCell2 = new Cell(1, 100)
                     .Add(new Paragraph("INSPECTION FORM"))
                     .SetTextAlignment(TextAlignment.CENTER)
                     .SetFont(sectionFont).SetFontSize(9)
                     .SetBorder(Border.NO_BORDER);
-                inspectionPlateTable.AddCell(inspectionCell);
+                inspectionPlateTable.AddCell(inspectionCell2);
 
                 document.Add(inspectionPlateTable);
 
@@ -332,6 +346,7 @@ namespace FitzCheckout.PDF
             //            img.SetFixedPosition(offset + columnWidth * 2 + 5, pageSize.GetHeight() - img.GetImageHeight());
             img.SetFixedPosition(offset + columnWidth * 2 + 34, offset + 20);
             document.Add(img);
+
 
         }
 
@@ -433,6 +448,7 @@ namespace FitzCheckout.PDF
             table.AddCell(new Cell(1, 20).Add(new Paragraph("")).SetFont(metadataFont).SetFontSize(8).SetBorder(Border.NO_BORDER));
 
             Text asterix = new Text("*").SetFont(metadataFont).SetTextRise(1).SetFontSize(6);
+
             string exceptionText = "Except safety items, vehicle inspection results are adjusted to refelct the relative condition of a similar make and model vehicle with similar mileage";
 
             Paragraph exceptionParagraph = new Paragraph()
@@ -441,6 +457,16 @@ namespace FitzCheckout.PDF
             table.AddCell(new Cell(1, 20).Add(exceptionParagraph).SetFont(metadataFont).SetFontSize(6).SetBorder(Border.NO_BORDER));
 
             document.Add(table);
+            string Page2Info = ("" + theData.Vin + " / " + theData.InspectionDate + " / 2 of 2");
+            Paragraph ParagraphPage2 = new Paragraph()
+                                                .Add(Page2Info)
+                                                .SetFontSize(8)
+                                                .SetVerticalAlignment(VerticalAlignment.BOTTOM)
+                                                .SetFixedPosition(columnWidth + 35,10,250);
+
+
+            document.Add(ParagraphPage2);
+
         }
 
         public string GetSignature(int checklistRecordID)

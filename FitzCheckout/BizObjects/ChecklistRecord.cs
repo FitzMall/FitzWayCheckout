@@ -86,27 +86,33 @@ namespace FitzCheckout.BizObjects
             }
             // code for FOC/FMM issue and FCG = FSS OR FAM issue
 
-
             vehicleLocation =  checklistRecord.MetaDataValue8;
-            if ((vehicleLocation == "1CVA" || vehicleLocation == "20FCG" || vehicleLocation == "" || vehicleLocation == null)) {
-                    if (findVIN != null && findVIN != "")
+
+
+            if ((vehicleLocation == "1CVA" || vehicleLocation == "20FCG" )) {
+                if (findVIN != null && findVIN != "")
                     {
                         vehicleLocation = PermissionCodeByVIN(findVIN);
+                        checklistRecord.MetaDataValue8 = vehicleLocation;  // substitute location from junk/csv_vehicleused
                     }
-                    // still FCG- make it FAM
-                    if (vehicleLocation == "20FCG" || vehicleLocation == "" || vehicleLocation == null)
+                vehicleLocation = FMMOverride(checklistRecord, vehicleLocation);
+                // still FCG- make it FAM
+                if (vehicleLocation == "20FCG")
                     {
                         vehicleLocation = "7AMF";  // force FCG to FAM (and make FAM code if nothing else is there)
-                    }
-                    checklistRecord.MetaDataValue8 = vehicleLocation;  // substitute location from junk/csv_vehicleused
+                        checklistRecord.MetaDataValue8 = vehicleLocation;  // substitute location from junk/csv_vehicleused
+                }
 
-                    if (vehicleLocation == "2MMA")
-                    {
-                        checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";  // dealership name
-                    }
             }
-                // no dealership name??
-                if (checklistRecord.MetaDataValue1 == "" || checklistRecord.MetaDataValue1 == null)  
+
+            if (vehicleLocation == "2MMA")
+            {
+                checklistRecord.MetaDataValue1 = "Fitzgerald Mazda Mitsubishi Annapolis";  // dealership name
+                checklistRecord.MetaDataValue8 = vehicleLocation;
+            }
+
+            // no dealership name??
+            if (checklistRecord.MetaDataValue1 == "" || checklistRecord.MetaDataValue1 == null)  
                 {
                     checklistRecord.MetaDataValue1 = DealershipNameByVIN(findVIN);
                 }
@@ -114,7 +120,25 @@ namespace FitzCheckout.BizObjects
             return checklistRecord;
         }
 
-        public int Save()
+        public string FMMOverride(ChecklistRecord checklistRecord, string PARvehicleLocation)
+        {
+            IUser thisUser = new User();
+
+            checklistItemValues = new List<ChecklistItem>();
+            thisUserLocations = thisUser.GetUserLocationCodes(checklistRecord.UserID); // find tech's location
+
+            //Fitzgerald Mazda Mitsubishi Annapolis code for 'Body Shop' work
+            if (thisUserLocations.Count > 0)
+            {
+                if (thisUserLocations[0].ToString() == "2MMA")
+                {
+                    return "2MMA";
+                }
+            }
+            return PARvehicleLocation;
+        }
+
+            public int Save()
         {
             return Save(this);
 
@@ -159,8 +183,18 @@ namespace FitzCheckout.BizObjects
 
         private string LocationCodeByVIN(string searchVIN)
         {
-            string qs = "SELECT [loc] FROM [JUNK].[dbo].[CSV_vehicleUSED] WHERE [vin] = @VIN";
+            string qs = "SELECT [loc] FROM [JUNK].[dbo].[CSV_vehicleUSED] WHERE [vin] = @VIN ORDER BY [status]";
             string result = SqlMapperUtil.SqlWithParams<string>(qs, new { VIN = searchVIN }).FirstOrDefault();
+            if (result == null)
+            {
+                return "";
+            }
+            return result;
+        }
+        private string LocationCodeByUser(string searchUser)
+        {
+            string qs = "SELECT [loc] FROM [JUNK].[dbo].[CSV_vehicleUSED] WHERE [vin] = @VIN ORDER BY [status]";
+            string result = SqlMapperUtil.SqlWithParams<string>(qs, new { VIN = searchUser }).FirstOrDefault();
             if (result == null)
             {
                 return "";
@@ -170,7 +204,7 @@ namespace FitzCheckout.BizObjects
 
         private string PermissionCodeByVIN(string searchVIN)
         {
-            string qs = "SELECT l.PermissionCode FROM [JUNK].[dbo].[CSV_vehicleUSED] v JOIN [Checklists].[dbo].[Locations_lkup] l on v.loc = l.LocCode WHERE [vin] = @VIN";
+            string qs = "SELECT l.PermissionCode FROM [JUNK].[dbo].[CSV_vehicleUSED] v JOIN [Checklists].[dbo].[Locations_lkup] l on v.loc = l.LocCode WHERE [vin] = @VIN ORDER BY [status]"; 
             string result = SqlMapperUtil.SqlWithParams<string>(qs, new { VIN = searchVIN }).FirstOrDefault();
             if (result == null)
             {
@@ -182,7 +216,7 @@ namespace FitzCheckout.BizObjects
 
         private string DealershipNameByVIN(string searchVIN)
         {
-            string qs = "SELECT [automall] FROM[JUNK].[dbo].[CSV_vehicleUSED] WHERE [vin] = @VIN";
+            string qs = "SELECT [automall] FROM[JUNK].[dbo].[CSV_vehicleUSED] WHERE [vin] = @VIN ORDER BY [status]";
             string result = SqlMapperUtil.SqlWithParams<string>(qs, new { VIN = searchVIN }).FirstOrDefault();
             if (result == null)
             {

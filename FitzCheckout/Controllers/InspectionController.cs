@@ -67,6 +67,7 @@ namespace FitzCheckout.Controllers
         [HttpPost]
         public ActionResult Index(string submit, string vin, string stockNumber)
         {
+
             if (!IsAuthorized())
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden); ;
 
@@ -205,6 +206,7 @@ namespace FitzCheckout.Controllers
             else
             {
                 Save(checklistVM);
+
             }
 
             return Json(new
@@ -334,6 +336,7 @@ namespace FitzCheckout.Controllers
                     }
                 }
             }
+
             return checklistRecordID;
         }
 
