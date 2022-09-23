@@ -23,10 +23,10 @@ $(document).ready(function () {
 
             },
             failure: function (response) {
-                alert(response.responseText);
+                alert(response.responseText + ": Inspectionform.js 3");
             },
             error: function (response) {
-                alert(response.statusText);
+                alert(response.statusText + ": Inspectionform.js 3");
             }
         });
     });
@@ -54,10 +54,10 @@ $(document).ready(function () {
                 table.columns.adjust().draw();
             },
             failure: function (response) {
-                alert(response.responseText);
+                alert(response.responseText + ": Inspectionform.js 2");
             },
             error: function (response) {
-                alert(response.statusText);
+                alert(response.statusText + ": Inspectionform.js 2");
             }
         });
     });
@@ -89,10 +89,10 @@ $(document).ready(function () {
                 //}
             },
             failure: function (response) {
-                alert(response.responseText);
+                alert(response.responseText + ": Inspectionform.js 1");
             },
             error: function (response) {
-                alert(response.statusText);
+                alert(response.statusText + ": Inspectionform.js 1");
             }
         });
     });

@@ -117,7 +117,9 @@ namespace FitzCheckout.Controllers
                 ChecklistStatus.Handyman,
                 ChecklistStatus.Wholesale,
                 ChecklistStatus.Reopen,
-                ChecklistStatus.RepairForRetail
+                ChecklistStatus.RepairForRetail,
+                ChecklistStatus.FitzWayValue,
+                ChecklistStatus.FitzWayUsed
             };
 
             supervisorVM.TableData = _supervisorTableData.GetTableData(currentUser.ID);
@@ -157,6 +159,8 @@ namespace FitzCheckout.Controllers
                 if (inspectionType.ToUpper() == "S")
                 {
                     statusList.Add(ChecklistStatus.TechComplete);
+                    statusList.Add(ChecklistStatus.FitzWayUsed);
+                    statusList.Add(ChecklistStatus.FitzWayValue);
                 }
                 else if (inspectionType.ToUpper() == "T")
                 {
@@ -185,7 +189,9 @@ namespace FitzCheckout.Controllers
             {
                 ChecklistStatus.TechComplete,
                 ChecklistStatus.Reopen,
-                ChecklistStatus.RepairForRetail
+                ChecklistStatus.RepairForRetail,
+                ChecklistStatus.FitzWayUsed,
+                ChecklistStatus.FitzWayValue
             };
 
 
@@ -212,7 +218,9 @@ namespace FitzCheckout.Controllers
                 ChecklistStatus.Pending,
                 ChecklistStatus.TechComplete,
                 ChecklistStatus.Reopen,
-                ChecklistStatus.RepairForRetail
+                ChecklistStatus.RepairForRetail,
+                ChecklistStatus.FitzWayUsed,
+                ChecklistStatus.FitzWayValue
             };
 
             var checklistRecords = _checklistRecord.Search(values, SearchType.And, -1, status);
@@ -314,7 +322,8 @@ namespace FitzCheckout.Controllers
 
             }
             else if (newChecklistRecord.Status == ChecklistStatus.Complete || newChecklistRecord.Status == ChecklistStatus.Handyman || 
-                newChecklistRecord.Status == ChecklistStatus.Wholesale || newChecklistRecord.Status == ChecklistStatus.RepairForRetail)
+                newChecklistRecord.Status == ChecklistStatus.Wholesale || newChecklistRecord.Status == ChecklistStatus.RepairForRetail
+                || newChecklistRecord.Status == ChecklistStatus.FitzWayUsed || newChecklistRecord.Status == ChecklistStatus.FitzWayValue)
             {
                 //For Repair for Retail, reasign to last technician to work on the inspection
                 if (newChecklistRecord.Status == ChecklistStatus.RepairForRetail)

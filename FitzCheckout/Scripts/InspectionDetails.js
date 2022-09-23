@@ -382,7 +382,7 @@ $(document).ready(function () {
         if (!hasErrors) {
             var data = 'submit=Save&' + $('#SaveChecklist').serialize();
             $.ajax({
-                url: '/FitzwayCheckout/Inspection/Save',
+                url: '/Inspection/Save',
                 type: 'post',
                 dataType: 'json',
                 data: data,
@@ -390,10 +390,10 @@ $(document).ready(function () {
                     window.location.replace(data.newUrl);
                 },
                 failure: function (response) {
-                    alert('failure: ' + response.responseText);
+                    alert('failure: ' + response.responseText + ": InspectionDetails.js, checklist");
                 },
                 error: function (response) {
-                    alert('error: ' + response.statusText);
+                    alert('error: ' + response.statusText + ": InspectionDetails.js, checklist");
                 }
             });
         }
@@ -471,7 +471,7 @@ $(document).ready(function () {
             if (confirmContinue) {
                 var data = 'submit=Submitted&' + $('#SaveChecklist').serialize();
                 $.ajax({
-                    url: '/FitzwayCheckout/Inspection/Save',
+                    url: '/Inspection/Save',
                     type: 'post',
                     dataType: 'json',
                     data: data,
@@ -482,10 +482,10 @@ $(document).ready(function () {
                         window.location.replace(response.newUrl);
                     },
                     failure: function (response) {
-                        alert('failure: ' + response.responseText);
+                        alert('failure: ' + response.responseText + ": InspectionDetails.js, SaveChecklist");
                     },
                     error: function (response) {
-                        alert('error: ' + response.statusText);
+                        alert('error: ' + response.statusText + ": InspectionDetails.js, SaveChecklist");
                     }
                 });
             }
