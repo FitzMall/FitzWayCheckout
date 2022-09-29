@@ -159,9 +159,7 @@ namespace FitzCheckout.Controllers
                 if (inspectionType.ToUpper() == "S")
                 {
                     statusList.Add(ChecklistStatus.TechComplete);
-                    statusList.Add(ChecklistStatus.FitzWayUsed);
-                    statusList.Add(ChecklistStatus.FitzWayValue);
-                }
+                 }
                 else if (inspectionType.ToUpper() == "T")
                 {
                     statusList.Add(ChecklistStatus.Pending);

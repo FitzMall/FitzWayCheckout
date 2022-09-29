@@ -22,7 +22,7 @@ namespace FitzCheckout.BizObjects
         {
             var qs = @"SELECT ((l.FullName) + SPACE(1) + '(' + (l.LocCode) + ')') AS Location , l.PermissionCode AS LocationCode, 
                 (SELECT COUNT(*) as OpenTechnicianItems FROM ChecklistRecord WHERE MetaDataValue8 = l.PermissionCode and Status IN (1,7)) as OpenTechnicianItems ,
-                (SELECT COUNT(*) as OpenSupervisorItems FROM ChecklistRecord WHERE MetaDataValue8 = l.PermissionCode and Status IN (2,8,9)) as OpenSupervisorItems
+                (SELECT COUNT(*) as OpenSupervisorItems FROM ChecklistRecord WHERE MetaDataValue8 = l.PermissionCode and Status IN (2)) as OpenSupervisorItems
                 FROM Locations_lkup l, AccessList a  
                 WHERE a.UserID = @userID AND CHARINDEX(l.PermissionCode, a.Permissions) > 0 
                 ORDER BY l.ID
