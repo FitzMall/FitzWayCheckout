@@ -159,9 +159,7 @@ namespace FitzCheckout.Controllers
                 if (inspectionType.ToUpper() == "S")
                 {
                     statusList.Add(ChecklistStatus.TechComplete);
-                    statusList.Add(ChecklistStatus.FitzWayUsed);
-                    statusList.Add(ChecklistStatus.FitzWayValue);
-                }
+                 }
                 else if (inspectionType.ToUpper() == "T")
                 {
                     statusList.Add(ChecklistStatus.Pending);
@@ -324,8 +322,7 @@ namespace FitzCheckout.Controllers
 
             }
             else if (newChecklistRecord.Status == ChecklistStatus.Complete || newChecklistRecord.Status == ChecklistStatus.Handyman || 
-                newChecklistRecord.Status == ChecklistStatus.Wholesale || newChecklistRecord.Status == ChecklistStatus.RepairForRetail
-                || newChecklistRecord.Status == ChecklistStatus.FitzWayUsed || newChecklistRecord.Status == ChecklistStatus.FitzWayValue)
+                newChecklistRecord.Status == ChecklistStatus.Wholesale || newChecklistRecord.Status == ChecklistStatus.RepairForRetail)
             {
                 //For Repair for Retail, reasign to last technician to work on the inspection
                 if (newChecklistRecord.Status == ChecklistStatus.RepairForRetail)
