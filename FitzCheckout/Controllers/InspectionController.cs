@@ -261,6 +261,10 @@ namespace FitzCheckout.Controllers
         {
             var file = System.IO.Path.Combine(Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]),
                     filename);
+
+            //var path = "J:/inetpub/wwwroot/production/FITZWAY/pictures/UCPDFS/";
+            //file = path + filename;
+
             //var file = System.IO.Path.Combine(ConfigurationManager.AppSettings["PdfLocation"],
             //        filename);
             byte[] FileBytes = System.IO.File.ReadAllBytes(file);
@@ -278,7 +282,7 @@ namespace FitzCheckout.Controllers
             {
                 action = "Create";
             }
-            else if (currentStatus == ChecklistStatus.Complete)
+            else if (currentStatus == ChecklistStatus.Complete || currentStatus == ChecklistStatus.FitzWayUsed || currentStatus == ChecklistStatus.FitzWayValue)
             {
                 action = "Complete";
             }

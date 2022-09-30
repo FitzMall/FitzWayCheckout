@@ -247,6 +247,8 @@ namespace FitzCheckout.Controllers
             {
                 var filename = ConfigurationManager.AppSettings["PdfFilenameRoot"] + supervisorViewVM.checklistInfo.MetaDataValue7 + ".pdf";
                 var path = Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]);
+                //path = "J:\\inetpub\\wwwroot\\production\\FITZWAY\\pictures\\UCPDFS\\";
+
                 if (PdfHelper.DoesPdfExist(filename, path))
                 {
                     supervisorViewVM.checklistInfo.PdfFileName = filename;
@@ -339,8 +341,6 @@ namespace FitzCheckout.Controllers
 
                     var file = System.IO.Path.Combine(Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]),
                                         filename);
-                    //var file = System.IO.Path.Combine(ConfigurationManager.AppSettings["PdfLocation"],
-                    //                    filename);
                     if (HttpContext.Session["LocationCode"] != null && HttpContext.Session["InspectionType"] != null)
                     {
                         return Json(new
@@ -386,7 +386,11 @@ namespace FitzCheckout.Controllers
             try
             {
 
-                var file = System.IO.Path.Combine(Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]),
+                var path = Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]);
+                //path = "J:\\inetpub\\wwwroot\\production\\FITZWAY\\pictures\\UCPDFS\\";
+
+
+                var file = System.IO.Path.Combine(path,
                         filename);
                 //var file = System.IO.Path.Combine(ConfigurationManager.AppSettings["PdfLocation"],
                 //        filename);

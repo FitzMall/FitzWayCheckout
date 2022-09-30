@@ -48,7 +48,9 @@ namespace FitzCheckout.PDF
             var checklistRecord = _checklistVM.GetChecklistVMByChecklistRecordID(checklistRecordID);
 
             var fileName = ConfigurationManager.AppSettings["PdfFilenameRoot"] + checklistRecord.MetaDataValue7 + ".pdf";
-
+            //var path = "J:/inetpub/wwwroot/production/FITZWAY/pictures/UCPDFS/";
+            //var fileName = path + ConfigurationManager.AppSettings["PdfFilenameRoot"] + checklistRecord.MetaDataValue7 + ".pdf";
+            
             try
             {
                 var file = System.IO.Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]),
