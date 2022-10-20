@@ -70,7 +70,8 @@ namespace FitzCheckout.Controllers
 
             if (!IsAuthorized())
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden); ;
-
+            vin = vin.Trim();
+            stockNumber = stockNumber.Trim();
             var values = ",,,,," + stockNumber + "," + vin + ",";
 
             var newDashboard = _userDashboard.GetEmptyDashboard();

@@ -81,6 +81,8 @@ namespace FitzCheckout.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden); 
 
             var supervisorVM = new SupervisorLandingVM();
+            vin = vin.Trim();
+            stockNumber = stockNumber.Trim();
 
             if (HttpContext.Session["currentUser"] != null)
             {
