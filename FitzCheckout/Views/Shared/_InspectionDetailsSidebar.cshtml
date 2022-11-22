@@ -3,6 +3,7 @@
 <script type="text/javascript" src="~/Scripts/InspectionDetails.js"></script>
 
 <div class="sidebar">
+    <button name="submit" type="button" id="Submitted3" value="MarkComplete" class="btn btn-danger submitChecklist">Submit Inspection</button>
     @for (int i = 0; i < Model.Count; i++)
     {
         <a href="#Section_@Model[i].ID" id="SecitonLink_@Model[i].ID" class="">@Model[i].SectionLabel</a>
