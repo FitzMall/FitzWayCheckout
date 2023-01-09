@@ -262,7 +262,7 @@ namespace FitzCheckout.Controllers
                 {
                     int intID = Int32.Parse(id);
 
-                    if ("0" == RecordType.ChecklistRecord.ToString() || "0" == RecordType.Submitted.ToString())
+                    if (("0" == RecordType.ChecklistRecord.ToString() || "0" == RecordType.Submitted.ToString()) && (id != "0"))
                     {
                         newChecklistVM = _checklistVM.GetChecklistVMByChecklistRecordID(intID);
                     }

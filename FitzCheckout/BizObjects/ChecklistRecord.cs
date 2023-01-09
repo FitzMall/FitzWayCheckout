@@ -317,7 +317,7 @@ namespace FitzCheckout.BizObjects
                     //add to established SQL
 
                     qs += @" UNION SELECT 
-                        UsedID AS ID
+                         0 AS ID
                          , CASE 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
 				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 

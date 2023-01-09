@@ -19,28 +19,37 @@
     <tbody>
         @for (int i = 0; i < Model.Count; i++)
         {
-            <tr>
-                <td>@Model[i].MetaDataValue1</td>
-                <td>@Model[i].MetaDataValue6</td>
-                <td>@Model[i].MetaDataValue4</td>
-                <td>@Model[i].MetaDataValue5</td>
-                <td>@Model[i].MetaDataValue3</td>
-                <td>@Model[i].FullName</td>
-                @if (Model[i].Status == ChecklistStatus.TechComplete)
-                {
-                    <td>Tech Complete</td>
-                }
-                else if (Model[i].Status == ChecklistStatus.RepairForRetail)
-                {
-                    <td>Repair for Retail</td>
-                }
-                else
-                {
-                    <td>@Model[i].Status.ToString()</td>
-                }
-                <td>@Model[i].DateUpdated.ToShortDateString()</td>
+        <tr>
+            <td>@Model[i].MetaDataValue1</td>
+            <td>@Model[i].MetaDataValue6</td>
+            <td>@Model[i].MetaDataValue4</td>
+            <td>@Model[i].MetaDataValue5</td>
+            <td>@Model[i].MetaDataValue3</td>
+            <td>@Model[i].FullName</td>
+            @if (Model[i].Status == ChecklistStatus.TechComplete)
+            {
+                <td>Tech Complete</td>
+            }
+            else if (Model[i].Status == ChecklistStatus.RepairForRetail)
+            {
+                <td>Repair for Retail</td>
+            }
+            else
+            {
+                <td>@Model[i].Status.ToString()</td>
+            }
+            <td>@Model[i].DateUpdated.ToShortDateString()</td>
+            @if (Model[i].ID != 0)
+            {
+
                 <td>@Html.ActionLink("View", "ViewInspection", new { @id = Model[i].ID }) </td>
-            </tr>
+            }
+            else
+            {
+                <td> </td>
+            }
+
+        </tr>
         }
     </tbody>
 </table>
