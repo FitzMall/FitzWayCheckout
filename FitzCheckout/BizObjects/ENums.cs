@@ -22,8 +22,11 @@ namespace FitzCheckout.BizObjects
         Wholesale = 5,
         RepairForRetail = 6,
         Reopen = 7,
-        FitzWayUsed = 8,
-        FitzWayValue = 9 
+        FitzWayValue = 8,
+        FitzWayPremium = 9,
+        FitzWaySelect = 10,
+        FitzWayHPE = 11
+
     }
 
     public enum RecordType

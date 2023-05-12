@@ -283,7 +283,7 @@ namespace FitzCheckout.Controllers
             {
                 action = "Create";
             }
-            else if (currentStatus == ChecklistStatus.Complete || currentStatus == ChecklistStatus.FitzWayUsed || currentStatus == ChecklistStatus.FitzWayValue)
+            else if (currentStatus == ChecklistStatus.Complete || currentStatus == ChecklistStatus.FitzWaySelect || currentStatus == ChecklistStatus.FitzWayHPE || currentStatus == ChecklistStatus.FitzWayPremium || currentStatus == ChecklistStatus.FitzWayValue)
             {
                 action = "Complete";
             }
