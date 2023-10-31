@@ -332,8 +332,7 @@ namespace FitzCheckout.Controllers
             }
             else if (newChecklistRecord.Status == ChecklistStatus.Complete || newChecklistRecord.Status == ChecklistStatus.Handyman || 
                 newChecklistRecord.Status == ChecklistStatus.Wholesale || newChecklistRecord.Status == ChecklistStatus.RepairForRetail
-                || newChecklistRecord.Status == ChecklistStatus.FitzWayHPE || newChecklistRecord.Status == ChecklistStatus.FitzWayPremium
-                || newChecklistRecord.Status == ChecklistStatus.FitzWaySelect)
+           )
             {
                 //For Repair for Retail, reasign to last technician to work on the inspection
                 if (newChecklistRecord.Status == ChecklistStatus.RepairForRetail)
