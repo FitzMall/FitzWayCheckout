@@ -9,7 +9,7 @@ namespace FitzCheckout.Models
 {
     public interface IChecklistItemRecordVM
     {
-        List<ChecklistItemRecordVM> GetItemsByIDs(int checklistRecordID, int sectionID);
+        List<ChecklistItemRecordVM> GetItemsByIDs(int checklistRecordID, int sectionID, string FuelType);
     }
     public class ChecklistItemRecordVM: IChecklistItemRecordVM
     {
@@ -57,7 +57,7 @@ namespace FitzCheckout.Models
             _checklistItem = checklistItem;
         }
 
-        public List<ChecklistItemRecordVM> GetItemsByIDs(int checklistRecordID, int sectionID)
+        public List<ChecklistItemRecordVM> GetItemsByIDs(int checklistRecordID, int sectionID, string FuelType)
         {
             if (sectionID == 0)
             {
@@ -79,9 +79,9 @@ namespace FitzCheckout.Models
                             ir.IsOption3Selected, ir.IsOption4Selected, ir.Option1Text, 
                             ir.Option2Text, ir.Option3Text, ir.Option4Text
                         FROM [Checklists].[dbo].[ChecklistItemRecord] ir, [Checklists].[dbo].[ChecklistItem_Hybrid_EV] i
-                        WHERE ir.ChecklistRecordID = @checklistRecordID 
-	                        AND ir.ChecklistItemID = i.ID and i.ChecklistSectionID = @sectionID 
-                        ORDER BY i.OrderNumber";
+                        WHERE ir.ChecklistRecordID = @checklistRecordID AND [Fuel] IN ";
+                qs += FuelType;
+                        qs += " AND ir.ChecklistItemID = i.ID and i.ChecklistSectionID = @sectionID ORDER BY i.OrderNumber";
                 recordItems = SqlMapperUtil.SqlWithParams<ChecklistItemRecordVM>(qs, new { checklistRecordID = checklistRecordID, sectionID = sectionID }).ToList();
 
             }
@@ -101,8 +101,10 @@ namespace FitzCheckout.Models
 	                        , '' Option1Text, '' Option2Text, '' Option3Text
                             , '' Option4Text
                         FROM [Checklists].[dbo].[ChecklistItem_Hybrid_EV] i
-                        WHERE i.ChecklistSectionID = @sectionID
-                        ORDER BY i.OrderNumber";
+                        WHERE i.ChecklistSectionID = @sectionID AND[Fuel] IN ";
+                qs += FuelType;
+                qs += " AND i.ChecklistSectionID = @sectionID ORDER BY i.OrderNumber";
+
                 recordItems = SqlMapperUtil.SqlWithParams<ChecklistItemRecordVM>(qs, new { sectionID = sectionID }).ToList();
             }
 

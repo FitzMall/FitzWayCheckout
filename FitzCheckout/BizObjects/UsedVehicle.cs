@@ -95,11 +95,11 @@ public class Vehicle
 
             if (selectFuel.Contains("GASOLINE") == true)
             {
-                retFuel = "('ALL', 'IC')";
+                retFuel = "('ALL', 'ICHYBRID', 'IC')";
             }
             if (selectFuel.Contains("DIESEL") == true)
             {
-                retFuel = "('ALL', 'IC')";
+                retFuel = "('ALL', 'ICHYBRID', 'IC')";
             }
             if (selectFuel.Contains("ELECTRIC") == true)
             {
@@ -107,7 +107,7 @@ public class Vehicle
             }
             if (selectFuel.Contains("HYBRID") == true)
             {
-                retFuel = "('ALL', 'ICHYBRID')";
+                retFuel = "('ALL', 'ICHYBRID', 'HYBRID')";
             }
 
             return retFuel;

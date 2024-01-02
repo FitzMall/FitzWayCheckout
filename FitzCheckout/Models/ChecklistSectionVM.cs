@@ -70,7 +70,7 @@ namespace FitzCheckout.Models
                 sectionVM.CanCheckAllOption3 = item.CanCheckAllOption3;
                 sectionVM.CanCheckAllOption4 = item.CanCheckAllOption4;
 
-                sectionVM.ChecklistItemRecords = _checklistItemRecordVM.GetItemsByIDs(0, sectionVM.ID);
+                sectionVM.ChecklistItemRecords = _checklistItemRecordVM.GetItemsByIDs(0, sectionVM.ID," ('ALL','ICHYBRID','EV')");
 
                 sections.Add(sectionVM);
             }
@@ -114,7 +114,7 @@ namespace FitzCheckout.Models
                 sectionVM.CanCheckAllOption3 = item.CanCheckAllOption3;
                 sectionVM.CanCheckAllOption4 = item.CanCheckAllOption4;
 
-                sectionVM.ChecklistItemRecords = _checklistItemRecordVM.GetItemsByIDs(checklistRecordID, sectionVM.ID);
+                sectionVM.ChecklistItemRecords = _checklistItemRecordVM.GetItemsByIDs(checklistRecordID, sectionVM.ID, FuelType);
 
                 sections.Add(sectionVM);
 
