@@ -14,6 +14,8 @@ namespace FitzCheckout.BizObjects
         List<UsedVehicle> Search(string searchValues, SearchType searchType, List<string> excludeStockNumbers, List<string> exlcudeVin);
 
         UsedVehicle GetVehicleByID(int ID);
+        String GetFuel(string Vin);
+
     }
     public class UsedVehicle : IUsedVehicle
     {
@@ -28,7 +30,44 @@ namespace FitzCheckout.BizObjects
         public string DealerName { get; set; }
         public string PermissionCode { get; set; }
 
-        public List<UsedVehicle> Search(string searchValues, SearchType searchType)
+
+public class Vehicle 
+        {
+        public int Id { get; set; }
+        public string VIN { get; set; }
+        public string StockNumber { get; set; }
+        public string XrefId { get; set; }
+        public string Source { get; set; }
+        public int Year { get; set; }
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public int ModelId { get; set; }
+        public decimal BuildMSRP { get; set; }
+        public DateTime BuildDate { get; set; }
+        public string Country { get; set; }
+        public string Manufacturer { get; set; }
+        public string BuildSource { get; set; }
+        public int StyleId { get; set; }
+        public int ExteriorColorId { get; set; }
+        public int InteriorColorId { get; set; }
+        public DateTime DateUpdated { get; set; }
+        public string Condition { get; set; }
+        public string CertificationLevelCode { get; set; }
+        public string CertificationLevel { get; set; }
+        public bool InReconditioning { get; set; }
+        public bool ManagerSpecial { get; set; }
+        public DateTime ManagerSpecialStartDate { get; set; }
+        public DateTime ManagerSpecialEndDate { get; set; }
+        public decimal VehiclePrice { get; set; }
+        public string OptionsApprovedBy { get; set; }
+        public DateTime OptionsApprovedDate { get; set; }
+        public string VehicleLocation { get; set; }
+        public string FuelType { get; set; }
+        public string DealerComments { get; set; }
+    }
+
+
+    public List<UsedVehicle> Search(string searchValues, SearchType searchType)
         {
             string qs = ConstructBaseQuery(searchValues, searchType);
 
@@ -36,6 +75,43 @@ namespace FitzCheckout.BizObjects
             return SqlMapperUtil.SqlWithParams<UsedVehicle>(qs, new { }, connectionString).ToList();
 
 
+        }
+
+        public string GetFuel(string Vin)
+        {
+            string qs = "[sp_GetVehicle]";
+            string retFuel = "";
+            string selectFuel = "";
+
+            string connectionString = ConfigurationManager.ConnectionStrings["ChromeDataCVD"].ConnectionString;
+            List<Vehicle> FoundVehicles = SqlMapperUtil.StoredProcWithParams<Vehicle>(qs, new {vin = Vin}, connectionString);
+
+            foreach (Vehicle ThisVehicle in FoundVehicles)
+            {
+                if (ThisVehicle.FuelType != null) {
+                    selectFuel = ThisVehicle.FuelType.ToUpper().Trim();
+                }
+            }
+
+            if (selectFuel.Contains("GASOLINE") == true)
+            {
+                retFuel = "('ALL', 'IC')";
+            }
+            if (selectFuel.Contains("DIESEL") == true)
+            {
+                retFuel = "('ALL', 'IC')";
+            }
+            if (selectFuel.Contains("ELECTRIC") == true)
+            {
+                retFuel = "('ALL', 'EV')";
+            }
+            if (selectFuel.Contains("HYBRID") == true)
+            {
+                retFuel = "('ALL', 'ICHYBRID')";
+            }
+
+            return retFuel;
+         
         }
 
         public List<UsedVehicle> Search(string searchValues, SearchType searchType, List<string> excludeStockNumbers, List<string> excludeVins)

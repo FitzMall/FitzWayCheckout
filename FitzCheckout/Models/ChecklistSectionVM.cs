@@ -11,7 +11,7 @@ namespace FitzCheckout.Models
     {
         List<ChecklistSectionVM> GetNewSectionsVMByChecklistID(int checklistID);
         List<ChecklistSectionVM> GetSectionsByChecklistRecordID(int checklistRecordID);
-        List<ChecklistSectionVM> GetSections(int checklistID, int checklistRecordID);
+        List<ChecklistSectionVM> GetSections(int checklistID, int checklistRecordID, string FuelType);
     }
 
     public class ChecklistSectionVM : IChecklistSectionVM
@@ -51,7 +51,7 @@ namespace FitzCheckout.Models
             List<ChecklistSectionVM> sections = new List<Models.ChecklistSectionVM>();
 
             string qs = @"SELECT *
-                    FROM [Checklists].[dbo].[ChecklistSection]
+                    FROM [Checklists].[dbo].[ChecklistSection_Hybrid_EV]
                     WHERE [ChecklistID] = @checklistID";
             var result = SqlMapperUtil.SqlWithParams<ChecklistSection>(qs, new { checklistID = checklistID }).ToList();
             foreach (var item in result)
@@ -88,13 +88,15 @@ namespace FitzCheckout.Models
             return sections;
         }
 
-        public List<ChecklistSectionVM> GetSections(int checklistID, int checklistRecordID)
+        public List<ChecklistSectionVM> GetSections(int checklistID, int checklistRecordID, string FuelType)
         {
             List<ChecklistSectionVM> sections = new List<Models.ChecklistSectionVM>();
 
             string qs = @"SELECT *
-                    FROM [Checklists].[dbo].[ChecklistSection]
-                    WHERE [ChecklistID] = @checklistID";
+                    FROM [Checklists].[dbo].[ChecklistSection_Hybrid_EV]
+                    WHERE [ChecklistID] = @checklistID
+                    AND [Fuel] IN " + FuelType;
+
             var result = SqlMapperUtil.SqlWithParams<ChecklistSection>(qs, new { checklistID = checklistID }).ToList();
             foreach (var item in result)
             {

@@ -277,8 +277,8 @@ namespace FitzCheckout.Controllers
                     {
                         UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
 
-                        newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2);
-
+                        string thisFuel = usedVehicle.GetFuel(usedVehicle.Vin);
+                        newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, thisFuel);
                         newChecklistVM.ID = 2;
                         newChecklistVM.MetaDataValue1 = usedVehicle.DealerName;
                         newChecklistVM.MetaDataValue2 = usedVehicle.Miles.ToString();

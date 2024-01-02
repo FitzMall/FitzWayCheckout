@@ -78,7 +78,7 @@ namespace FitzCheckout.Models
                             i.AllowAutoChecking, ir.IsOption1Selected, ir.IsOption2Selected, 
                             ir.IsOption3Selected, ir.IsOption4Selected, ir.Option1Text, 
                             ir.Option2Text, ir.Option3Text, ir.Option4Text
-                        FROM [Checklists].[dbo].[ChecklistItemRecord] ir, [Checklists].[dbo].[ChecklistItem] i
+                        FROM [Checklists].[dbo].[ChecklistItemRecord] ir, [Checklists].[dbo].[ChecklistItem_Hybrid_EV] i
                         WHERE ir.ChecklistRecordID = @checklistRecordID 
 	                        AND ir.ChecklistItemID = i.ID and i.ChecklistSectionID = @sectionID 
                         ORDER BY i.OrderNumber";
@@ -100,7 +100,7 @@ namespace FitzCheckout.Models
                             , CAST(0 as bit) IsOption4Selected
 	                        , '' Option1Text, '' Option2Text, '' Option3Text
                             , '' Option4Text
-                        FROM [Checklists].[dbo].[ChecklistItem] i
+                        FROM [Checklists].[dbo].[ChecklistItem_Hybrid_EV] i
                         WHERE i.ChecklistSectionID = @sectionID
                         ORDER BY i.OrderNumber";
                 recordItems = SqlMapperUtil.SqlWithParams<ChecklistItemRecordVM>(qs, new { sectionID = sectionID }).ToList();

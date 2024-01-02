@@ -122,18 +122,32 @@ namespace FitzCheckout.Controllers
         }
 
         [HttpPost]
-        public ActionResult Details(string metadataValues)
+        public ActionResult Details(string metadataValues, string FuelType)
         {
             if (!IsAuthorized())
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden); ;
 
+
+            // MetaDataValue1 = DealerName;
+            // MetaDataValue2 = Miles.ToString();
+            // MetaDataValue3 = Yr;
+            // MetaDataValue4 = Make;
+            // MetaDataValue5 = Carline;
+            // MetaDataValue6 = Stk;
+            // MetaDataValue7 = Vin;
+            // MetaDataValue8 = PermissionCode;
+            // MetaDataValue6 = Stk;
+            // MetaDataValue7 = Vin;
+
             ChecklistVM newChecklistVM = new Models.ChecklistVM();
             if (String.IsNullOrEmpty(metadataValues))
             {
+                FuelType = "('ALL')";
                 ModelState.Clear();
-                newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2);
+                newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, FuelType);
                 ViewBag.UserType = "Technician";
                 return PartialView("_Details", newChecklistVM);
+
             }
             else
             {
@@ -236,8 +250,9 @@ namespace FitzCheckout.Controllers
                 else
                 {
                     UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
+                    string FuelFound = _usedVehicle.GetFuel(usedVehicle.Vin);
 
-                    newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2);
+                    newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, FuelFound);
 
                     newChecklistVM.ID = 2;
                     newChecklistVM.MetaDataValue1 = usedVehicle.DealerName;

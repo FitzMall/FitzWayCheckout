@@ -49,7 +49,7 @@ namespace FitzCheckout.BizObjects
             string qs = @"SELECT ir.ID, ir.ChecklistItemID, ir.ChecklistRecordID, ir.IsChecked, ir.ITDropDownText1, ir.ITDropDownText2, ir.OptionType1, ir.OptionType2, ir.OptionType3, ir.OptionType4, ir.IsOption1Selected , ir.IsOption2Selected, 
                                     ir.IsOption3Selected, ir.IsOption4Selected, ir.Option1Text, ir.Option2Text, ir.Option3Text, ir.Option4Text, i.ChecklistSectionID
                                 FROM [Checklists].[dbo].[ChecklistItemRecord] ir 
-                                JOIN [Checklists].[dbo].[ChecklistItem] i on ir.ChecklistItemID = i.ID
+                                JOIN [Checklists].[dbo].[ChecklistItem_Hybrid_EV] i on ir.ChecklistItemID = i.ID
                                 WHERE ir.ID = @ID
                                 ORDER BY i.ChecklistSectionID, i.OrderNumber";
             var result = SqlMapperUtil.SqlWithParams<ChecklistItemRecord>(qs, new { ID = ID }).FirstOrDefault();
