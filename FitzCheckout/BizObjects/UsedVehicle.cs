@@ -80,7 +80,7 @@ public class Vehicle
         public string GetFuel(string Vin)
         {
             string qs = "[sp_GetVehicle]";
-            string retFuel = "";
+            string retFuel = "('MISSING')";
             string selectFuel = "";
 
             string connectionString = ConfigurationManager.ConnectionStrings["ChromeDataCVD"].ConnectionString;
