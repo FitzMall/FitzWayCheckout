@@ -43,7 +43,7 @@ namespace FitzCheckout.Controllers
         {
             if (!IsAuthorized())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden); 
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
             }
 
             ViewBag.SearchType = "";
@@ -78,7 +78,7 @@ namespace FitzCheckout.Controllers
         public ActionResult Index(string submit, string vin, string stockNumber)
         {
             if (!IsAuthorized())
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden); 
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
             var supervisorVM = new SupervisorLandingVM();
             vin = vin.Trim();
@@ -129,7 +129,7 @@ namespace FitzCheckout.Controllers
 
             supervisorVM.TableData = _supervisorTableData.GetTableData(currentUser.ID);
             supervisorVM.Checklists = _checklistRecord.SearchWider(values, SearchType.And, -1, status);
-            
+
             ViewBag.SearchType = "Search Results:";
 
 
@@ -138,7 +138,7 @@ namespace FitzCheckout.Controllers
         public ActionResult OpenItems(string locationCode, string inspectionType)
         {
             if (!IsAuthorized())
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden); 
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
             var currentUser = (User)HttpContext.Session["currentUser"];
             var locations = new List<string>();
@@ -164,7 +164,7 @@ namespace FitzCheckout.Controllers
                 if (inspectionType.ToUpper() == "S")
                 {
                     statusList.Add(ChecklistStatus.TechComplete);
-                 }
+                }
                 else if (inspectionType.ToUpper() == "T")
                 {
                     statusList.Add(ChecklistStatus.Pending);
@@ -260,7 +260,7 @@ namespace FitzCheckout.Controllers
                 {
                     supervisorViewVM.checklistInfo.PdfFileName = filename;
                 }
-            } 
+            }
             else
             {
 
@@ -288,11 +288,19 @@ namespace FitzCheckout.Controllers
                         newChecklistVM.MetaDataValue6 = usedVehicle.Stk;
                         newChecklistVM.MetaDataValue7 = usedVehicle.Vin;
                         newChecklistVM.MetaDataValue8 = usedVehicle.PermissionCode;
+                        if (thisFuel == "('MISSING')")
+                        {
+                            RedirectToAction("");
+                        }
+                        else
+                        {
+                            ModelState.Clear();
+                            ModelState.Remove("sections");
+                            supervisorViewVM.checklistInfo = newChecklistVM;  // move new checklist into supervisor view
+                        }
                     }
                 }
-                ModelState.Clear();
-                ModelState.Remove("sections");
-                supervisorViewVM.checklistInfo = newChecklistVM;  // move new checklist into supervisor view
+
             }
 
             return View(supervisorViewVM);
@@ -330,7 +338,7 @@ namespace FitzCheckout.Controllers
                 newChecklistRecord.Save();
 
             }
-            else if (newChecklistRecord.Status == ChecklistStatus.Complete || newChecklistRecord.Status == ChecklistStatus.Handyman || 
+            else if (newChecklistRecord.Status == ChecklistStatus.Complete || newChecklistRecord.Status == ChecklistStatus.Handyman ||
                 newChecklistRecord.Status == ChecklistStatus.Wholesale || newChecklistRecord.Status == ChecklistStatus.RepairForRetail
            )
             {
@@ -404,7 +412,8 @@ namespace FitzCheckout.Controllers
                 byte[] FileBytes = System.IO.File.ReadAllBytes(file);
                 Response.AppendHeader("Content-Disposition", "inline; filename= " + filename);
                 return File(FileBytes, "application/pdf");
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }

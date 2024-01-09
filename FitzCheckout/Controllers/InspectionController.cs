@@ -237,6 +237,7 @@ namespace FitzCheckout.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden); ;
 
             int intID = 0;
+            string FuelFound = "";
 
             ChecklistVM newChecklistVM = new Models.ChecklistVM();
             if (!String.IsNullOrEmpty(ID))
@@ -250,7 +251,7 @@ namespace FitzCheckout.Controllers
                 else
                 {
                     UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
-                    string FuelFound = _usedVehicle.GetFuel(usedVehicle.Vin);
+                    FuelFound = _usedVehicle.GetFuel(usedVehicle.Vin);
 
                     newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, FuelFound);
 
@@ -266,6 +267,12 @@ namespace FitzCheckout.Controllers
                 }
                 //return PartialView("Details", newChecklistVM);
             }
+
+            if (FuelFound == "('MISSING')")
+            {
+                RedirectToAction("");
+            }
+
             ModelState.Clear();
             ModelState.Remove("sections");
             ViewBag.UserType = "Technician";
