@@ -40,88 +40,28 @@ namespace FitzCheckout.Controllers
 
         // GET: Supervisor
 
-        public ActionResult SelectFuel()
+        public ActionResult SelectFuel(string id)
         {
-            if (!IsAuthorized())
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-            }
+            ChecklistVM newChecklistVM = new Models.ChecklistVM();
+            int intID = Int32.Parse(id);
 
-            ViewBag.SearchType = "";
-            var supervisorVM = new SupervisorLandingVM();
-
-            if (HttpContext.Session["currentUser"] != null)
-            {
-                var currentUser = (User)HttpContext.Session["currentUser"];
-
-                if (currentUser.UserRole == UserRole.Admin)
-                {
-                    ViewBag.IsAdmin = "true";
-                }
-                else
-                {
-                    ViewBag.IsAdmin = "false";
-                }
-
-                ViewBag.UserID = currentUser.ID;
-                supervisorVM.TableData = _supervisorTableData.GetTableData(currentUser.ID);
-                return View(supervisorVM);
-            }
-            else
-            {
-                return View(supervisorVM);
-            }
-
-
+            newChecklistVM = _checklistVM.GetChecklistVMByChecklistRecordID(intID);
+            return View(newChecklistVM);
         }
 
         [HttpPost]
-        public ActionResult SelectFuel(string submit, string vin, string stockNumber)
+
+        public ActionResult SelectFuel(string id, string FuelType)
         {
-            if (!IsAuthorized())
-                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            ChecklistVM newChecklistVM = new Models.ChecklistVM();
+            int intID = Int32.Parse(id);
 
-            var supervisorVM = new SupervisorLandingVM();
-            vin = vin.Trim();
-            stockNumber = stockNumber.Trim();
+            // insert the value in the table
+            // stored proc: [ChecklistRecordUpdateFuel]
+            //
+            return RedirectToAction("ViewInspection", new { @id = id });
 
-            if (HttpContext.Session["currentUser"] != null)
-            {
-                var currentUser = (User)HttpContext.Session["currentUser"];
-
-                if (currentUser.UserRole == UserRole.Admin)
-                {
-                    ViewBag.IsAdmin = "true";
-                }
-                else
-                {
-                    ViewBag.IsAdmin = "false";
-                }
-
-            }
-            else
-            {
-                ViewBag.IsAdmin = "false";
-            }
-
-            ViewBag.UserID = currentUser.ID;
-
-
-            if (String.IsNullOrEmpty(vin) && String.IsNullOrEmpty(stockNumber))
-            {
-                return RedirectToAction("Index");
-            }
-
-
-            supervisorVM.TableData = _supervisorTableData.GetTableData(currentUser.ID);
-
-            ViewBag.SearchType = "Search Results:";
-
-
-            return View(supervisorVM);
         }
-        // GET: Supervisor
-
         public ActionResult Index()
         {
             if (!IsAuthorized())
@@ -375,7 +315,7 @@ namespace FitzCheckout.Controllers
                         newChecklistVM.MetaDataValue6 = usedVehicle.Stk;
                         newChecklistVM.MetaDataValue7 = usedVehicle.Vin;
                         newChecklistVM.MetaDataValue8 = usedVehicle.PermissionCode;
-
+                        newChecklistVM.FuelType = thisFuel;
 
                         ModelState.Clear();
                         ModelState.Remove("sections");
@@ -388,7 +328,7 @@ namespace FitzCheckout.Controllers
             if (thisFuel == "('MISSING')" | thisFuel == "")
             {
 
-                //return RedirectToAction("SelectFuel");
+                return RedirectToAction("SelectFuel", new { @id = id });
 
             }
             return View(supervisorViewVM);

@@ -70,6 +70,8 @@ namespace FitzCheckout.Models
         public bool IsMeta7Required { get; set; }
         public bool IsMeta8Required { get; set; }
 
+        public string FuelType { get; set; }
+
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 
