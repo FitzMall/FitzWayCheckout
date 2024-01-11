@@ -32,7 +32,7 @@ namespace FitzCheckout.Models
                             , u.FirstName 
                             , u.LastName
                             , cr.DateUpdated InspectionDate
-                        FROM [Checklists].[dbo].[ChecklistRecord] cr
+                        FROM [ChecklistsTEST].[dbo].[ChecklistRecord] cr
                             LEFT OUTER JOIN [FitzDB].[dbo].[Users] u ON cr.UserID = u.ID
                         WHERE cr.ID = @ID";
             return SqlMapperUtil.SqlWithParams<InspectionMetadata>(qs, new { @ID = recordID }).FirstOrDefault();

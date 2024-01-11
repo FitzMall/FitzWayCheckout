@@ -360,6 +360,7 @@
     <Content Include="Views\Supervisor\Index.cshtml" />
     <Content Include="Views\Supervisor\OpenItems.cshtml" />
     <Content Include="Views\Shared\_SupervisorLayout.cshtml" />
+    <Content Include="Views\Supervisor\SelectFuel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

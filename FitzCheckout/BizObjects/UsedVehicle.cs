@@ -30,44 +30,46 @@ namespace FitzCheckout.BizObjects
         public string DealerName { get; set; }
         public string PermissionCode { get; set; }
 
-
-public class Vehicle 
-        {
-        public int Id { get; set; }
-        public string VIN { get; set; }
-        public string StockNumber { get; set; }
-        public string XrefId { get; set; }
-        public string Source { get; set; }
-        public int Year { get; set; }
-        public string Make { get; set; }
-        public string Model { get; set; }
-        public int ModelId { get; set; }
-        public decimal BuildMSRP { get; set; }
-        public DateTime BuildDate { get; set; }
-        public string Country { get; set; }
-        public string Manufacturer { get; set; }
-        public string BuildSource { get; set; }
-        public int StyleId { get; set; }
-        public int ExteriorColorId { get; set; }
-        public int InteriorColorId { get; set; }
-        public DateTime DateUpdated { get; set; }
-        public string Condition { get; set; }
-        public string CertificationLevelCode { get; set; }
-        public string CertificationLevel { get; set; }
-        public bool InReconditioning { get; set; }
-        public bool ManagerSpecial { get; set; }
-        public DateTime ManagerSpecialStartDate { get; set; }
-        public DateTime ManagerSpecialEndDate { get; set; }
-        public decimal VehiclePrice { get; set; }
-        public string OptionsApprovedBy { get; set; }
-        public DateTime OptionsApprovedDate { get; set; }
-        public string VehicleLocation { get; set; }
         public string FuelType { get; set; }
-        public string DealerComments { get; set; }
-    }
 
 
-    public List<UsedVehicle> Search(string searchValues, SearchType searchType)
+        public class Vehicle
+        {
+            public int Id { get; set; }
+            public string VIN { get; set; }
+            public string StockNumber { get; set; }
+            public string XrefId { get; set; }
+            public string Source { get; set; }
+            public int Year { get; set; }
+            public string Make { get; set; }
+            public string Model { get; set; }
+            public int ModelId { get; set; }
+            public decimal BuildMSRP { get; set; }
+            public DateTime BuildDate { get; set; }
+            public string Country { get; set; }
+            public string Manufacturer { get; set; }
+            public string BuildSource { get; set; }
+            public int StyleId { get; set; }
+            public int ExteriorColorId { get; set; }
+            public int InteriorColorId { get; set; }
+            public DateTime DateUpdated { get; set; }
+            public string Condition { get; set; }
+            public string CertificationLevelCode { get; set; }
+            public string CertificationLevel { get; set; }
+            public bool InReconditioning { get; set; }
+            public bool ManagerSpecial { get; set; }
+            public DateTime ManagerSpecialStartDate { get; set; }
+            public DateTime ManagerSpecialEndDate { get; set; }
+            public decimal VehiclePrice { get; set; }
+            public string OptionsApprovedBy { get; set; }
+            public DateTime OptionsApprovedDate { get; set; }
+            public string VehicleLocation { get; set; }
+            public string FuelType { get; set; }
+            public string DealerComments { get; set; }
+        }
+
+
+        public List<UsedVehicle> Search(string searchValues, SearchType searchType)
         {
             string qs = ConstructBaseQuery(searchValues, searchType);
 
@@ -77,42 +79,6 @@ public class Vehicle
 
         }
 
-        public string GetFuel(string Vin)
-        {
-            string qs = "[sp_GetVehicle]";
-            string retFuel = "('MISSING')";
-            string selectFuel = "";
-
-            string connectionString = ConfigurationManager.ConnectionStrings["ChromeDataCVD"].ConnectionString;
-            List<Vehicle> FoundVehicles = SqlMapperUtil.StoredProcWithParams<Vehicle>(qs, new {vin = Vin}, connectionString);
-
-            foreach (Vehicle ThisVehicle in FoundVehicles)
-            {
-                if (ThisVehicle.FuelType != null) {
-                    selectFuel = ThisVehicle.FuelType.ToUpper().Trim();
-                }
-            }
-
-            if (selectFuel.Contains("GASOLINE") == true)
-            {
-                retFuel = "('ALL', 'ICHYBRID', 'IC')";
-            }
-            if (selectFuel.Contains("DIESEL") == true)
-            {
-                retFuel = "('ALL', 'ICHYBRID', 'IC')";
-            }
-            if (selectFuel.Contains("ELECTRIC") == true)
-            {
-                retFuel = "('ALL', 'EV')";
-            }
-            if (selectFuel.Contains("HYBRID") == true)
-            {
-                retFuel = "('ALL', 'ICHYBRID', 'HYBRID')";
-            }
-
-            return retFuel;
-         
-        }
 
         public List<UsedVehicle> Search(string searchValues, SearchType searchType, List<string> excludeStockNumbers, List<string> excludeVins)
         {
@@ -158,9 +124,52 @@ public class Vehicle
             }
             qs = qs + excludeClause.ToString();
             string connectionString = ConfigurationManager.ConnectionStrings["Junk"].ConnectionString;
-                return SqlMapperUtil.SqlWithParams<UsedVehicle>(qs, new { }, connectionString).ToList();
+            return SqlMapperUtil.SqlWithParams<UsedVehicle>(qs, new { }, connectionString).ToList();
 
         }
+
+        public string GetFuel(string Vin)
+        {
+            string qs = "[sp_GetVehicle]";
+            string retFuel = "('MISSING')";
+            string selectFuel = "";
+
+            string connectionString = ConfigurationManager.ConnectionStrings["ChromeDataCVD"].ConnectionString;
+            List<Vehicle> FoundVehicles = SqlMapperUtil.StoredProcWithParams<Vehicle>(qs, new { vin = Vin }, connectionString);
+
+            foreach (Vehicle ThisVehicle in FoundVehicles)
+            {
+                if (ThisVehicle.FuelType != null)
+                {
+                    selectFuel = ThisVehicle.FuelType.ToUpper().Trim();
+                }
+            }
+
+            if (selectFuel.Contains("GAS") == true)
+            {
+                retFuel = "('ALL', 'ICHYBRID', 'IC')";
+            }
+            if (selectFuel.Contains("GASOLINE") == true)
+            {
+                retFuel = "('ALL', 'ICHYBRID', 'IC')";
+            }
+            if (selectFuel.Contains("DIESEL") == true)
+            {
+                retFuel = "('ALL', 'ICHYBRID', 'IC')";
+            }
+            if (selectFuel.Contains("ELECTRIC") == true)
+            {
+                retFuel = "('ALL', 'EV')";
+            }
+            if (selectFuel.Contains("HYBRID") == true)
+            {
+                retFuel = "('ALL', 'ICHYBRID', 'HYBRID')";
+            }
+
+            return retFuel;
+
+        }
+
 
         private string ConstructBaseQuery(string searchValues, SearchType searchType)
         {
@@ -209,21 +218,21 @@ public class Vehicle
                         , stk
                         , vin 
 		                , CASE 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
-				                ELSE (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
+				                ELSE (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
 			                END as PermissionCode
 		                , CASE 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
-				                ELSE (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
+				                ELSE (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
 			                END as DealerName
                     FROM [JUNK].[dbo].[CSV_vehicleUSED] v
-                        LEFT OUTER JOIN [Checklists].[dbo].[locations_lkup] l on v.DRloc = l.loccode " + whereClause;
+                        LEFT OUTER JOIN [ChecklistsTEST].[dbo].[locations_lkup] l on v.DRloc = l.loccode " + whereClause;
             return qs;
         }
 
@@ -239,23 +248,23 @@ public class Vehicle
                             ,stk
                             ,Vin 
  		                , CASE 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
-				                WHEN DRloc = 'LFO' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFO') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
-				                ELSE (SELECT PermissionCode from [checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'LFO' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFO') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
+				                ELSE (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
 			                END as PermissionCode
 		                , CASE 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
-				                WHEN DRloc = 'LFO' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFO') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
-				                ELSE (SELECT FullName from [checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'LFO' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFO') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
+				                ELSE (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
 			                END as DealerName
                        FROM [JUNK].[dbo].[CSV_vehicleUSED] V
-                            LEFT OUTER JOIN [Checklists].[dbo].[locations_lkup] l on v.DRloc = l.loccode
+                            LEFT OUTER JOIN [ChecklistsTEST].[dbo].[locations_lkup] l on v.DRloc = l.loccode
                        WHERE UsedID = @ID";
 
             return SqlMapperUtil.SqlWithParams<UsedVehicle>(qs, new { ID = ID }).FirstOrDefault();

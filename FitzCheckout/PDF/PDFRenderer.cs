@@ -477,7 +477,7 @@ namespace FitzCheckout.PDF
                         LastName + ', ' + FirstName 
                     FROM [FITZDB].[dbo].[users] 
                     WHERE ID = (SELECT TOP 1 UserID 
-                                    FROM[Checklists].[dbo].[ChecklistRecordHistory]
+                                    FROM[ChecklistsTEST].[dbo].[ChecklistRecordHistory]
                                     WHERE ID = @ID AND Status = 2 
                                     ORDER BY DateUpdated DESC)";
             var signature = SqlMapperUtil.SqlWithParams<string>(qs, new { @ID = checklistRecordID }).FirstOrDefault();
@@ -488,7 +488,7 @@ namespace FitzCheckout.PDF
                         LastName + ', ' + FirstName 
                     FROM [FITZDB].[dbo].[users] 
                     WHERE ID = (SELECT UserID 
-                                    FROM[Checklists].[dbo].[ChecklistRecord]
+                                    FROM[ChecklistsTEST].[dbo].[ChecklistRecord]
                                     WHERE ID = @ID)";
                 signature = SqlMapperUtil.SqlWithParams<string>(qs, new { @ID = checklistRecordID }).FirstOrDefault();
             }

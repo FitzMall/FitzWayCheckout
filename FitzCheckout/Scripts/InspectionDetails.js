@@ -170,57 +170,7 @@ $(document).ready(function () {
         CheckSectionsWithInitialCheckbox(sectionTable);
     })
 
-    //$(document).on('click', '.initialCheckbox', function () {
-    //    var sectionTable = $(this).closest('table');
-    //    let sectionID = sectionTable.attr('data-itemID');
-    //    let itemID = $(this).attr('id');
-    //    let checked = $(this).prop('checked');
-    //    if ((sectionID == SECTION1ID && itemID == SECTION1ITEMID) || (sectionID == SECTION3ID && itemID == SECTION3ITEMID))
-    //    {
-    //        //make sure the other checkboxes in the section (1 or 3) are unchecked if checked is true
-    //        sectionTable.find('tr').each(function (index) {
-    //            if (index > 2 && checked)
-    //            {
-    //                let firstcheckbox = $(this).find('td:eq(0)').find('.initialCheckbox');
-    //                firstcheckbox.prop('checked', false);
-    //            }
-    //        })
 
-    //        //handle the related sections (2, 4)
-    //        let nextSectionTable = sectionTable.next('table');
-    //        let initialCheckbox = nextSectionTable.find('tr:eq(2)').find('td:eq(0)').find('.initialCheckbox');
-    //        nextSectionTable.find('tr').each(function (index) {
-    //            let firstcheckbox = $(this).find('td:eq(0)').find('.initialCheckbox');
-    //            if (index ==2 && firstcheckbox.length > 0) //the N/A checkbox for sections 2 or 4
-    //            {
-    //                if (checked) {//if the first checkbox of sections 1&3 are checked, check the N/A checkboxes of 2 and 4
-    //                    firstcheckbox.prop('checked', true);
-    //                    firstcheckbox.prop('disabled', false);
-    //                }
-    //                else {
-    //                    firstcheckbox.prop('checked', false);
-    //                    firstcheckbox.prop('disabled', true);
-    //                }
-    //            }
-    //            else //if the first checkbox of 1 or 3 are checked uncheck the rest of the checkboxes in sections 2 or 4
-    //            {
-    //                if (checked) {
-    //                    firstcheckbox.prop('checked', false);
-    //                }
-    //            }
-    //        });
-    //    }
-
-    //    sectionTable.find('tr').each(function (index) {
-    //        if (index > 1 && checked && $(this).attr('data-itemid') != itemID) {
-    //            let firstcheckbox = $(this).find('td:eq(0)').find('.initialCheckbox');
-    //            firstcheckbox.prop('checked', false);
-    //        }
-    //    })
-
-
-    //    CheckSectionsWithInitialCheckbox(sectionTable);
-    //})
 
     //These functions make sure only one checkbox is checked (for pass, fail, n/a)
     $(document).on('click', '.ChecklistItem1', function () {

@@ -24,7 +24,7 @@ namespace FitzCheckout.DAL
                             ,ch.Status
                             ,ch.Action
                             ,ch.DateUpdated
-                        FROM [Checklists].[dbo].[ChecklistRecordHistory] ch, [FITZDB].[dbo].[users] u 
+                        FROM [ChecklistsTEST].[dbo].[ChecklistRecordHistory] ch, [FITZDB].[dbo].[users] u 
                         WHERE ch.UserID = u.ID AND  ch.ID = @ID 
                         UNION
                         SELECT 
@@ -34,7 +34,7 @@ namespace FitzCheckout.DAL
                             ,cr.Status
                             ,cr.Action
                             ,cr.DateUpdated
-                        FROM [Checklists].[dbo].[ChecklistRecord] cr, [FITZDB].[dbo].[users] u2 
+                        FROM [ChecklistsTEST].[dbo].[ChecklistRecord] cr, [FITZDB].[dbo].[users] u2 
                         WHERE cr.UserID = u2.ID AND cr.ID = @ID
                         ORDER BY DateUpdated";
             return SqlMapperUtil.SqlWithParams <ChecklistHistory>(qs, new {@ID = checklistRecordID}).ToList();

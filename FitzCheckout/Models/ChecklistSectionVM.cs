@@ -51,7 +51,7 @@ namespace FitzCheckout.Models
             List<ChecklistSectionVM> sections = new List<Models.ChecklistSectionVM>();
 
             string qs = @"SELECT *
-                    FROM [Checklists].[dbo].[ChecklistSection_Hybrid_EV]
+                    FROM [ChecklistsTEST].[dbo].[ChecklistSection_Hybrid_EV]
                     WHERE [ChecklistID] = @checklistID";
             var result = SqlMapperUtil.SqlWithParams<ChecklistSection>(qs, new { checklistID = checklistID }).ToList();
             foreach (var item in result)
@@ -93,7 +93,7 @@ namespace FitzCheckout.Models
             List<ChecklistSectionVM> sections = new List<Models.ChecklistSectionVM>();
 
             string qs = @"SELECT *
-                    FROM [Checklists].[dbo].[ChecklistSection_Hybrid_EV]
+                    FROM [ChecklistsTEST].[dbo].[ChecklistSection_Hybrid_EV]
                     WHERE [ChecklistID] = @checklistID
                     AND [Fuel] IN " + FuelType;
 

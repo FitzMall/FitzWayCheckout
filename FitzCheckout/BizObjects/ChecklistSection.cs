@@ -51,7 +51,7 @@ namespace FitzCheckout.BizObjects
         {
             ChecklistSection section = new ChecklistSection();
 
-            string qs = @"SELECT * FROM [Checklists].[dbo].[ChecklistSection_Hybrid_EV] WHERE [ID] = @ID";
+            string qs = @"SELECT * FROM [ChecklistsTEST].[dbo].[ChecklistSection_Hybrid_EV] WHERE [ID] = @ID";
             var result = SqlMapperUtil.SqlWithParams<ChecklistSection>(qs, new { ID = ID }).FirstOrDefault();
 
             if (result == null)
@@ -88,7 +88,7 @@ namespace FitzCheckout.BizObjects
             List<ChecklistSection> checklistSections = new List<ChecklistSection>();
 
             var qs = @"SELECT *
-                            FROM [Checklists].[dbo].[ChecklistSection_Hybrid_EV]
+                            FROM [ChecklistsTEST].[dbo].[ChecklistSection_Hybrid_EV]
                             WHERE [ChecklistID] = @ID
                                         ORDER BY [OrderNumber]";
             var result = SqlMapperUtil.SqlWithParams<ChecklistSection>(qs, new { ID = checklistID }).ToList();

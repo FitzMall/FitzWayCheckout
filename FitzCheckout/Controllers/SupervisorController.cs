@@ -37,6 +37,89 @@ namespace FitzCheckout.Controllers
             _checklistHistory = checklistHistory;
             _usedVehicle = usedVehicle;
         }
+
+        // GET: Supervisor
+
+        public ActionResult SelectFuel()
+        {
+            if (!IsAuthorized())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+            ViewBag.SearchType = "";
+            var supervisorVM = new SupervisorLandingVM();
+
+            if (HttpContext.Session["currentUser"] != null)
+            {
+                var currentUser = (User)HttpContext.Session["currentUser"];
+
+                if (currentUser.UserRole == UserRole.Admin)
+                {
+                    ViewBag.IsAdmin = "true";
+                }
+                else
+                {
+                    ViewBag.IsAdmin = "false";
+                }
+
+                ViewBag.UserID = currentUser.ID;
+                supervisorVM.TableData = _supervisorTableData.GetTableData(currentUser.ID);
+                return View(supervisorVM);
+            }
+            else
+            {
+                return View(supervisorVM);
+            }
+
+
+        }
+
+        [HttpPost]
+        public ActionResult SelectFuel(string submit, string vin, string stockNumber)
+        {
+            if (!IsAuthorized())
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+            var supervisorVM = new SupervisorLandingVM();
+            vin = vin.Trim();
+            stockNumber = stockNumber.Trim();
+
+            if (HttpContext.Session["currentUser"] != null)
+            {
+                var currentUser = (User)HttpContext.Session["currentUser"];
+
+                if (currentUser.UserRole == UserRole.Admin)
+                {
+                    ViewBag.IsAdmin = "true";
+                }
+                else
+                {
+                    ViewBag.IsAdmin = "false";
+                }
+
+            }
+            else
+            {
+                ViewBag.IsAdmin = "false";
+            }
+
+            ViewBag.UserID = currentUser.ID;
+
+
+            if (String.IsNullOrEmpty(vin) && String.IsNullOrEmpty(stockNumber))
+            {
+                return RedirectToAction("Index");
+            }
+
+
+            supervisorVM.TableData = _supervisorTableData.GetTableData(currentUser.ID);
+
+            ViewBag.SearchType = "Search Results:";
+
+
+            return View(supervisorVM);
+        }
         // GET: Supervisor
 
         public ActionResult Index()
@@ -246,6 +329,7 @@ namespace FitzCheckout.Controllers
 
             ViewBag.UserType = "Supervisor";
             var supervisorViewVM = new SupervisorViewDisplayVM();
+            string thisFuel = "";
 
             supervisorViewVM.checklistInfo = _checklistVM.GetChecklistVMByChecklistRecordID(Int32.Parse(id));
             supervisorViewVM.Users = _user.GetUsersByLocation(currentUser.Locations).Where(u => u.UserRole == UserRole.Technician).ToList();
@@ -253,6 +337,9 @@ namespace FitzCheckout.Controllers
             if (supervisorViewVM.checklistInfo != null && !String.IsNullOrEmpty(supervisorViewVM.checklistInfo.MetaDataValue7))
             {
                 var filename = ConfigurationManager.AppSettings["PdfFilenameRoot"] + supervisorViewVM.checklistInfo.MetaDataValue7 + ".pdf";
+                int intID = Int32.Parse(id);
+                UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(1);
+                thisFuel = usedVehicle.GetFuel(supervisorViewVM.checklistInfo.MetaDataValue7);
                 var path = Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]);
                 //path = "J:\\inetpub\\wwwroot\\production\\FITZWAY\\pictures\\UCPDFS\\";
 
@@ -275,9 +362,9 @@ namespace FitzCheckout.Controllers
                     }
                     else
                     {
-                        UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
 
-                        string thisFuel = usedVehicle.GetFuel(usedVehicle.Vin);
+                        UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
+                        thisFuel = usedVehicle.GetFuel(usedVehicle.Vin);
                         newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, thisFuel);
                         newChecklistVM.ID = 2;
                         newChecklistVM.MetaDataValue1 = usedVehicle.DealerName;
@@ -288,21 +375,22 @@ namespace FitzCheckout.Controllers
                         newChecklistVM.MetaDataValue6 = usedVehicle.Stk;
                         newChecklistVM.MetaDataValue7 = usedVehicle.Vin;
                         newChecklistVM.MetaDataValue8 = usedVehicle.PermissionCode;
-                        if (thisFuel == "('MISSING')")
-                        {
-                            RedirectToAction("");
-                        }
-                        else
-                        {
-                            ModelState.Clear();
-                            ModelState.Remove("sections");
-                            supervisorViewVM.checklistInfo = newChecklistVM;  // move new checklist into supervisor view
-                        }
+
+
+                        ModelState.Clear();
+                        ModelState.Remove("sections");
+                        supervisorViewVM.checklistInfo = newChecklistVM;  // move new checklist into supervisor view
+
                     }
                 }
 
             }
+            if (thisFuel == "('MISSING')" | thisFuel == "")
+            {
 
+                //return RedirectToAction("SelectFuel");
+
+            }
             return View(supervisorViewVM);
         }
 

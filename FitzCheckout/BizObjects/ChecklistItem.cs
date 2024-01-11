@@ -40,7 +40,7 @@ namespace FitzCheckout.BizObjects
             ChecklistItem item = new ChecklistItem();
 
             string qs = @"SELECT ID, ChecklistSectionID, OrderNumber, HasCheckbox, ItemText, HasITDropDown1, HasITDropDown2, ITDropDownType1, ITDropDownType2, OptionType1, OptionType2, OptionType3, OptionType4, AllowAutoChecking
-                        FROM [Checklists].[dbo].[ChecklistItem_Hybrid_EV] 
+                        FROM [ChecklistsTEST].[dbo].[ChecklistItem_Hybrid_EV] 
                         WHERE ID = @ID
                         ORDER BY ChecklistSectionID, OrderNumber";
 
@@ -74,7 +74,7 @@ namespace FitzCheckout.BizObjects
                             HasITDropDown2, ITDropDownType1, ITDropDownType2, 
                             OptionType1, OptionType2, OptionType3, 
                             OptionType4, AllowAutoChecking 
-                        FROM [Checklists].[dbo].[ChecklistItem_Hybrid_EV]
+                        FROM [ChecklistsTEST].[dbo].[ChecklistItem_Hybrid_EV]
                         WHERE [ChecklistSectionID] = @ID
                         ORDER BY [OrderNumber]";
             var results = SqlMapperUtil.SqlWithParams<ChecklistItem>(qs, new { ID = checklistSectionID }).ToList();

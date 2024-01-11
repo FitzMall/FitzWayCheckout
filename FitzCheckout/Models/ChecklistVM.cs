@@ -129,8 +129,6 @@ namespace FitzCheckout.Models
             UsedVehicle usedVehicle = new UsedVehicle();
             string FuelType = usedVehicle.GetFuel(checklistRecordInfo.MetaDataValue7);
 
-            //string FuelType = " ('ALL', 'EV')"; 
-
             recordVM.sections = _checklistSectionVM.GetSections(checklistID, checklistRecordID, FuelType);
 
             recordVM.history = _checklistHistory.GetBasicHistory(checklistRecordID);
