@@ -126,6 +126,7 @@ namespace FitzCheckout.Models
                 recordVM.MetaDataValue8 = checklistRecordInfo.MetaDataValue8;
                 recordVM.DateCreated = checklistRecordInfo.DateCreated;
                 recordVM.DateUpdated = checklistRecordInfo.DateUpdated;
+                recordVM.FuelType = checklistRecordInfo.FuelType.Trim();
             }
 
             UsedVehicle usedVehicle = new UsedVehicle();
@@ -162,6 +163,7 @@ namespace FitzCheckout.Models
                 recordVM.IsMeta5Required = checklistInfo.IsMeta5Required;
                 recordVM.IsMeta6Required = checklistInfo.IsMeta6Required;
                 recordVM.IsMeta7Required = checklistInfo.IsMeta7Required;
+                recordVM.IsMeta8Required = checklistInfo.IsMeta8Required;
                 recordVM.IsMeta8Required = checklistInfo.IsMeta8Required;
 
             }

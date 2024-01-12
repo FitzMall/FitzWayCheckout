@@ -108,6 +108,16 @@
                     </div>
                 </div>
             }
+            @if (Model.FuelType != null && Model.FuelType.Length > 0)
+            {
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-1">Fuel</div>
+                        <div class="col-md-1">@Html.TextBoxFor(m => m.FuelType, new { id = "detailFuelType" })</div>
+                        <div class="col-md-1"></div><label id="FuelTypeError" class="errorMessage alert-danger" hidden="hidden">@Model.FuelType cannot be blank</label>
+                    </div>
+                </div>
+            }
         </div>
         <div>
             @*Display inspection history*@

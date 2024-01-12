@@ -44,6 +44,7 @@ namespace FitzCheckout.BizObjects
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         public string Action { get; set; }
+        public string FuelType { get; set; }
 
         public List<ChecklistItem> checklistItemValues { get; set; }
         private List<String> thisUserLocations { get; set; }
@@ -80,6 +81,7 @@ namespace FitzCheckout.BizObjects
                 checklistRecord.MetaDataValue7 = results.MetaDataValue7;
                 checklistRecord.MetaDataValue8 = results.MetaDataValue8;
                 checklistRecord.Status = (ChecklistStatus)results.Status;
+                checklistRecord.FuelType = results.FuelType;
                 checklistRecord.DateCreated = results.DateCreated;
                 checklistRecord.DateUpdated = results.DateUpdated;
 
@@ -240,6 +242,7 @@ namespace FitzCheckout.BizObjects
                     ,MetaDataValue6
                     ,MetaDataValue7
                     ,MetaDataValue8
+                    ,FuelType
                     ,Status
                     ,Action)
                 OUTPUT INSERTED.ID
@@ -254,6 +257,7 @@ namespace FitzCheckout.BizObjects
                     ,@MetaDataValue6
                     ,@MetaDataValue7
                     ,@MetaDataValue8
+                    ,FuelType
                     ,@Status
                     ,@Action)";
             int result = SqlMapperUtil.SqlWithParams<int>(qs, record).First();
@@ -296,7 +300,7 @@ namespace FitzCheckout.BizObjects
                 string qs = @"SELECT 
                                 cr.ID, cr.MetaDataValue1, cr.MetaDataValue2, 
                                 cr.MetaDataValue3, cr.MetaDataValue4, cr.MetaDataValue5, 
-                                cr.MetaDataValue6, cr.MetaDataValue7, cr.MetaDataValue8, cr.Status, 
+                                cr.MetaDataValue6, cr.MetaDataValue7, cr.MetaDataValue8, cr.Status, cr.FuelType,
                                 cr.UserID, uv.LastName + ', ' + uv.FirstName FullName, cr.DateCreated, cr.DateUpdated 
                             FROM [ChecklistRecord] cr
                                 LEFT OUTER JOIN [FITZDB].[dbo].[users] uv on cr.UserID = uv.ID " + whereClause;
@@ -408,7 +412,7 @@ namespace FitzCheckout.BizObjects
             var qs = @"SELECT
                         cr.ID, cr.MetaDataValue1, cr.MetaDataValue2, 
                         cr.MetaDataValue3, cr.MetaDataValue4, cr.MetaDataValue5, 
-                        cr.MetaDataValue6, cr.MetaDataValue7, cr.MetaDataValue8, cr.Status, 
+                        cr.MetaDataValue6, cr.MetaDataValue7, cr.MetaDataValue8, cr.Status, cr.FuelType,
                         cr.UserID, uv.LastName + ', ' + uv.FirstName FullName, cr.DateCreated, cr.DateUpdated 
                     FROM [ChecklistsTEST].[dbo].[ChecklistRecord] cr
                         LEFT OUTER JOIN [FITZDB].[dbo].[users] uv on cr.UserID = uv.ID " + whereClause;

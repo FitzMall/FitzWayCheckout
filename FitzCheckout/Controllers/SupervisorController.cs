@@ -53,12 +53,12 @@ namespace FitzCheckout.Controllers
 
         public ActionResult SelectFuel(string id, string FuelType)
         {
-            ChecklistVM newChecklistVM = new Models.ChecklistVM();
-            int intID = Int32.Parse(id);
 
             // insert the value in the table
             // stored proc: [ChecklistRecordUpdateFuel]
-            //
+
+            SqlMapperUtil.InsertUpdateOrDeleteStoredProc("ChecklistRecordUpdateFuel", new { id = id, FuelType = FuelType });
+
             return RedirectToAction("ViewInspection", new { @id = id });
 
         }

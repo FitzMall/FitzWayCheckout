@@ -66,6 +66,7 @@ namespace FitzChecklist.Models
                 recordVM.MetaDataTitle4 = checklistInfo.MetaDataTitle4;
                 recordVM.MetaDataTitle5 = checklistInfo.MetaDataTitle5;
                 recordVM.MetaDataTitle6 = checklistInfo.MetaDataTitle6;
+                //vvvvvvvv could be a good place for fueltype
 
             }
 
@@ -78,6 +79,7 @@ namespace FitzChecklist.Models
                 recordVM.MetaDataValue4 = checklistRecordInfo.MetaDataValue4;
                 recordVM.MetaDataValue5 = checklistRecordInfo.MetaDataValue5;
                 recordVM.MetaDataValue6 = checklistRecordInfo.MetaDataValue6;
+                //vvvvvvvv could be a good place for fueltype
             }
 
             return recordVM;

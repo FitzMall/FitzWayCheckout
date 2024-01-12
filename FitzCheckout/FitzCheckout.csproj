@@ -361,6 +361,7 @@
     <Content Include="Views\Supervisor\OpenItems.cshtml" />
     <Content Include="Views\Shared\_SupervisorLayout.cshtml" />
     <Content Include="Views\Supervisor\SelectFuel.cshtml" />
+    <Content Include="Views\Inspection\SelectFuel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -47,6 +47,8 @@ namespace FitzCheckout.Controllers
             _checklistHistory = checklistHistory;
 
         }
+
+
         public ActionResult Index()
         {
             if (!IsAuthorized())
@@ -80,7 +82,7 @@ namespace FitzCheckout.Controllers
 
             ViewData["NoSearchResults"] = "true";
             ViewData["DetailsSidebarType"] = "Inspection";
-            List<SearchResult> results = _vehicleSearch.Search(values, SearchType.And, (Int32)currentUser.ID) ;
+            List<SearchResult> results = _vehicleSearch.Search(values, SearchType.And, (Int32)currentUser.ID);
             if (results.Count == 0)
             {
                 newDashboard.SearchResults = new List<SearchResult>();
@@ -99,6 +101,28 @@ namespace FitzCheckout.Controllers
             }
         }
 
+        public ActionResult SelectFuel(string id)
+        {
+            ChecklistVM newChecklistVM = new Models.ChecklistVM();
+            int intID = Int32.Parse(id);
+
+            newChecklistVM = _checklistVM.GetChecklistVMByChecklistRecordID(intID);
+            return View(newChecklistVM);
+        }
+
+        [HttpPost]
+
+        public ActionResult SelectFuel(ChecklistVM parChecklist, string FuelType)
+        {
+
+            // insert the value in the table
+            // stored proc: [ChecklistRecordUpdateFuel]
+
+           parChecklist.FuelType = FuelType;
+
+            return RedirectToAction("GetItem", new { @id = parChecklist.ID });
+
+        }
         public ActionResult InspectionForm()
         {
             if (!IsAuthorized())
@@ -159,7 +183,7 @@ namespace FitzCheckout.Controllers
                 else if (results.Count == 1)
                 {
                     if (results[0].recordType == RecordType.ChecklistRecord || results[0].recordType == RecordType.Submitted)
-                    {                       
+                    {
                         return RedirectToAction("GetItem", new { ID = results[0].ID, RecordType.ChecklistRecord });
                     }
                     else
@@ -170,7 +194,7 @@ namespace FitzCheckout.Controllers
                 }
                 else
                 {
-                    return  PartialView("MatchingVehicles", results);
+                    return PartialView("MatchingVehicles", results);
 
                 }
 
@@ -246,7 +270,10 @@ namespace FitzCheckout.Controllers
 
                 if (type == RecordType.ChecklistRecord.ToString() || type == RecordType.Submitted.ToString())
                 {
+
                     newChecklistVM = _checklistVM.GetChecklistVMByChecklistRecordID(intID);
+                    FuelFound = newChecklistVM.FuelType;
+
                 }
                 else
                 {
@@ -264,13 +291,16 @@ namespace FitzCheckout.Controllers
                     newChecklistVM.MetaDataValue6 = usedVehicle.Stk;
                     newChecklistVM.MetaDataValue7 = usedVehicle.Vin;
                     newChecklistVM.MetaDataValue8 = usedVehicle.PermissionCode;
+                    newChecklistVM.FuelType = FuelFound;
                 }
                 //return PartialView("Details", newChecklistVM);
-            }
 
-            if (FuelFound == "('MISSING')")
-            {
-                RedirectToAction("");
+                if (FuelFound == "('MISSING')" || FuelFound == "" || FuelFound == null)
+                {
+                    // return RedirectToAction("SelectFuel", new { @parChecklist = newChecklistVM, @FuelType = FuelFound});
+                     return RedirectToAction("SelectFuel", new { @id = newChecklistVM.ID});
+
+                }
             }
 
             ModelState.Clear();

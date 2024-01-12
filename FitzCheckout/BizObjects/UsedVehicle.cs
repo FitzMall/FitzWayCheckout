@@ -130,6 +130,33 @@ namespace FitzCheckout.BizObjects
 
         public string GetFuel(string Vin)
         {
+            // first try getting it from checklist, then from CHROME if that does not work
+
+            string qs = "[GetChecklistRecordFuel]";
+            string selectFuel = "";
+
+            string connectionString = ConfigurationManager.ConnectionStrings["Checklist"].ConnectionString;
+            List<string> FoundVehicles = SqlMapperUtil.StoredProcWithParams<string>(qs, new { vin = Vin }, connectionString);
+
+            foreach (string ThisVehicle in FoundVehicles)
+            {
+                if (ThisVehicle != null)
+                {
+                    selectFuel = ThisVehicle.ToUpper().Trim();
+                }
+            }
+
+            if (selectFuel == "" | selectFuel == null)
+            {
+                return GetFuelFromCHROME(Vin);
+            }
+            else
+            {
+                return selectFuel;
+            }
+        }
+        public string GetFuelFromCHROME(string Vin)
+        {
             string qs = "[sp_GetVehicle]";
             string retFuel = "('MISSING')";
             string selectFuel = "";
