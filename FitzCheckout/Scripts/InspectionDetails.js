@@ -332,7 +332,7 @@ $(document).ready(function () {
         if (!hasErrors) {
             var data = 'submit=Save&' + $('#SaveChecklist').serialize();
             $.ajax({
-                url: '/FitzwayCheckout/Inspection/Save',
+                url: '/Inspection/Save',
                 type: 'post',
                 dataType: 'json',
                 data: data,
@@ -340,10 +340,10 @@ $(document).ready(function () {
                     window.location.replace(data.newUrl);
                 },
                 failure: function (response) {
-                    alert('failure: ' + response.responseText + ": InspectionDetails.js, checklist");
+                    alert('save1 failure: ' + response.responseText + ": InspectionDetails.js, checklist");
                 },
                 error: function (response) {
-                    alert('error: ' + response.statusText + ": InspectionDetails.js, checklist");
+                    alert('save1 error: ' + response.statusText + ": InspectionDetails.js, checklist");
                 }
             });
         }
@@ -432,10 +432,10 @@ $(document).ready(function () {
                         window.location.replace(response.newUrl);
                     },
                     failure: function (response) {
-                        alert('failure: ' + response.responseText + ": InspectionDetails.js, SaveChecklist");
+                        alert('save2 failure: ' + response.responseText + ": InspectionDetails.js, SaveChecklist");
                     },
                     error: function (response) {
-                        alert('error: ' + response.statusText + ": InspectionDetails.js, SaveChecklist");
+                        alert('save2 error: ' + response.statusText + ": InspectionDetails.js, SaveChecklist");
                     }
                 });
             }

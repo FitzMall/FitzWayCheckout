@@ -119,8 +119,9 @@ namespace FitzCheckout.Controllers
             // stored proc: [ChecklistRecordUpdateFuel]
 
            parChecklist.FuelType = FuelType;
+            SqlMapperUtil.InsertUpdateOrDeleteStoredProc("ChecklistRecordUpdateFuel", new { id = parChecklist.ID , FuelType = FuelType });
 
-            return RedirectToAction("GetItem", new { @id = parChecklist.ID });
+            return RedirectToAction("GetItem", new { @id = parChecklist.ID, @type = RecordType.ChecklistRecord });
 
         }
         public ActionResult InspectionForm()
@@ -278,7 +279,10 @@ namespace FitzCheckout.Controllers
                 else
                 {
                     UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
-                    FuelFound = _usedVehicle.GetFuel(usedVehicle.Vin);
+                    if (usedVehicle.Vin != null & usedVehicle.Vin.Trim() != "")
+                    {
+                        FuelFound = _usedVehicle.GetFuel(usedVehicle.Vin);   // CALL 2
+                    }
 
                     newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, FuelFound);
 
@@ -291,14 +295,16 @@ namespace FitzCheckout.Controllers
                     newChecklistVM.MetaDataValue6 = usedVehicle.Stk;
                     newChecklistVM.MetaDataValue7 = usedVehicle.Vin;
                     newChecklistVM.MetaDataValue8 = usedVehicle.PermissionCode;
-                    newChecklistVM.FuelType = FuelFound;
+                    if (usedVehicle.Vin != null & usedVehicle.Vin.Trim() != "")
+                    {
+                        newChecklistVM.FuelType = FuelFound;
+                    }
                 }
                 //return PartialView("Details", newChecklistVM);
 
                 if (FuelFound == "('MISSING')" || FuelFound == "" || FuelFound == null)
                 {
-                    // return RedirectToAction("SelectFuel", new { @parChecklist = newChecklistVM, @FuelType = FuelFound});
-                     return RedirectToAction("SelectFuel", new { @id = newChecklistVM.ID});
+                     return RedirectToAction("SelectFuel", new { @id = ID});
 
                 }
             }
@@ -340,6 +346,11 @@ namespace FitzCheckout.Controllers
                 action = "Complete";
             }
 
+            if (checklistVM.DateCreated == null)
+            {
+                checklistVM.DateCreated = DateTime.Now;
+            }
+
             checklistRecordID = _checklistRecord.Save(
                 new ChecklistRecord
                 {
@@ -354,6 +365,7 @@ namespace FitzCheckout.Controllers
                     MetaDataValue6 = checklistVM.MetaDataValue6,
                     MetaDataValue7 = checklistVM.MetaDataValue7,
                     MetaDataValue8 = checklistVM.MetaDataValue8,
+                    FuelType = checklistVM.FuelType,
                     DateCreated = checklistVM.DateCreated,
                     DateUpdated = DateTime.Now,
                     Status = currentStatus,

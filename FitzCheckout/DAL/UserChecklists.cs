@@ -45,5 +45,6 @@ namespace FitzCheckout.DAL
         public ChecklistStatus Status { get; set; }
         public string Action { get; set; }
 
+
     }
 }

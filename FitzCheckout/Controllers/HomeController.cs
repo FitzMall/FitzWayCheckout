@@ -69,8 +69,8 @@ namespace FitzCheckout.Controllers
                 HttpContext.Session["currentUser"] = currentUser;
                 HttpContext.Session["userName"] = currentUser.FullName;
                 HttpContext.Session["userRole"] = currentUser.UserRole.ToString();
-                
 
+                currentUser.UserRole = UserRole.Technician;  /// vvvvvv TEMPORARY!
 
                 if (currentUser.UserRole == UserRole.Supervisor || currentUser.UserRole == UserRole.Admin)
                 {

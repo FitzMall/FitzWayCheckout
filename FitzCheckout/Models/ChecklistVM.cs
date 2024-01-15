@@ -13,7 +13,7 @@ namespace FitzCheckout.Models
         ChecklistVM GetEmptyChecklistVMByChecklistID(int checklistID, string FuelType);
         ChecklistVM GetChecklistVMByChecklistRecordID(int checklistRecordID);
     }
-    public class ChecklistVM: IChecklistVM  //, IValidatableObject
+    public class ChecklistVM : IChecklistVM  //, IValidatableObject
     {
         private readonly IChecklistRecord _checklistRecord;
         private readonly IChecklist _checklist;
@@ -103,6 +103,7 @@ namespace FitzCheckout.Models
                 recordVM = GetBaseChecklistInfo(checklistID);
             }
             recordVM.RecordID = checklistRecordID;
+            string FuelType = "";
 
             ChecklistRecord checklistRecordInfo = _checklistRecord.GetChecklistRecordInformation(checklistRecordID);
             if (checklistRecordInfo.ID > 0)
@@ -127,10 +128,18 @@ namespace FitzCheckout.Models
                 recordVM.DateCreated = checklistRecordInfo.DateCreated;
                 recordVM.DateUpdated = checklistRecordInfo.DateUpdated;
                 recordVM.FuelType = checklistRecordInfo.FuelType.Trim();
-            }
+                FuelType = recordVM.FuelType;
 
-            UsedVehicle usedVehicle = new UsedVehicle();
-            string FuelType = usedVehicle.GetFuel(checklistRecordInfo.MetaDataValue7);
+                if (FuelType == null || FuelType == "('MISSING')" || FuelType.Trim() == "")
+                {
+                    if (checklistRecordInfo.MetaDataValue7 != null & checklistRecordInfo.MetaDataValue7 != "")
+                    {
+                        UsedVehicle usedVehicle = new UsedVehicle();
+                        FuelType = usedVehicle.GetFuel(checklistRecordInfo.MetaDataValue7); // CALL 1
+                        recordVM.FuelType = FuelType;
+                    }
+                }
+            }
 
             recordVM.sections = _checklistSectionVM.GetSections(checklistID, checklistRecordID, FuelType);
 

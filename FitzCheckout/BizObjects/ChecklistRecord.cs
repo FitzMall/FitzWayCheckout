@@ -257,7 +257,7 @@ namespace FitzCheckout.BizObjects
                     ,@MetaDataValue6
                     ,@MetaDataValue7
                     ,@MetaDataValue8
-                    ,FuelType
+                    ,@FuelType
                     ,@Status
                     ,@Action)";
             int result = SqlMapperUtil.SqlWithParams<int>(qs, record).First();

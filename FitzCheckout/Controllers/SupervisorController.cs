@@ -279,7 +279,7 @@ namespace FitzCheckout.Controllers
                 var filename = ConfigurationManager.AppSettings["PdfFilenameRoot"] + supervisorViewVM.checklistInfo.MetaDataValue7 + ".pdf";
                 int intID = Int32.Parse(id);
                 UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(1);
-                thisFuel = usedVehicle.GetFuel(supervisorViewVM.checklistInfo.MetaDataValue7);
+                thisFuel = usedVehicle.GetFuel(supervisorViewVM.checklistInfo.MetaDataValue7);   // CALL 3
                 var path = Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]);
                 //path = "J:\\inetpub\\wwwroot\\production\\FITZWAY\\pictures\\UCPDFS\\";
 
@@ -304,7 +304,7 @@ namespace FitzCheckout.Controllers
                     {
 
                         UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
-                        thisFuel = usedVehicle.GetFuel(usedVehicle.Vin);
+                        thisFuel = usedVehicle.GetFuel(usedVehicle.Vin);    // CALL 4
                         newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, thisFuel);
                         newChecklistVM.ID = 2;
                         newChecklistVM.MetaDataValue1 = usedVehicle.DealerName;

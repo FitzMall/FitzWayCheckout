@@ -140,7 +140,7 @@ namespace FitzCheckout.BizObjects
 
             foreach (string ThisVehicle in FoundVehicles)
             {
-                if (ThisVehicle != null)
+                if (ThisVehicle != null & ThisVehicle.Trim() != "")
                 {
                     selectFuel = ThisVehicle.ToUpper().Trim();
                 }
