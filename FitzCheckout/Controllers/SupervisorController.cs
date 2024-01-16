@@ -278,8 +278,13 @@ namespace FitzCheckout.Controllers
             {
                 var filename = ConfigurationManager.AppSettings["PdfFilenameRoot"] + supervisorViewVM.checklistInfo.MetaDataValue7 + ".pdf";
                 int intID = Int32.Parse(id);
-                UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(1);
-                thisFuel = usedVehicle.GetFuel(supervisorViewVM.checklistInfo.MetaDataValue7);   // CALL 3
+                thisFuel = supervisorViewVM.checklistInfo.FuelType;
+
+                if (thisFuel == null || thisFuel == "('MISSING')" || thisFuel.Trim() == "")
+                {
+                    UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(1);
+                    thisFuel = usedVehicle.GetFuel(supervisorViewVM.checklistInfo.MetaDataValue7);   // CALL 3
+                }
                 var path = Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]);
                 //path = "J:\\inetpub\\wwwroot\\production\\FITZWAY\\pictures\\UCPDFS\\";
 
@@ -325,7 +330,7 @@ namespace FitzCheckout.Controllers
                 }
 
             }
-            if (thisFuel == "('MISSING')" | thisFuel == "")
+            if (thisFuel == "('MISSING')" || thisFuel == "" || thisFuel == null)
             {
 
                 return RedirectToAction("SelectFuel", new { @id = id });

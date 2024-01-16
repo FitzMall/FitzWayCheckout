@@ -48,8 +48,8 @@ namespace FitzCheckout.BizObjects
             ChecklistItemRecord checklistItemRecord = new ChecklistItemRecord();
             string qs = @"SELECT ir.ID, ir.ChecklistItemID, ir.ChecklistRecordID, ir.IsChecked, ir.ITDropDownText1, ir.ITDropDownText2, ir.OptionType1, ir.OptionType2, ir.OptionType3, ir.OptionType4, ir.IsOption1Selected , ir.IsOption2Selected, 
                                     ir.IsOption3Selected, ir.IsOption4Selected, ir.Option1Text, ir.Option2Text, ir.Option3Text, ir.Option4Text, i.ChecklistSectionID
-                                FROM [ChecklistsTEST].[dbo].[ChecklistItemRecord] ir 
-                                JOIN [ChecklistsTEST].[dbo].[ChecklistItem_Hybrid_EV] i on ir.ChecklistItemID = i.ID
+                                FROM [Checklists].[dbo].[ChecklistItemRecord] ir 
+                                JOIN [Checklists].[dbo].[ChecklistItem_Hybrid_EV] i on ir.ChecklistItemID = i.ID
                                 WHERE ir.ID = @ID
                                 ORDER BY i.ChecklistSectionID, i.OrderNumber";
             var result = SqlMapperUtil.SqlWithParams<ChecklistItemRecord>(qs, new { ID = ID }).FirstOrDefault();
@@ -88,7 +88,7 @@ namespace FitzCheckout.BizObjects
         public int GetChecklistItemIDByChecklistItemRecordID(int itemRecordID)
         {
             string qs = @"SELECT ChecklistItemID
-								FROM [ChecklistsTEST].[dbo].[ChecklistItemRecord]
+								FROM [Checklists].[dbo].[ChecklistItemRecord]
 								WHERE ID = @itemRecordID";
             return SqlMapperUtil.SqlWithParams<int>(qs, new { itemRecordID = itemRecordID }).FirstOrDefault();
         }
@@ -136,7 +136,7 @@ namespace FitzCheckout.BizObjects
 
         private void SaveRecord(ChecklistItemRecord itemRecord)
         {
-            string qs = @"INSERT INTO [ChecklistsTEST].[dbo].[ChecklistItemRecord] (
+            string qs = @"INSERT INTO [Checklists].[dbo].[ChecklistItemRecord] (
                             ChecklistItemID
                             ,ChecklistRecordID
                             ,isChecked

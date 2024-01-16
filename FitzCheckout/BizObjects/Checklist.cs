@@ -30,7 +30,7 @@ namespace FitzCheckout.BizObjects
         public Checklist GetChecklistByID(int ID)
         {
 
-            string qs = @"SELECT * FROM [ChecklistsTEST].[dbo].[Checklist] WHERE [ID] = @ID";
+            string qs = @"SELECT * FROM [Checklists].[dbo].[Checklist] WHERE [ID] = @ID";
             var result = DAL.SqlMapperUtil.SqlWithParams<Checklist>(qs, new { ID = ID }).FirstOrDefault();
             if (result != null && result.ID > 0)
             {
@@ -89,7 +89,7 @@ namespace FitzCheckout.BizObjects
                         IsMeta6Required,
                         IsMeta7Required
                         IsMeta8Required
-                    FROM [ChecklistsTEST].[dbo].[Checklist]
+                    FROM [Checklists].[dbo].[Checklist]
                     WHERE ID = @checklistID";
 
             

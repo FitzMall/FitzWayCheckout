@@ -76,7 +76,7 @@ namespace FitzCheckout.DAL
                             u.ID, u.UserID, u.FirstName, u.LastName, 
                             a.UserRole, a.Permissions
                         FROM [FitzDB].[dbo].[Users] u
-                            LEFT OUTER JOIN [ChecklistsTEST].[dbo].[AccessList] a ON U.ID = a.UserID
+                            LEFT OUTER JOIN [Checklists].[dbo].[AccessList] a ON U.ID = a.UserID
                         WHERE u.ID = @ID";
             var associateInfo =  SqlMapperUtil.SqlWithParams<Associate>(qs, new { @ID = ID }).FirstOrDefault();
 

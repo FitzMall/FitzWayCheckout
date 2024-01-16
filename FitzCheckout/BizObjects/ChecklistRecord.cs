@@ -54,7 +54,7 @@ namespace FitzCheckout.BizObjects
         {
             ChecklistRecord checklistRecord = new ChecklistRecord();
             string qs = @"SELECT *
-                            FROM [ChecklistsTEST].[dbo].[ChecklistRecord] cr
+                            FROM [Checklists].[dbo].[ChecklistRecord] cr
                             WHERE [ID] = @ID";
     
             string vehicleLocation = "";
@@ -163,7 +163,7 @@ namespace FitzCheckout.BizObjects
         public int GetChecklistIDByChecklistRecordID(int checklistRecordID)
         {
             string qs = @"SELECT ChecklistID 
-                            FROM [ChecklistsTEST].[dbo].[ChecklistRecord]
+                            FROM [Checklists].[dbo].[ChecklistRecord]
                             WHERE [ID] = @ID";
             int result = SqlMapperUtil.SqlWithParams<int>(qs, new { ID = checklistRecordID }).FirstOrDefault();
 
@@ -206,7 +206,7 @@ namespace FitzCheckout.BizObjects
 
         private string PermissionCodeByVIN(string searchVIN)
         {
-            string qs = "SELECT l.PermissionCode FROM [JUNK].[dbo].[CSV_vehicleUSED] v JOIN [ChecklistsTEST].[dbo].[Locations_lkup] l on v.loc = l.LocCode WHERE [vin] = @VIN ORDER BY [status]"; 
+            string qs = "SELECT l.PermissionCode FROM [JUNK].[dbo].[CSV_vehicleUSED] v JOIN [Checklists].[dbo].[Locations_lkup] l on v.loc = l.LocCode WHERE [vin] = @VIN ORDER BY [status]"; 
             string result = SqlMapperUtil.SqlWithParams<string>(qs, new { VIN = searchVIN }).FirstOrDefault();
             if (result == null)
             {
@@ -231,7 +231,7 @@ namespace FitzCheckout.BizObjects
         {
 
 
-            string qs = @"INSERT INTO [ChecklistsTEST].[dbo].[ChecklistRecord] 
+            string qs = @"INSERT INTO [Checklists].[dbo].[ChecklistRecord] 
                     (ChecklistID
                     ,UserID
                     ,MetaDataValue1
@@ -323,11 +323,11 @@ namespace FitzCheckout.BizObjects
                     qs += @" UNION SELECT 
                          0 AS ID
                          , CASE 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
-				                ELSE (SELECT FullName from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT FullName from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT FullName from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT FullName from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT FullName from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
+				                ELSE (SELECT FullName from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = V.DRloc)
 			                END as MetaDataValue1    
                         , STR(miles) AS MetaDataValue2
                         , yr AS MetaDataValue3
@@ -336,10 +336,10 @@ namespace FitzCheckout.BizObjects
                         , stk AS MetaDataValue6
                         , vin AS MetaDataValue7 
                         , CASE 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
-				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
-				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [ChecklistsTEST].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GA' THEN (SELECT PermissionCode from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GA') 
+				                WHEN DRloc = 'LFT' AND v.Mall = 'GM' THEN (SELECT PermissionCode from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'LFT' AND Mall = 'GM') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WN' THEN (SELECT PermissionCode from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WN') 
+				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
 				                ELSE (SELECT PermissionCode from [Locations_lkup] WHERE LocCode = V.DRloc)
 			                END as MetaDataValue8,
                          1 AS Status, 0 AS UserID, 'UnAssigned' AS FullName, GETDATE() AS DateCreated, GETDATE() AS DateUpdated 
@@ -414,7 +414,7 @@ namespace FitzCheckout.BizObjects
                         cr.MetaDataValue3, cr.MetaDataValue4, cr.MetaDataValue5, 
                         cr.MetaDataValue6, cr.MetaDataValue7, cr.MetaDataValue8, cr.Status, cr.FuelType,
                         cr.UserID, uv.LastName + ', ' + uv.FirstName FullName, cr.DateCreated, cr.DateUpdated 
-                    FROM [ChecklistsTEST].[dbo].[ChecklistRecord] cr
+                    FROM [Checklists].[dbo].[ChecklistRecord] cr
                         LEFT OUTER JOIN [FITZDB].[dbo].[users] uv on cr.UserID = uv.ID " + whereClause;
             return SqlMapperUtil.SqlWithParams<ChecklistRecord>(qs, null);
         }
@@ -423,8 +423,8 @@ namespace FitzCheckout.BizObjects
         {
             var results = new List<ChecklistRecord>();
             string qs = @"SELECT cr.*
-                            FROM [ChecklistsTEST].[dbo].[ChecklistRecord] cr
-                            JOIN [ChecklistsTEST].[dbo].[ChecklistStatus] cs ON cr.Status = cs.ID
+                            FROM [Checklists].[dbo].[ChecklistRecord] cr
+                            JOIN [Checklists].[dbo].[ChecklistStatus] cs ON cr.Status = cs.ID
                             WHERE cr.[UserID] = @userID AND cs.Status = @status";
 
             results = SqlMapperUtil.SqlWithParams<ChecklistRecord>(qs, new { userID = userID, status = status.ToString() }).ToList();
@@ -442,7 +442,7 @@ namespace FitzCheckout.BizObjects
 
 
             string qs = @"SELECT cr.*, u.LastName + ', ' + u.FirstName FullName
-                            FROM [ChecklistsTEST].[dbo].[ChecklistRecord] cr, 
+                            FROM [Checklists].[dbo].[ChecklistRecord] cr, 
                                 [FITZDB].[dbo].[users] u
                             WHERE cr.UserID = u.ID AND 
                                 MetaDataValue8 in (" + locationList.ToString().Substring(0, locationList.ToString().Length - 1) + ")" +

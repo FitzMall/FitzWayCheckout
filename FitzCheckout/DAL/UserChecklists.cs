@@ -28,7 +28,7 @@ namespace FitzCheckout.DAL
                         ,MetaDataValue7
                         ,Status
                         ,Action
-                    FROM [ChecklistsTEST].[dbo].[ChecklistRecord]
+                    FROM [Checklists].[dbo].[ChecklistRecord]
                     WHERE UserID = @UserID";
             return SqlMapperUtil.SqlWithParams<UserChecklist>(qs, new { @UserID = userID });
         }

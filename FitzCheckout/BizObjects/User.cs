@@ -47,7 +47,7 @@ namespace FitzCheckout.BizObjects
                         , a.UserRole
                         , a.Permissions
                     FROM [FitzDB].[dbo].[users] u
-                        LEFT OUTER JOIN [ChecklistsTEST].[dbo].[AccessList] a ON u.ID = a.UserID
+                        LEFT OUTER JOIN [Checklists].[dbo].[AccessList] a ON u.ID = a.UserID
                     WHERE u.UserID = @userID";
 
             newUser = SqlMapperUtil.SqlWithParams<User>(qs, new { @userID = userid }).FirstOrDefault();
@@ -112,7 +112,7 @@ namespace FitzCheckout.BizObjects
                         , a.UserRole
                         , a.Permissions
                     FROM [FitzDB].[dbo].[users] u
-                        LEFT OUTER JOIN [ChecklistsTEST].[dbo].[AccessList] a ON u.ID = a.UserID " 
+                        LEFT OUTER JOIN [Checklists].[dbo].[AccessList] a ON u.ID = a.UserID " 
                         + whereClause;
             users = SqlMapperUtil.SqlWithParams<User>(qs, null);
 
@@ -149,7 +149,7 @@ namespace FitzCheckout.BizObjects
         public List<string> GetUserLocationCodes(decimal ID)
         {
             var locationCodes = new List<string>();
-            var qs = @"SELECT Permissions FROM [ChecklistsTEST].[dbo].[AccessList] WHERE UserID = @id";
+            var qs = @"SELECT Permissions FROM [Checklists].[dbo].[AccessList] WHERE UserID = @id";
             var permissions = SqlMapperUtil.SqlWithParams<string>(qs, new { @id = ID }).FirstOrDefault();
             if (!String.IsNullOrEmpty(permissions))
             {
