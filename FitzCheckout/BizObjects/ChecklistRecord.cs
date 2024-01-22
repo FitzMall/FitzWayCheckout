@@ -234,6 +234,8 @@ namespace FitzCheckout.BizObjects
             string qs = @"INSERT INTO [Checklists].[dbo].[ChecklistRecord] 
                     (ChecklistID
                     ,UserID
+                    ,DateCreated
+                    ,DateUpdated
                     ,MetaDataValue1
                     ,MetaDataValue2
                     ,MetaDataValue3
@@ -249,6 +251,8 @@ namespace FitzCheckout.BizObjects
                 VALUES
                     (@ChecklistID
                     ,@UserID
+                    ,@DateCreated
+                    ,GETDATE()
                     ,@MetaDataValue1
                     ,@MetaDataValue2
                     ,@MetaDataValue3

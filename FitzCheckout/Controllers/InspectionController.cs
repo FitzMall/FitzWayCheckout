@@ -340,6 +340,8 @@ namespace FitzCheckout.Controllers
             if (currentStatus == ChecklistStatus.Pending && checklistVM.RecordID == 0)
             {
                 action = "Create";
+                checklistVM.DateCreated = DateTime.Now;
+
             }
             else if (currentStatus == ChecklistStatus.Complete || currentStatus == ChecklistStatus.FitzWaySelect || currentStatus == ChecklistStatus.FitzWayHPE || currentStatus == ChecklistStatus.FitzWayPremium || currentStatus == ChecklistStatus.FitzWayValue)
             {
