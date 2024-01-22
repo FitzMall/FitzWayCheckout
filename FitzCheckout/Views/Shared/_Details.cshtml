@@ -16,7 +16,7 @@
     @Html.HiddenFor(m => m.IsMeta2Required)
     @Html.HiddenFor(m => m.IsMeta3Required)
     @Html.HiddenFor(m => m.IsMeta4Required)
-    @Html.HiddenFor(m => m.IsMeta5Required) 
+    @Html.HiddenFor(m => m.IsMeta5Required)
     @Html.HiddenFor(m => m.IsMeta6Required)
     @Html.HiddenFor(m => m.MetaDataValue8)
     @Html.HiddenFor(m => m.DateCreated)
@@ -110,6 +110,16 @@
             }
 
         </div>
+        @if (Model.FuelType != null && Model.FuelType.Length > 0)
+        {
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-1">FuelType</div>
+                    <div class="col-md-1">@Html.TextBoxFor(m => m.FuelType, new { id = "detailMetaDataValue7" })</div>
+                 </div>
+            </div>
+        }
+
         <div>
             @*Display inspection history*@
             @if (Model.history != null)
@@ -120,266 +130,266 @@
 
         <div>
             @*Display Section Title information*@
-        @for (int i = 0; i < Model.sections.Count; i++)
-        {
-            <table style="width:100%" id="Section_@Model.sections[i].ID" class="checklistSection" data-itemid="@Model.sections[i].ID">
-                <tr>
-                    <th style="width:40%">
-                        @if (Model.sections[i].HTMLHeaderType == 2)
-                        {
-                            <h2>@Model.sections[i].SectionLabel</h2>
-                        }
-                        else if (Model.sections[i].HTMLHeaderType == 3)
-                        {
-                            <h3>@Model.sections[i].SectionLabel</h3>
-                        }
-                        @Html.HiddenFor(m => m.sections[i].ID)
-                    </th>
-                    @*Display the column headings (Pass, Fail, etc.)*@
-                    <th style="width:10%">
-                        @if (Model.sections[i].OptionName1 != null && Model.sections[i].OptionName1.Length > 0)
-                        {
-                            @Model.sections[i].OptionName1
-                        }
-                    </th>
-                    <th style="width:10%">
-                        @if (Model.sections[i].OptionName2 != null && Model.sections[i].OptionName2.Length > 0)
-                        {
-                            @Model.sections[i].OptionName2
-                        }
-                    </th>
-                    <th style="width:10%">
-
-                        @if (Model.sections[i].OptionName3 != null && Model.sections[i].OptionName3.Length > 0)
-                        {
-                            @Model.sections[i].OptionName3
-                        }
-                    </th>
-                    <th style="width:10%">
-
-                        @if (Model.sections[i].OptionName4 != null && Model.sections[i].OptionName4.Length > 0)
-                        {
-                            @Model.sections[i].OptionName4
-                        }
-                    </th>
-                </tr>
-                <tr class="sectionErrorMessage" hidden="hidden"><td colspan="5"><label class="alert-warning">You must check at least one checkbox</label></td></tr>
-
-                @if (Model.sections[i].CanCheckAllOption1 || Model.sections[i].CanCheckAllOption2 || Model.sections[i].CanCheckAllOption3 || Model.sections[i].CanCheckAllOption4)
-                {
+            @for (int i = 0; i < Model.sections.Count; i++)
+            {
+                <table style="width:100%" id="Section_@Model.sections[i].ID" class="checklistSection" data-itemid="@Model.sections[i].ID">
                     <tr>
-                        <td></td>
-                        @if (Model.sections[i].CanCheckAllOption1)
-                        {
-                            <td><button type="button" class="btn btn-sm checkAll1" id="CheckAll1_@Model.sections[i].ID">Check All</button></td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                        @if (Model.sections[i].CanCheckAllOption2)
-                        {
-                            <td><button type="button" class="btn btn-sm checkAll2" id="CheckAll2_@Model.sections[i].ID">Check All</button></td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                        @if (Model.sections[i].CanCheckAllOption3)
-                        {
-                            <td><button type="button" class="btn btn-sm checkAll3" id="CheckAll3_@Model.sections[i].ID">Check All</button></td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-                        @if (Model.sections[i].CanCheckAllOption4)
-                        {
-                            <td><button type="button" class="btn btn-sm checkAll4" id="CheckAll1_@Model.sections[i].ID">Check All</button></td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
+                        <th style="width:40%">
+                            @if (Model.sections[i].HTMLHeaderType == 2)
+                            {
+                                <h2>@Model.sections[i].SectionLabel</h2>
+                            }
+                            else if (Model.sections[i].HTMLHeaderType == 3)
+                            {
+                                <h3>@Model.sections[i].SectionLabel</h3>
+                            }
+                            @Html.HiddenFor(m => m.sections[i].ID)
+                        </th>
+                        @*Display the column headings (Pass, Fail, etc.)*@
+                        <th style="width:10%">
+                            @if (Model.sections[i].OptionName1 != null && Model.sections[i].OptionName1.Length > 0)
+                            {
+                                @Model.sections[i].OptionName1
+                            }
+                        </th>
+                        <th style="width:10%">
+                            @if (Model.sections[i].OptionName2 != null && Model.sections[i].OptionName2.Length > 0)
+                            {
+                                @Model.sections[i].OptionName2
+                            }
+                        </th>
+                        <th style="width:10%">
+
+                            @if (Model.sections[i].OptionName3 != null && Model.sections[i].OptionName3.Length > 0)
+                            {
+                                @Model.sections[i].OptionName3
+                            }
+                        </th>
+                        <th style="width:10%">
+
+                            @if (Model.sections[i].OptionName4 != null && Model.sections[i].OptionName4.Length > 0)
+                            {
+                                @Model.sections[i].OptionName4
+                            }
+                        </th>
                     </tr>
-                }
+                    <tr class="sectionErrorMessage" hidden="hidden"><td colspan="5"><label class="alert-warning">You must check at least one checkbox</label></td></tr>
 
-                @for (int j = 0; j < Model.sections[i].ChecklistItemRecords.Count; j++)
-                {
-                    var sectionItemRecord = Model.sections[i].ChecklistItemRecords[j];
-                    <tr class="itemlist" data-itemid="@Model.sections[i].ChecklistItemRecords[j].ItemId">
-                        @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, new { @id = "ChecklistItemRecordID" })
-                        @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].ItemId)
-                        @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].OptionType1)
-                        @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].OptionType2)
-                        @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].OptionType3)
-                        @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].OptionType4)
-                        @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].AllowAutoChecking, new { @class = "AllowAutoChecking" })
-                        @if (sectionItemRecord.HasCheckbox)
-                        {
-                            <td>
-
-                                @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsChecked, new { id = Model.sections[i].ChecklistItemRecords[j].ItemId, @class = "initialCheckbox" })
-                                @sectionItemRecord.ItemText
-                                <label class="errorMessage alert-danger" hidden="hidden">You must check at least one checkbox</label>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                @sectionItemRecord.ItemText
-                                @if (sectionItemRecord.HasITDropDown1)
-                                {
-                                    if (sectionItemRecord.ITDropDownType1 == "Tread")
-                                    {
-                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText1, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].ITDropDownText1), new { @class = "form-control-item treadDropdown1" })
-                                    }
-                                    else if (sectionItemRecord.ITDropDownType1 == "Brake")
-                                    {
-                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText1, new SelectList(FitzCheckout.BizObjects.DropDownValues.BrakeLiningMeasurment, Model.sections[i].ChecklistItemRecords[j].ITDropDownText1), new { @class = "form-control-item brakeLiningDropdown" })
-                                    }
-                                    else if (sectionItemRecord.ITDropDownType1 == "Spare")
-                                    {
-                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText1, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].ITDropDownText1), new { @class = "form-control-item spareTireDropdown1" })
-                                    }
-                                }
-                                @if (sectionItemRecord.HasITDropDown2)
-                                {
-                                    if (sectionItemRecord.ITDropDownType1 == "Spare" && sectionItemRecord.ITDropDownText1 == "Full Size")
-                                    {
-                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText2, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].ITDropDownText2), new { @class = "form-control-item spareTreadDropdown" })
-
-                                    }
-                                    else
-                                    {
-                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText2, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].ITDropDownText2), new { @class = "form-control-item spareTreadDropdown", @hidden = true })
-                                    }
-                                }
-                                <label class="errorMessage alert-danger" hidden="hidden">You must check at least one checkbox</label>
-                                <label class="measurementError alert-danger" hidden="hidden">All measurements must be filled in</label>
-                            </td>
-                        }
-                        @if (!String.IsNullOrEmpty(sectionItemRecord.OptionType1))
-                        {
-                            if (sectionItemRecord.OptionType1 == "Checkbox")
+                    @if (Model.sections[i].CanCheckAllOption1 || Model.sections[i].CanCheckAllOption2 || Model.sections[i].CanCheckAllOption3 || Model.sections[i].CanCheckAllOption4)
+                    {
+                        <tr>
+                            <td></td>
+                            @if (Model.sections[i].CanCheckAllOption1)
                             {
-                                <td class="ChecklistItem1" data-itemid="option1">
-                                    @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption1Selected, new { id = "Option1" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem1 checkboxClass" })
-                                </td>
+                                <td><button type="button" class="btn btn-sm checkAll1" id="CheckAll1_@Model.sections[i].ID">Check All</button></td>
                             }
-                            else if (sectionItemRecord.OptionType1 == "Textbox")
+                            else
                             {
-                                <td class="ListItem1" data-itemid="option1">
-                                    @Html.TextBoxFor(m => m.sections[i].ChecklistItemRecords[j].Option1Text, new { id = "Option1" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, style = "width:80%", @class = "textboxItem1" })
-                                </td>
+                                <td></td>
                             }
-
-                            //jjs - Are these two necessary anymore?
-                            else if (sectionItemRecord.OptionType1 == "Tread")
+                            @if (Model.sections[i].CanCheckAllOption2)
                             {
-                                <td class="ListItem1" data-itemid="option1">
-                                    @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option1Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option1Text), new { @class = "form-control measurementDropdown1" })
+                                <td><button type="button" class="btn btn-sm checkAll2" id="CheckAll2_@Model.sections[i].ID">Check All</button></td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (Model.sections[i].CanCheckAllOption3)
+                            {
+                                <td><button type="button" class="btn btn-sm checkAll3" id="CheckAll3_@Model.sections[i].ID">Check All</button></td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            @if (Model.sections[i].CanCheckAllOption4)
+                            {
+                                <td><button type="button" class="btn btn-sm checkAll4" id="CheckAll1_@Model.sections[i].ID">Check All</button></td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        </tr>
+                    }
+
+                    @for (int j = 0; j < Model.sections[i].ChecklistItemRecords.Count; j++)
+                    {
+                        var sectionItemRecord = Model.sections[i].ChecklistItemRecords[j];
+                        <tr class="itemlist" data-itemid="@Model.sections[i].ChecklistItemRecords[j].ItemId">
+                            @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, new { @id = "ChecklistItemRecordID" })
+                            @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].ItemId)
+                            @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].OptionType1)
+                            @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].OptionType2)
+                            @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].OptionType3)
+                            @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].OptionType4)
+                            @Html.HiddenFor(m => m.sections[i].ChecklistItemRecords[j].AllowAutoChecking, new { @class = "AllowAutoChecking" })
+                            @if (sectionItemRecord.HasCheckbox)
+                            {
+                                <td>
+
+                                    @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsChecked, new { id = Model.sections[i].ChecklistItemRecords[j].ItemId, @class = "initialCheckbox" })
+                                    @sectionItemRecord.ItemText
+                                    <label class="errorMessage alert-danger" hidden="hidden">You must check at least one checkbox</label>
                                 </td>
                             }
                             else
                             {
-                                <td class="ListItem1" data-itemid="option1">
-                                    @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option1Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].Option1Text), new { @class = "form-control spareTireDropdown1" })
+                                <td>
+                                    @sectionItemRecord.ItemText
+                                    @if (sectionItemRecord.HasITDropDown1)
+                                    {
+                                        if (sectionItemRecord.ITDropDownType1 == "Tread")
+                                        {
+                                            @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText1, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].ITDropDownText1), new { @class = "form-control-item treadDropdown1" })
+                                        }
+                                        else if (sectionItemRecord.ITDropDownType1 == "Brake")
+                                        {
+                                            @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText1, new SelectList(FitzCheckout.BizObjects.DropDownValues.BrakeLiningMeasurment, Model.sections[i].ChecklistItemRecords[j].ITDropDownText1), new { @class = "form-control-item brakeLiningDropdown" })
+                                        }
+                                        else if (sectionItemRecord.ITDropDownType1 == "Spare")
+                                        {
+                                            @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText1, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].ITDropDownText1), new { @class = "form-control-item spareTireDropdown1" })
+                                        }
+                                    }
+                                    @if (sectionItemRecord.HasITDropDown2)
+                                    {
+                                        if (sectionItemRecord.ITDropDownType1 == "Spare" && sectionItemRecord.ITDropDownText1 == "Full Size")
+                                        {
+                                            @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText2, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].ITDropDownText2), new { @class = "form-control-item spareTreadDropdown" })
+
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].ITDropDownText2, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].ITDropDownText2), new { @class = "form-control-item spareTreadDropdown", @hidden = true })
+                                        }
+                                    }
+                                    <label class="errorMessage alert-danger" hidden="hidden">You must check at least one checkbox</label>
+                                    <label class="measurementError alert-danger" hidden="hidden">All measurements must be filled in</label>
                                 </td>
                             }
-                        }
-                        <td class="ChecklistItem2" data-itemid="option2">
-                            @if (!String.IsNullOrEmpty(sectionItemRecord.OptionType2))
+                            @if (!String.IsNullOrEmpty(sectionItemRecord.OptionType1))
                             {
-                                if (sectionItemRecord.OptionType2 == "Checkbox")
+                                if (sectionItemRecord.OptionType1 == "Checkbox")
                                 {
-                                    @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption2Selected, new { id = "Option2" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem2 checkboxClass" });
+                                    <td class="ChecklistItem1" data-itemid="option1">
+                                        @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption1Selected, new { id = "Option1" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem1 checkboxClass" })
+                                    </td>
                                 }
-                                else if (sectionItemRecord.OptionType2 == "Textbox")
+                                else if (sectionItemRecord.OptionType1 == "Textbox")
                                 {
-                                    @Html.TextBoxFor(m => m.sections[i].ChecklistItemRecords[j].Option2Text, new { id = "Option2" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, style = "width:80%", @class = "textboxItem2" });
+                                    <td class="ListItem1" data-itemid="option1">
+                                        @Html.TextBoxFor(m => m.sections[i].ChecklistItemRecords[j].Option1Text, new { id = "Option1" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, style = "width:80%", @class = "textboxItem1" })
+                                    </td>
                                 }
-                                else if (sectionItemRecord.OptionType2 == "Tread")
+
+                                //jjs - Are these two necessary anymore?
+                                else if (sectionItemRecord.OptionType1 == "Tread")
                                 {
-                                    if (sectionItemRecord.OptionType1 == "Spare" && Model.sections[i].ChecklistItemRecords[j].Option1Text != "Full Size")
+                                    <td class="ListItem1" data-itemid="option1">
+                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option1Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option1Text), new { @class = "form-control measurementDropdown1" })
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="ListItem1" data-itemid="option1">
+                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option1Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].Option1Text), new { @class = "form-control spareTireDropdown1" })
+                                    </td>
+                                }
+                            }
+                            <td class="ChecklistItem2" data-itemid="option2">
+                                @if (!String.IsNullOrEmpty(sectionItemRecord.OptionType2))
+                                {
+                                    if (sectionItemRecord.OptionType2 == "Checkbox")
                                     {
-                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option2Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option2Text), new { @class = "form-control measurementDropdown2", @style = "display:none" });
+                                        @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption2Selected, new { id = "Option2" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem2 checkboxClass" });
+                                    }
+                                    else if (sectionItemRecord.OptionType2 == "Textbox")
+                                    {
+                                        @Html.TextBoxFor(m => m.sections[i].ChecklistItemRecords[j].Option2Text, new { id = "Option2" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, style = "width:80%", @class = "textboxItem2" });
+                                    }
+                                    else if (sectionItemRecord.OptionType2 == "Tread")
+                                    {
+                                        if (sectionItemRecord.OptionType1 == "Spare" && Model.sections[i].ChecklistItemRecords[j].Option1Text != "Full Size")
+                                        {
+                                            @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option2Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option2Text), new { @class = "form-control measurementDropdown2", @style = "display:none" });
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option2Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option2Text), new { @class = "form-control measurementDropdown2" });
+                                        }
                                     }
                                     else
                                     {
-                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option2Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option2Text), new { @class = "form-control measurementDropdown2" });
+                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option2Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].Option2Text), new { @class = "form-control spareTireDropdown2" });
                                     }
                                 }
-                                else
+                            </td>
+                            <td class="ChecklistItem3" data-itemid="option3">
+                                @if (!String.IsNullOrEmpty(sectionItemRecord.OptionType3))
                                 {
-                                    @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option2Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].Option2Text), new { @class = "form-control spareTireDropdown2" });
+                                    if (sectionItemRecord.OptionType3 == "Checkbox")
+                                    {
+                                        @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption3Selected, new { id = "Option3" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem3 checkboxClass" });
+                                    }
+                                    else if (sectionItemRecord.OptionType3 == "Textbox")
+                                    {
+                                        @Html.TextBoxFor(m => m.sections[i].ChecklistItemRecords[j].Option3Text, new { id = "Option3" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, style = "width:80%", @class = "textboxItem3" });
+                                    }
+                                    else if (sectionItemRecord.OptionType3 == "Tread")
+                                    {
+                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option3Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option3Text), new { @class = "form-control measurementDropdown3" });
+                                    }
+                                    else
+                                    {
+                                        //@Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option3Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].Option3Text), new { @class = "form-control spareTireDropdown3" });
+                                    }
                                 }
-                            }
-                        </td>
-                        <td class="ChecklistItem3" data-itemid="option3">
-                            @if (!String.IsNullOrEmpty(sectionItemRecord.OptionType3))
-                            {
-                                if (sectionItemRecord.OptionType3 == "Checkbox")
+                            </td>
+                            <td class="ChecklistItem4" data-itemid="option4">
+                                @if (!String.IsNullOrEmpty(sectionItemRecord.OptionType4))
                                 {
-                                    @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption3Selected, new { id = "Option3" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem3 checkboxClass" });
-                                }
-                                else if (sectionItemRecord.OptionType3 == "Textbox")
-                                {
-                                    @Html.TextBoxFor(m => m.sections[i].ChecklistItemRecords[j].Option3Text, new { id = "Option3" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, style = "width:80%", @class = "textboxItem3" });
-                                }
-                                else if (sectionItemRecord.OptionType3 == "Tread")
-                                {
-                                    @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option3Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option3Text), new { @class = "form-control measurementDropdown3" });
-                                }
-                                else
-                                {
-                                    //@Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option3Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].Option3Text), new { @class = "form-control spareTireDropdown3" });
-                                }
-                            }
-                        </td>
-                        <td class="ChecklistItem4" data-itemid="option4">
-                            @if (!String.IsNullOrEmpty(sectionItemRecord.OptionType4))
-                            {
-                                if (sectionItemRecord.OptionType4 == "Checkbox")
-                                {
-                                    @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption4Selected, new { id = "Option4" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem4 checkboxClass" });
-                                }
-                                else if (sectionItemRecord.OptionType4 == "Textbox")
-                                {
-                                    @Html.TextBoxFor(m => m.sections[i].ChecklistItemRecords[j].Option4Text, new { id = "Option4" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, style = "width:80%", @class = "textboxItem4" });
-                                }
-                                else if (sectionItemRecord.OptionType4 == "Tread")
-                                {
-                                    @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option4Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option4Text), new { @class = "form-control measurementDropdown4" });
-                                }
-                                else
-                                {
-                                    @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option4Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].Option4Text), new { @class = "form-control spareTireDropdown4" });
-                                }
+                                    if (sectionItemRecord.OptionType4 == "Checkbox")
+                                    {
+                                        @Html.CheckBoxFor(m => m.sections[i].ChecklistItemRecords[j].IsOption4Selected, new { id = "Option4" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, @class = "checkboxItem4 checkboxClass" });
+                                    }
+                                    else if (sectionItemRecord.OptionType4 == "Textbox")
+                                    {
+                                        @Html.TextBoxFor(m => m.sections[i].ChecklistItemRecords[j].Option4Text, new { id = "Option4" + Model.sections[i].ChecklistItemRecords[j].ChecklistItemRecordID, style = "width:80%", @class = "textboxItem4" });
+                                    }
+                                    else if (sectionItemRecord.OptionType4 == "Tread")
+                                    {
+                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option4Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.TireTreadMeasurment, Model.sections[i].ChecklistItemRecords[j].Option4Text), new { @class = "form-control measurementDropdown4" });
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => m.sections[i].ChecklistItemRecords[j].Option4Text, new SelectList(FitzCheckout.BizObjects.DropDownValues.SparTireTypes, Model.sections[i].ChecklistItemRecords[j].Option4Text), new { @class = "form-control spareTireDropdown4" });
+                                    }
 
-                            }
-                        </td>
-                    </tr>
-                }
-                @if (Model.sections[i].ID == 1)
-                {
-                    <tr><td colspan="5"><i><b>(If frame damage exists - complete section 2 below)</b></i></td></tr>
-                }
-                @if (Model.sections[i].ID == 3)
-                {
-                    <tr><td colspan="5"><i><b>(If water damage exists - complete section 4 below)</b></i></td></tr>
-                }
-            </table>
-        }
-        <p></p>
-        @*<div class="row col-md-3">
-                <button name="submit" type="button" id="saveForm2" value="Save" class="btn btn-primary pull-left saveForm">Save</button>
-            </div>
-            <div class="row col-md-3">
-                <button name="submit" type="button" id="Submitted2" value="MarkComplete" class="btn btn-danger markComplete">Finish</button>
-            </div>*@
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.sections[i].ID == 1)
+                    {
+                        <tr><td colspan="5"><i><b>(If frame damage exists - complete section 2 below)</b></i></td></tr>
+                    }
+                    @if (Model.sections[i].ID == 3)
+                    {
+                        <tr><td colspan="5"><i><b>(If water damage exists - complete section 4 below)</b></i></td></tr>
+                    }
+                </table>
+            }
+            <p></p>
+            @*<div class="row col-md-3">
+                    <button name="submit" type="button" id="saveForm2" value="Save" class="btn btn-primary pull-left saveForm">Save</button>
+                </div>
+                <div class="row col-md-3">
+                    <button name="submit" type="button" id="Submitted2" value="MarkComplete" class="btn btn-danger markComplete">Finish</button>
+                </div>*@
+        </div>
+        <div class="inspectionOverlay"></div>
     </div>
-    <div class="inspectionOverlay"></div>
-</div>
 }
 

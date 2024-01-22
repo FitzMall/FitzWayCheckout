@@ -332,7 +332,7 @@ $(document).ready(function () {
         if (!hasErrors) {
             var data = 'submit=Save&' + $('#SaveChecklist').serialize();
             $.ajax({
-                url: '/FitzwayCheckout/Inspection/Save',
+                url: '/Inspection/Save',
                 type: 'post',
                 dataType: 'json',
                 data: data,
@@ -421,7 +421,7 @@ $(document).ready(function () {
             if (confirmContinue) {
                 var data = 'submit=Submitted&' + $('#SaveChecklist').serialize();
                 $.ajax({
-                    url: '/FitzwayCheckout/Inspection/Save',
+                    url: '/Inspection/Save',
                     type: 'post',
                     dataType: 'json',
                     data: data,

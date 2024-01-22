@@ -127,7 +127,7 @@ namespace FitzCheckout.Models
                 recordVM.MetaDataValue8 = checklistRecordInfo.MetaDataValue8;
                 recordVM.DateCreated = checklistRecordInfo.DateCreated;
                 recordVM.DateUpdated = checklistRecordInfo.DateUpdated;
-                recordVM.FuelType = checklistRecordInfo.FuelType.Trim();
+                recordVM.FuelType = checklistRecordInfo.FuelType;
                 FuelType = recordVM.FuelType;
 
                 if (FuelType == null || FuelType == "('MISSING')" || FuelType.Trim() == "")

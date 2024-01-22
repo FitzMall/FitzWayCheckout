@@ -350,7 +350,7 @@ namespace FitzCheckout.BizObjects
                     FROM [JUNK].[dbo].[CSV_vehicleUSED] v ";
 
                     qs += whereClause2;
-
+                    /// put fuel in here?? vvvvvvv
                     checklistRecords = SqlMapperUtil.SqlWithParams<ChecklistRecord>(qs, new { }).ToList();
                 }
 

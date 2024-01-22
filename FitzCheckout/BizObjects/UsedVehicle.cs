@@ -140,12 +140,20 @@ namespace FitzCheckout.BizObjects
 
             foreach (string ThisVehicle in FoundVehicles)
             {
-                if (ThisVehicle != null & ThisVehicle.Trim() != "")
+                if (ThisVehicle != null)
                 {
-                    selectFuel = ThisVehicle.ToUpper().Trim();
-                }
+                    if (ThisVehicle.Trim() != "")
+                    {
+                        selectFuel = ThisVehicle.ToUpper().Trim();
+                    }
+                } 
+                else
+            {
+                    selectFuel = "";
             }
 
+            } 
+          
             if (selectFuel == "" | selectFuel == null)
             {
                 return GetFuelFromCHROME(Vin);

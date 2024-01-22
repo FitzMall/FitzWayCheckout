@@ -12,7 +12,7 @@ $(document).ready(function () {
         //var metadataValues = '1047866';
         $.ajax({
             type: 'POST',
-            url: '/FitzwayCheckout/Inspection/Details',
+            url: '/Inspection/Details',
             data: '{metadataValues: "" }',
             contentType: 'application/json; charset=utf-8',
             dataType: 'html',
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: '/FitzwayCheckout/Inspection/Details',
+            url: '/Inspection/Details',
             data: '{metadataValues: "' + metadataValues + '" }',
             contentType: 'application/json; charset=utf-8',
             dataType: 'html',
@@ -67,7 +67,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: '/FitzwayCheckout/Inspection/Details',
+            url: '/Inspection/Details',
             data: '{metadataValues: "' + metadataValues + '" }',
             contentType: 'application/json; charset=utf-8',
             dataType: 'html',
