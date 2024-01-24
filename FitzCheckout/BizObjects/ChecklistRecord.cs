@@ -346,7 +346,7 @@ namespace FitzCheckout.BizObjects
 				                WHEN DRloc = 'FBS' AND v.Mall = 'WF' THEN (SELECT PermissionCode from [Checklists].[dbo].[Locations_lkup] WHERE LocCode = 'FBS' AND Mall = 'WF') 
 				                ELSE (SELECT PermissionCode from [Locations_lkup] WHERE LocCode = V.DRloc)
 			                END as MetaDataValue8,
-                         1 AS Status, 0 AS UserID, 'UnAssigned' AS FullName, GETDATE() AS DateCreated, GETDATE() AS DateUpdated 
+                         1 AS Status, '' AS FuelType, 0 AS UserID, 'UnAssigned' AS FullName, GETDATE() AS DateCreated, GETDATE() AS DateUpdated 
                     FROM [JUNK].[dbo].[CSV_vehicleUSED] v ";
 
                     qs += whereClause2;

@@ -130,6 +130,11 @@ namespace FitzCheckout.Models
                 recordVM.FuelType = checklistRecordInfo.FuelType;
                 FuelType = recordVM.FuelType;
 
+                if (FuelType == "Select Fuel")
+                {
+                    FuelType = "('MISSING')";
+                }
+
                 if (FuelType == null || FuelType == "('MISSING')" || FuelType.Trim() == "")
                 {
                     if (checklistRecordInfo.MetaDataValue7 != null & checklistRecordInfo.MetaDataValue7 != "")

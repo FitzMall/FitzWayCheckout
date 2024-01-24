@@ -308,8 +308,10 @@
     <Content Include="Scripts\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\datatables.min.css" />
     <Content Include="Scripts\datatables.min.js" />
+    <Content Include="Scripts\InspectionDetails_C.js" />
     <Content Include="Scripts\InspectionDetails_B.js" />
     <Content Include="Scripts\InspectionDetails.js" />
+    <Content Include="Scripts\InspectionForm_C.js" />
     <Content Include="Scripts\InspectionForm_B.js" />
     <Content Include="Scripts\InspectionForm.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -326,6 +328,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\SupervisorView_C.js" />
     <Content Include="Scripts\SupervisorView_B.js" />
     <Content Include="Scripts\SupervisorView.js" />
     <Content Include="Scripts\_references.js" />

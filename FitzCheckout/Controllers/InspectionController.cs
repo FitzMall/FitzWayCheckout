@@ -301,6 +301,10 @@ namespace FitzCheckout.Controllers
                     }
                 }
                 //return PartialView("Details", newChecklistVM);
+                if (FuelFound == "Select Fuel")
+                {
+                    FuelFound = "('MISSING')";
+                }
 
                 if (FuelFound == "('MISSING')" || FuelFound == "" || FuelFound == null)
                 {

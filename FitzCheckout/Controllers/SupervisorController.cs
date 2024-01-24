@@ -279,6 +279,10 @@ namespace FitzCheckout.Controllers
                 var filename = ConfigurationManager.AppSettings["PdfFilenameRoot"] + supervisorViewVM.checklistInfo.MetaDataValue7 + ".pdf";
                 int intID = Int32.Parse(id);
                 thisFuel = supervisorViewVM.checklistInfo.FuelType;
+                if (thisFuel == "Select Fuel")
+                {
+                    thisFuel = "('MISSING')";
+                }
 
                 if (thisFuel == null || thisFuel == "('MISSING')" || thisFuel.Trim() == "")
                 {
@@ -330,6 +334,12 @@ namespace FitzCheckout.Controllers
                 }
 
             }
+
+            if (thisFuel == "Select Fuel")
+            {
+                thisFuel = "('MISSING')";
+            }
+
             if (thisFuel == "('MISSING')" || thisFuel == "" || thisFuel == null)
             {
 

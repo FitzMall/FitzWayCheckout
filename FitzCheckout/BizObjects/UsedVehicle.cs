@@ -152,8 +152,12 @@ namespace FitzCheckout.BizObjects
                     selectFuel = "";
             }
 
-            } 
-          
+            }
+            if (selectFuel == "Select Fuel")
+            {
+                selectFuel = "";
+            }
+
             if (selectFuel == "" | selectFuel == null)
             {
                 return GetFuelFromCHROME(Vin);
