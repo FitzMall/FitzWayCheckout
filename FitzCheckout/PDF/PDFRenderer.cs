@@ -409,7 +409,7 @@ namespace FitzCheckout.PDF
             var dingbatsFont = PdfFontFactory.CreateFont(iText.IO.Font.Constants.StandardFonts.ZAPFDINGBATS);
 
             var cellBackgroundGray = new DeviceRgb(0xEB, 0xEB, 0xEB);
-
+            string FuelDescription = GetFuelDescription(theData.VehicleFuel);
 
             table.AddCell(new Cell(1, 1).Add(new Paragraph("F")).SetFont(dingbatsFont).SetFontSize(8).SetBorder(Border.NO_BORDER));
             table.AddCell(new Cell(1, 2).Add(new Paragraph("Dealership: ")).SetFont(metadataFont).SetFontSize(8).SetBorder(Border.NO_BORDER));
@@ -431,6 +431,10 @@ namespace FitzCheckout.PDF
             table.AddCell(new Cell(1, 2).Add(new Paragraph("VIN: ")).SetFont(metadataFont).SetFontSize(8).SetBorder(Border.NO_BORDER));
             table.AddCell(new Cell(1, 7).Add(new Paragraph(theData.Vin)).SetFont(metadataFontBold).SetFontSize(8).SetBackgroundColor(cellBackgroundGray).SetBorder(Border.NO_BORDER));
 
+            table.AddCell(new Cell(1, 1).Add(new Paragraph("F")).SetFont(dingbatsFont).SetFontSize(8).SetBorder(Border.NO_BORDER));
+            table.AddCell(new Cell(1, 2).Add(new Paragraph("Fuel: ")).SetFont(metadataFont).SetFontSize(8).SetBorder(Border.NO_BORDER));
+            table.AddCell(new Cell(1, 7).Add(new Paragraph(FuelDescription)).SetFont(metadataFontBold).SetFontSize(8).SetBackgroundColor(cellBackgroundGray).SetBorder(Border.NO_BORDER));
+
             document.Add(table);
 
             table = new Table(UnitValue.CreatePercentArray(20));
@@ -446,8 +450,6 @@ namespace FitzCheckout.PDF
 
             string techCertify = "I certify the information on this form was accurate at the time I inspected the vehicle and completed this form.";
             table.AddCell(new Cell(1, 20).Add(new Paragraph(techCertify)).SetFont(metadataFont).SetFontSize(8).SetBorder(Border.NO_BORDER));
-
-            table.AddCell(new Cell(1, 20).Add(new Paragraph("")).SetFont(metadataFont).SetFontSize(8).SetBorder(Border.NO_BORDER));
 
             Text asterix = new Text("*").SetFont(metadataFont).SetTextRise(1).SetFontSize(6);
 
@@ -468,6 +470,41 @@ namespace FitzCheckout.PDF
 
 
             document.Add(ParagraphPage2);
+
+        }
+
+        public string GetFuelDescription(string Fuel)
+        {
+
+            string qs = "[GetFuelDescription]";
+            string selectFuel = "";
+
+            string connectionString = ConfigurationManager.ConnectionStrings["Checklist"].ConnectionString;
+            List<string> FoundVehicles = SqlMapperUtil.StoredProcWithParams<string>(qs, new { fuel = Fuel }, connectionString);
+
+            foreach (string ThisVehicle in FoundVehicles)
+            {
+                if (ThisVehicle != null)
+                {
+                    if (ThisVehicle.Trim() != "")
+                    {
+                        selectFuel = ThisVehicle.ToUpper().Trim();
+                        break;
+                    }
+                }
+                else
+                {
+                    selectFuel = "";
+                }
+
+            }
+      
+            if (selectFuel == "Select Fuel")
+            {
+                selectFuel = "";
+            }
+
+            return selectFuel;
 
         }
 

@@ -10,15 +10,21 @@
 {
      
     <div class="form-horizontal">
-        <h4>Select Your Fuel for @Model.MetaDataValue7</h4>
+        <h4>Select Fuel Type for @Model.MetaDataValue6</h4>
         <hr />
-        <div class="form-group">
-            <select class="form-control" name="FuelType">
-                <option value=" ">Select Fuel</option>
-                <option value="('ALL', 'ICHYBRID', 'IC')">Gasoline/Diesel</option>
-                <option value="('ALL', 'ICHYBRID', 'HYBRID')">Hybrid</option>
-                <option value="('ALL', 'EV')">EV</option>
-            </select>
+        <div class="form-group" style="font-size:x-large">
+            <div>
+                <input type="radio" name="FuelType" value="('ALL', 'ICHYBRID', 'IC')"  />
+                <label>Gasoline/Diesel</label>
+            </div>
+            <div>
+                <input type="radio" name="FuelType" value="('ALL', 'ICHYBRID', 'HYBRID')"  />
+                <label>Hybrid</label>
+            </div>
+            <div>
+                <input type="radio" name="FuelType" value="('ALL', 'EV')"  />
+                <label>EV</label>
+            </div>
         </div>
 
         <div class="form-group">

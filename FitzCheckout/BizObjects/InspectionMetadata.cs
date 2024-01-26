@@ -20,6 +20,8 @@ namespace FitzCheckout.Models
         public string LastName { get; set; }
         public DateTime InspectionDate { get; set; }
 
+        public string VehicleFuel { get; set; }
+
         public InspectionMetadata GetInspectionMetadata(int recordID)
         {
             string qs = @"SELECT 
@@ -32,6 +34,7 @@ namespace FitzCheckout.Models
                             , u.FirstName 
                             , u.LastName
                             , cr.DateUpdated InspectionDate
+                            , cr.FuelType
                         FROM [Checklists].[dbo].[ChecklistRecord] cr
                             LEFT OUTER JOIN [FitzDB].[dbo].[Users] u ON cr.UserID = u.ID
                         WHERE cr.ID = @ID";

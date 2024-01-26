@@ -92,6 +92,11 @@ namespace FitzCheckout.Models
         {
             List<ChecklistSectionVM> sections = new List<Models.ChecklistSectionVM>();
 
+            if (FuelType == "")
+            {
+                FuelType = "('MISSING')";
+            }
+
             string qs = @"SELECT *
                     FROM [Checklists].[dbo].[ChecklistSection_Hybrid_EV]
                     WHERE [ChecklistID] = @checklistID

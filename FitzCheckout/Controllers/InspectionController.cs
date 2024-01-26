@@ -284,6 +284,18 @@ namespace FitzCheckout.Controllers
                         FuelFound = _usedVehicle.GetFuel(usedVehicle.Vin);   // CALL 2
                     }
 
+                    if (FuelFound == "Select Fuel")
+                    {
+                        FuelFound = "('MISSING')";
+                    }
+
+                    if (FuelFound == "")
+                    {
+                        FuelFound = "('MISSING')";
+                    }
+
+
+
                     newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, FuelFound);
 
                     newChecklistVM.ID = 2;
