@@ -281,9 +281,15 @@ namespace FitzCheckout.BizObjects
 
             for (int i = 0; i < metadata.Length; i++)
             {
-                if (metadata[i] != "undefined" && !String.IsNullOrEmpty(metadata[i]))
+                if (metadata[i] != "undefined" && !String.IsNullOrEmpty(metadata[i]) && i != 6)
+                {
                     where.Append("MetaDataValue" + (i + 1) + "  LIKE '%" + metadata[i] + "%' " + searchType + " ");
+                }
 
+                if (metadata[i] != "undefined" && !String.IsNullOrEmpty(metadata[i]) && i == 6)
+                {
+                    where.Append("MetaDataValue" + (i + 1) + "  = '" + metadata[i] + "' " + searchType + " ");
+                }
             }
 
             string whereClause = where.ToString();
