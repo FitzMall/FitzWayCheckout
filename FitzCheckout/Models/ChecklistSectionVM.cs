@@ -92,6 +92,8 @@ namespace FitzCheckout.Models
         {
             List<ChecklistSectionVM> sections = new List<Models.ChecklistSectionVM>();
 
+            FuelType = FuelType.Replace("___", "");
+
             if (FuelType == "")
             {
                 FuelType = "('MISSING')";

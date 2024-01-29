@@ -308,9 +308,11 @@
     <Content Include="Scripts\dataTables.bootstrap.min.js" />
     <Content Include="Scripts\datatables.min.css" />
     <Content Include="Scripts\datatables.min.js" />
+    <Content Include="Scripts\InspectionDetails_D.js" />
     <Content Include="Scripts\InspectionDetails_C.js" />
     <Content Include="Scripts\InspectionDetails_B.js" />
     <Content Include="Scripts\InspectionDetails.js" />
+    <Content Include="Scripts\InspectionForm_D.js" />
     <Content Include="Scripts\InspectionForm_C.js" />
     <Content Include="Scripts\InspectionForm_B.js" />
     <Content Include="Scripts\InspectionForm.js" />

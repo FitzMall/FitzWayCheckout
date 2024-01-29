@@ -14,7 +14,9 @@ namespace FitzCheckout.BizObjects
         List<UsedVehicle> Search(string searchValues, SearchType searchType, List<string> excludeStockNumbers, List<string> exlcudeVin);
 
         UsedVehicle GetVehicleByID(int ID);
+        UsedVehicle GetVehicleByID_Fuel(int ID, string FuelType);
         String GetFuel(string Vin);
+        String GetFuelByID(string ID);
 
     }
     public class UsedVehicle : IUsedVehicle
@@ -163,6 +165,47 @@ namespace FitzCheckout.BizObjects
                 return selectFuel;
             
         }
+
+        public string GetFuelByID(string ID)
+        {
+            // first try getting it from checklist, then from CHROME if that does not work
+
+            string qs = "[GetChecklistRecordFuelByID]";
+            string selectFuel = "('MISSING')";  
+
+            string connectionString = ConfigurationManager.ConnectionStrings["Checklist"].ConnectionString;
+            List<string> FoundVehicles = SqlMapperUtil.StoredProcWithParams<string>(qs, new { ID = ID }, connectionString);
+
+            if (ID.Length < 4) //  a dummy record
+            {
+                return selectFuel;
+            }
+
+            foreach (string ThisVehicle in FoundVehicles)
+            {
+                if (ThisVehicle != null)
+                {
+                    if (ThisVehicle.Trim() != "")
+                    {
+                        selectFuel = ThisVehicle.ToUpper().Trim();
+                        break;
+                    }
+                }
+                else
+                {
+                    selectFuel = "('MISSING')";
+                }
+
+            }
+            if (selectFuel == "Select Fuel")
+            {
+                selectFuel = "('MISSING')";
+            }
+
+
+            return selectFuel;
+
+        }
         public string GetFuelFromCHROME(string Vin)
         {
             string qs = "[sp_GetVehicle]";
@@ -277,6 +320,10 @@ namespace FitzCheckout.BizObjects
         }
 
         public UsedVehicle GetVehicleByID(int ID)
+        {
+            return GetVehicleByID_Fuel(ID, "('MISSING')");
+        }
+        public UsedVehicle GetVehicleByID_Fuel(int ID, string FuelType)
         {
             string qs = @"SELECT DISTINCT
                             UsedID 

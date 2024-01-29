@@ -119,9 +119,15 @@ namespace FitzCheckout.Controllers
             // stored proc: [ChecklistRecordUpdateFuel]
 
            parChecklist.FuelType = FuelType;
-            SqlMapperUtil.InsertUpdateOrDeleteStoredProc("ChecklistRecordUpdateFuel", new { id = parChecklist.ID , FuelType = FuelType });
+            string SQLFuelType;
 
-            return RedirectToAction("GetItem", new { @id = parChecklist.ID, @type = RecordType.ChecklistRecord });
+            bool FuelTypeJustPicked = (FuelType.Contains("___"));  // three _ means just picked
+
+            SQLFuelType = FuelType.Replace("___", "");  // remove ___ if present
+
+            SqlMapperUtil.InsertUpdateOrDeleteStoredProc("ChecklistRecordUpdateFuel", new { id = parChecklist.ID , FuelType = SQLFuelType });
+
+            return RedirectToAction("GetItem", new { @id = parChecklist.ID, @type = RecordType.ChecklistRecord, @FuelFound = FuelType });
 
         }
         public ActionResult InspectionForm()
@@ -256,7 +262,7 @@ namespace FitzCheckout.Controllers
             );
         }
 
-        public ActionResult GetItem(string ID, string type)
+        public ActionResult xGetItem(string ID, string type)
         {
             if (!IsAuthorized())
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden); ;
@@ -331,6 +337,87 @@ namespace FitzCheckout.Controllers
             return View(newChecklistVM);
 
         }
+
+        public ActionResult GetItem(string ID, string type, string FuelFound)
+        {
+            if (!IsAuthorized())
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden); ;
+
+            int intID = 0;
+
+            if (FuelFound == "" || FuelFound == null)
+            {
+                FuelFound = _usedVehicle.GetFuelByID(ID);
+
+                if (FuelFound == "" || FuelFound == null)
+                {
+                    FuelFound = "('MISSING')";
+                }
+            }
+
+            bool FuelTypeJustPicked = (FuelFound.Contains("___"));  // three _ means just picked
+
+            FuelFound = FuelFound.Replace("___", "");  // remove ___ if present
+
+            if (FuelTypeJustPicked == true)
+            {
+                //type = RecordType.UsedVehicle.ToString();  // fuel selected
+            }
+
+            ChecklistVM newChecklistVM = new Models.ChecklistVM();
+            if (!String.IsNullOrEmpty(ID))
+            {
+                intID = Int32.Parse(ID);
+
+                if (type == RecordType.ChecklistRecord.ToString() || type == RecordType.Submitted.ToString())
+                {
+
+                    newChecklistVM = _checklistVM.GetChecklistVMByChecklistRecordID(intID);
+
+                }
+
+                if (newChecklistVM.MetaDataValue7 == null)
+                {
+                    if (FuelFound == "")
+                    {
+                        FuelFound = "('MISSING')";
+                    } 
+
+                    UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID_Fuel(intID, FuelFound);
+
+                    newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, FuelFound);
+
+                    newChecklistVM.ID = 2;
+                    newChecklistVM.MetaDataValue1 = usedVehicle.DealerName;
+                    newChecklistVM.MetaDataValue2 = usedVehicle.Miles.ToString();
+                    newChecklistVM.MetaDataValue3 = usedVehicle.Yr;
+                    newChecklistVM.MetaDataValue4 = usedVehicle.Make;
+                    newChecklistVM.MetaDataValue5 = usedVehicle.Carline;
+                    newChecklistVM.MetaDataValue6 = usedVehicle.Stk;
+                    newChecklistVM.MetaDataValue7 = usedVehicle.Vin;
+                    newChecklistVM.MetaDataValue8 = usedVehicle.PermissionCode;
+                    newChecklistVM.FuelType = FuelFound;
+                 
+                }
+
+                if (FuelFound == "('MISSING')" || FuelFound == "" || FuelFound == null)
+                {
+                    return RedirectToAction("SelectFuel", new { @id = ID });
+
+                }
+            }
+
+            FuelFound = _usedVehicle.GetFuelByID(ID);
+            SqlMapperUtil.InsertUpdateOrDeleteStoredProc("ChecklistRecordUpdateFuel", new { id = ID, FuelType = FuelFound });
+
+            ModelState.Clear();
+
+            ModelState.Remove("sections");
+            ViewBag.UserType = "Technician";
+            return View(newChecklistVM);
+
+        }
+
 
         public ActionResult DisplayPDF(string filename)
         {
