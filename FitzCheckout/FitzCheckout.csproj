@@ -280,6 +280,10 @@
     <Content Include="Content\chosen.min.css" />
     <Content Include="Content\datatables.min.css" />
     <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="db\ChecklistRecordUpdate.sql" />
+    <Content Include="db\ChecklistRecordUpdateFuel.sql" />
+    <Content Include="db\GetChecklistRecordFuel.sql" />
+    <Content Include="db\GetChecklistRecordFuelByID.sql" />
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_asc_disabled.png" />
     <Content Include="Images\sort_both.png" />

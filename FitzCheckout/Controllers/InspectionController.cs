@@ -451,10 +451,16 @@ namespace FitzCheckout.Controllers
                 action = "Complete";
             }
 
-            if (checklistVM.DateCreated == null)
+            if (checklistVM.DateCreated == null || checklistVM.DateCreated.Year < 1950)
             {
                 checklistVM.DateCreated = DateTime.Now;
             }
+
+            if (checklistVM.DateUpdated == null || checklistVM.DateUpdated.Year < 1950)
+            {
+                checklistVM.DateUpdated = DateTime.Now;
+            }
+
 
             checklistRecordID = _checklistRecord.Save(
                 new ChecklistRecord
