@@ -80,6 +80,9 @@ namespace FitzCheckout.Controllers
             newDashboard.Checklists = _checklistRecord.GeChecklistRecordsByUserID((Int32)currentUser.ID, ChecklistStatus.Pending);
             ChecklistVM newChecklistVM = new Models.ChecklistVM();
 
+            string stockAndVin = stockNumber + vin;
+            stockAndVin = stockAndVin.Trim();
+
             ViewData["NoSearchResults"] = "true";
             ViewData["DetailsSidebarType"] = "Inspection";
             List<SearchResult> results = _vehicleSearch.Search(values, SearchType.And, (Int32)currentUser.ID);
@@ -287,7 +290,7 @@ namespace FitzCheckout.Controllers
                     UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
                     if (usedVehicle.Vin != null & usedVehicle.Vin.Trim() != "")
                     {
-                        FuelFound = _usedVehicle.GetFuel(usedVehicle.Vin);   // CALL 2
+                        FuelFound = _usedVehicle.GetFuel(usedVehicle.Stk);   // CALL 2
                     }
 
                     if (FuelFound == "Select Fuel")
@@ -383,7 +386,7 @@ namespace FitzCheckout.Controllers
                         FuelFound = "('MISSING')";
                     } 
 
-                    UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID_Fuel(intID, FuelFound);
+                    UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
 
                     newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, FuelFound);
 

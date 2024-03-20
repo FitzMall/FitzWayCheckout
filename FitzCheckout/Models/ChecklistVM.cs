@@ -140,7 +140,7 @@ namespace FitzCheckout.Models
                     if (checklistRecordInfo.MetaDataValue7 != null & checklistRecordInfo.MetaDataValue7 != "")
                     {
                         UsedVehicle usedVehicle = new UsedVehicle();
-                        FuelType = usedVehicle.GetFuel(checklistRecordInfo.MetaDataValue7); // CALL 1
+                        FuelType = usedVehicle.GetFuel(checklistRecordInfo.MetaDataValue6); // CALL 1
                         recordVM.FuelType = FuelType;
                     }
                 }

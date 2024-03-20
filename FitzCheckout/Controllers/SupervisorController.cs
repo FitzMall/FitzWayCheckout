@@ -287,7 +287,7 @@ namespace FitzCheckout.Controllers
                 if (thisFuel == null || thisFuel == "('MISSING')" || thisFuel.Trim() == "")
                 {
                     UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(1);
-                    thisFuel = usedVehicle.GetFuel(supervisorViewVM.checklistInfo.MetaDataValue7);   // CALL 3
+                    thisFuel = usedVehicle.GetFuel(supervisorViewVM.checklistInfo.MetaDataValue6);   // CALL 3
                 }
                 var path = Server.MapPath(ConfigurationManager.AppSettings["PdfLocation"]);
                 //path = "J:\\inetpub\\wwwroot\\production\\FITZWAY\\pictures\\UCPDFS\\";
@@ -313,7 +313,7 @@ namespace FitzCheckout.Controllers
                     {
 
                         UsedVehicle usedVehicle = _usedVehicle.GetVehicleByID(intID);
-                        thisFuel = usedVehicle.GetFuel(usedVehicle.Vin);    // CALL 4
+                        thisFuel = usedVehicle.GetFuel(usedVehicle.Stk);    // CALL 4
                         newChecklistVM = _checklistVM.GetEmptyChecklistVMByChecklistID(2, thisFuel);
                         newChecklistVM.ID = 2;
                         newChecklistVM.MetaDataValue1 = usedVehicle.DealerName;

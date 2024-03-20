@@ -14,8 +14,7 @@ namespace FitzCheckout.BizObjects
         List<UsedVehicle> Search(string searchValues, SearchType searchType, List<string> excludeStockNumbers, List<string> exlcudeVin);
 
         UsedVehicle GetVehicleByID(int ID);
-        UsedVehicle GetVehicleByID_Fuel(int ID, string FuelType);
-        String GetFuel(string Vin);
+        String GetFuel(string Stk);
         String GetFuelByID(string ID);
 
     }
@@ -130,15 +129,15 @@ namespace FitzCheckout.BizObjects
 
         }
 
-        public string GetFuel(string Vin)
+        public string GetFuel(string Stock)
         {
             // first try getting it from checklist, then from CHROME if that does not work
 
-            string qs = "[GetChecklistRecordFuel]";
+            string qs = "[GetChecklistRecordFuelByStock]";
             string selectFuel = "('MISSING')";  // make blank if we turn on CHROME fuel search again!!
 
             string connectionString = ConfigurationManager.ConnectionStrings["Checklist"].ConnectionString;
-            List<string> FoundVehicles = SqlMapperUtil.StoredProcWithParams<string>(qs, new { vin = Vin }, connectionString);
+            List<string> FoundVehicles = SqlMapperUtil.StoredProcWithParams<string>(qs, new { Stk = Stock }, connectionString);
 
             foreach (string ThisVehicle in FoundVehicles)
             {
@@ -321,12 +320,8 @@ namespace FitzCheckout.BizObjects
 
         public UsedVehicle GetVehicleByID(int ID)
         {
-            return GetVehicleByID_Fuel(ID, "('MISSING')");
-        }
-        public UsedVehicle GetVehicleByID_Fuel(int ID, string FuelType)
-        {
             string qs = @"SELECT DISTINCT
-                            UsedID 
+                             UsedID 
                             ,Drloc 
                             ,miles 
                             ,yr
